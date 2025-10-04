@@ -23,7 +23,11 @@ public class Passageiro {
     String senha;
     LocalDate data_criacao;
     LocalDate data_modificacao;
-
+    
+    public Passageiro() {
+    
+    }
+    
     public Passageiro(int id, String nome, LocalDate nascimento, String documento, String login, String senha, LocalDate data_criacao, LocalDate data_modificacao) {
         this.id = id;
         this.nome = nome;
@@ -121,6 +125,6 @@ public class Passageiro {
         return Objects.equals(this.documento, other.documento);
     }
     
-    
+  
     
 }
