@@ -2,7 +2,9 @@ package trabalhopoo;
 
 import java.time.LocalDate;
 import java.util.Scanner;
-import trabalhopoo.model.Aeroporto;
+import trabalhopoo.dao.PassageiroDAO;
+import trabalhopoo.dao.UsuarioDAO;
+import trabalhopoo.dao.VooDAO;
 import trabalhopoo.model.CompanhiaAerea;
 import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Usuario;
@@ -54,10 +56,10 @@ public class TrabalhoPOO {
 
             switch (opc) {
                 case 1:
-                    Voo.exibirVoos(voos);
+                    VooDAO.listar(voos);
                     break;
                 case 2:
-                    Usuario admin = Usuario.loginAdmin(scan, usuarios);
+                    Usuario admin = UsuarioDAO.loginAdmin(scan, usuarios);
                     if (admin != null) {
                         Usuario.menuAdmin(scan, passageiros, voos, companhiaAerea);
                     } else {
@@ -65,7 +67,7 @@ public class TrabalhoPOO {
                     }
                     break;
                 case 3:
-                    comprarPassagem(scan, passageiros, voos);
+                    PassageiroDAO.cadastrar(passageiros, scan);
                     break;
                 case 4:
                     System.out.println("Funcionalidade de gestão de passagem ainda não implementada.");
@@ -78,47 +80,6 @@ public class TrabalhoPOO {
                     System.out.println("Opção inválida!");
                     break;
             }
-        }
-    }
-
-
-   
-    // ---------------- Compra de passagem ----------------
-    private static void comprarPassagem(Scanner scan, Passageiro[] passageiros, Voo[] voos) {
-        System.out.println("\n--- Compra de Passagem ---");
-        System.out.print("Digite seu nome: "); String nome = scan.nextLine();
-        System.out.print("Digite seu documento: "); String doc = scan.nextLine();
-
-        // Procura passageiro
-        Passageiro p = null;
-        for (Passageiro pass : passageiros) {
-            if (pass != null && pass.getDocumento().equals(doc)) { p = pass; break; }
-        }
-
-        if (p == null) {
-            System.out.println("Passageiro não encontrado. Cadastrando novo...");
-            for (int i = 0; i < passageiros.length; i++) {
-                if (passageiros[i] == null) {
-                    p = new Passageiro(i + 1, nome, LocalDate.MIN, doc, LocalDate.MIN, LocalDate.MIN);
-                    passageiros[i] = p;
-                    break;
-                }
-            }
-        }
-
-        // Lista voos disponíveis
-        Voo.exibirVoos(voos);
-        System.out.print("Escolha o ID do voo para comprar: ");
-        int idVoo = scan.nextInt(); scan.nextLine();
-        Voo vooEscolhido = null;
-        for (Voo v : voos) {
-            if (v != null && v.getId() == idVoo) { vooEscolhido = v; break; }
-        }
-
-        if (vooEscolhido != null) {
-            System.out.println("Passagem comprada com sucesso para " + vooEscolhido.getDestino() + "!");
-        } else {
-            System.out.println("Voo inválido!");
         }
     }
 }

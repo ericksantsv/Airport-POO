@@ -3,47 +3,46 @@ package trabalhopoo.dao;
 import java.time.LocalDate;
 import java.util.Scanner;
 import trabalhopoo.model.Passageiro;
+import trabalhopoo.model.Voo;
 
 public class PassageiroDAO {
+    
+    // ---------------- Compra de passagem ----------------
+    public static void comprarPassagem(Scanner scan, Passageiro[] passageiros, Voo[] voos) {
+        System.out.println("\n--- Compra de Passagem ---");
+        System.out.print("Digite seu nome: "); String nome = scan.nextLine();
+        System.out.print("Digite seu documento: "); String doc = scan.nextLine();
 
-    public static void crudPassageiro(Passageiro[] passageiros, Scanner scan) {
-        boolean menu = true;
-        while (menu) {
-            System.out.println("\n--- CRUD Passageiro ---");
-            System.out.println("1 - Cadastrar");
-            System.out.println("2 - Listar");
-            System.out.println("3 - Editar");
-            System.out.println("4 - Deletar");
-            System.out.println("5 - Voltar");
-            System.out.print("Escolha: ");
-            int op = scan.nextInt();
-            scan.nextLine();
+        // Procura passageiro
+        Passageiro p = null;
+        for (Passageiro pass : passageiros) {
+            if (pass != null && pass.getDocumento().equals(doc)) { p = pass; break; }
+        }
 
-            switch (op) {
-                case 1:
-                    cadastrar(passageiros, scan);
+        if (p == null) {
+            System.out.println("Passageiro não encontrado. Cadastrando novo...");
+            for (int i = 0; i < passageiros.length; i++) {
+                if (passageiros[i] == null) {
+                    p = new Passageiro(i + 1, nome, LocalDate.MIN, doc, LocalDate.MIN, LocalDate.MIN);
+                    passageiros[i] = p;
                     break;
-
-                case 2:
-                    listar(passageiros);
-                    break;
-
-                case 3:
-                    editar(passageiros, scan);
-                    break;
-
-                case 4:
-                    deletar(passageiros, scan);
-                    break;
-
-                case 5:
-                    menu = false;
-                    break;
-
-                default:
-                    System.out.println("Opção inválida!");
-                    break;
+                }
             }
+        }
+
+        // Lista voos disponíveis
+        VooDAO.listar(voos);
+        System.out.print("Escolha o ID do voo para comprar: ");
+        int idVoo = scan.nextInt(); scan.nextLine();
+        Voo vooEscolhido = null;
+        for (Voo v : voos) {
+            if (v != null && v.getId() == idVoo) { vooEscolhido = v; break; }
+        }
+
+        if (vooEscolhido != null) {
+            System.out.println("Passagem comprada com sucesso para " + vooEscolhido.getDestino() + "!");
+        } else {
+            System.out.println("Voo inválido!");
         }
     }
 

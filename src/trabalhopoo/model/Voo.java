@@ -6,6 +6,11 @@ package trabalhopoo.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Scanner;
+import static trabalhopoo.dao.VooDAO.cadastrar;
+import static trabalhopoo.dao.VooDAO.deletar;
+import static trabalhopoo.dao.VooDAO.editar;
+import static trabalhopoo.dao.VooDAO.listar;
 
 /**
  * =>CRUD de voo. Informações importantes: id, origem, destino, data, duração,
@@ -154,20 +159,44 @@ public class Voo {
         }
         return Objects.equals(this.data, other.data);
     }
+    
+    public static void crudVoo(Voo[] voos, CompanhiaAerea[] companhias, Scanner scan) {
+        boolean menu = true;
+        while (menu) {
+            System.out.println("\n--- CRUD Voo ---");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Listar");
+            System.out.println("3 - Editar");
+            System.out.println("4 - Deletar");
+            System.out.println("5 - Voltar");
+            System.out.print("Escolha: ");
+            int op = scan.nextInt();
+            scan.nextLine();
 
-    public static void exibirVoos(Voo[] voos) {
-        System.out.println("\n ===== Voos =====");
-        for (Voo v : voos) {
-            if (v != null) {
-                System.out.println("\n| Numero: " + v.id
-                        + "\n| Origem: " + v.origem
-                        + "\n| Destino: " + v.destino
-                        + "\n| Data: " + v.data
-                        + "\n| Duracao: " + v.duracao
-                        + "\n| Companhia: " + v.getCompanhiaAerea().nome
-                        + "\n| Capacidade: " + v.capacidade
-                        + "\n| Estado: " + v.estado
-                );
+            switch (op) {
+                case 1:
+                    cadastrar(voos, companhias, scan);
+                    break;
+
+                case 2:
+                    listar(voos);
+                    break;
+
+                case 3:
+                    editar(voos, scan);
+                    break;
+
+                case 4:
+                    deletar(voos, scan);
+                    break;
+
+                case 5:
+                    menu = false;
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
+                    break;
             }
         }
     }

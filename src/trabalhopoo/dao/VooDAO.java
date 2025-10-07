@@ -7,47 +7,6 @@ import trabalhopoo.model.CompanhiaAerea;
 
 public class VooDAO {
 
-    public static void crudVoo(Voo[] voos, CompanhiaAerea[] companhias, Scanner scan) {
-        boolean menu = true;
-        while (menu) {
-            System.out.println("\n--- CRUD Voo ---");
-            System.out.println("1 - Cadastrar");
-            System.out.println("2 - Listar");
-            System.out.println("3 - Editar");
-            System.out.println("4 - Deletar");
-            System.out.println("5 - Voltar");
-            System.out.print("Escolha: ");
-            int op = scan.nextInt();
-            scan.nextLine();
-
-            switch (op) {
-                case 1:
-                    cadastrar(voos, companhias, scan);
-                    break;
-
-                case 2:
-                    Voo.exibirVoos(voos);
-                    break;
-
-                case 3:
-                    editar(voos, scan);
-                    break;
-
-                case 4:
-                    deletar(voos, scan);
-                    break;
-
-                case 5:
-                    menu = false;
-                    break;
-
-                default:
-                    System.out.println("Opção inválida!");
-                    break;
-            }
-        }
-    }
-
     public static void cadastrar(Voo[] voos, CompanhiaAerea[] companhias, Scanner scan) {
         for (int i = 0; i < voos.length; i++) {
             if (voos[i] == null) {
@@ -124,6 +83,23 @@ public class VooDAO {
                 voos[i] = null;
                 System.out.println("Voo deletado!");
                 break;
+            }
+        }
+    }
+
+    public static void listar(Voo[] voos) {
+        System.out.println("\n ===== Voos =====");
+        for (Voo v : voos) {
+            if (v != null) {
+                System.out.println("\n| Numero: " + v.getId()
+                        + "\n| Origem: " + v.getOrigem()
+                        + "\n| Destino: " + v.getDestino()
+                        + "\n| Data: " + v.getData()
+                        + "\n| Duracao: " + v.getDuracao()
+                        + "\n| Companhia: " + v.getCompanhiaAerea().getNome()
+                        + "\n| Capacidade: " + v.getCapacidade()
+                        + "\n| Estado: " + v.getEstado()
+                );
             }
         }
     }

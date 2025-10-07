@@ -4,19 +4,10 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class Usuario {
-
-    private static void crudPassageiro(Scanner scan, Passageiro[] passageiros) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    private static void crudVoo(Scanner scan, Voo[] voos, CompanhiaAerea[] companhias) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
     //atributos
     private int id;
-    private String login;
-    private String senha;
+    public String login;
+    public String senha;
 
     //construtores
     public Usuario() {
@@ -60,32 +51,6 @@ public class Usuario {
         return Objects.equals(this.login, other.login) &&
                Objects.equals(this.senha, other.senha);
     }
-
-    public Usuario criaUsuario(Scanner scan) {
-        System.out.println("Registre o seu login e senha");
-        System.out.print("Usuário: ");
-        String login = scan.nextLine().trim();
-
-        System.out.print("Senha: ");
-        String senha = scan.nextLine().trim();
-
-        return new Usuario(login, senha);
-    }
-
-    public static Usuario loginAdmin(Scanner scan, Usuario[] usuarios){
-        System.out.print("Login: ");
-        String login = scan.nextLine().trim();
-
-        System.out.print("Senha: ");
-        String senha = scan.nextLine().trim();
-
-        for(Usuario u : usuarios){
-            if(u != null && Objects.equals(login, u.getLogin()) && Objects.equals(senha, u.getSenha())){
-                return u;
-            }
-        }
-        return null; // login incorreto
-    }
     
     // ---------------- Menu Admin ----------------
     public static void menuAdmin(Scanner scan, Passageiro[] passageiros, Voo[] voos, CompanhiaAerea[] companhias) {
@@ -101,10 +66,10 @@ public class Usuario {
 
             switch (admOpc) {
                 case 1:
-                    crudPassageiro(scan, passageiros);
+                    Passageiro.crudPassageiro(passageiros, scan);
                     break;
                 case 2:
-                    crudVoo(scan, voos, companhias);
+                    Voo.crudVoo(voos, companhias, scan);
                     break;
                 case 3:
                     admMenu = false;
@@ -112,18 +77,6 @@ public class Usuario {
                 default:
                     System.out.println("Opção inválida!");
                     break;
-            }
-        }
-    }
-    
-    
-    public static void exibirUsuario(Usuario[] usuarios) {
-        System.out.println("\n===== Usuários =====");
-        for (Usuario u : usuarios) {
-            if (u != null) {
-                System.out.println("\n| Login: " + u.login
-                        + "\n| Senha: " + u.senha
-                );
             }
         }
     }

@@ -6,6 +6,11 @@ package trabalhopoo.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Scanner;
+import static trabalhopoo.dao.PassageiroDAO.cadastrar;
+import static trabalhopoo.dao.PassageiroDAO.deletar;
+import static trabalhopoo.dao.PassageiroDAO.editar;
+import static trabalhopoo.dao.PassageiroDAO.listar;
 
 /**
  * CRUD de passageiro. 
@@ -108,6 +113,45 @@ public class Passageiro {
         return Objects.equals(this.documento, other.documento);
     }
     
-  
+    public static void crudPassageiro(Passageiro[] passageiros, Scanner scan) {
+        boolean menu = true;
+        while (menu) {
+            System.out.println("\n--- CRUD Passageiro ---");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Listar");
+            System.out.println("3 - Editar");
+            System.out.println("4 - Deletar");
+            System.out.println("5 - Voltar");
+            System.out.print("Escolha: ");
+            int op = scan.nextInt();
+            scan.nextLine();
+
+            switch (op) {
+                case 1:
+                    cadastrar(passageiros, scan);
+                    break;
+
+                case 2:
+                    listar(passageiros);
+                    break;
+
+                case 3:
+                    editar(passageiros, scan);
+                    break;
+
+                case 4:
+                    deletar(passageiros, scan);
+                    break;
+
+                case 5:
+                    menu = false;
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
+                    break;
+            }
+        }
+    }
     
 }
