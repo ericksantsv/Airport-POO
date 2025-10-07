@@ -163,7 +163,6 @@ public class Voo {
                         + "\n| Origem: " + v.origem
                         + "\n| Destino: " + v.destino
                         + "\n| Data: " + v.data
-                        + "\n| Origem: " + v.origem
                         + "\n| Duracao: " + v.duracao
                         + "\n| Companhia: " + v.getCompanhiaAerea().nome
                         + "\n| Capacidade: " + v.capacidade

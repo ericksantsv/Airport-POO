@@ -19,8 +19,6 @@ public class Passageiro {
     String nome;
     LocalDate nascimento;
     String documento;
-    String login;
-    String senha;
     LocalDate data_criacao;
     LocalDate data_modificacao;
     
@@ -28,16 +26,16 @@ public class Passageiro {
     
     }
     
-    public Passageiro(int id, String nome, LocalDate nascimento, String documento, String login, String senha, LocalDate data_criacao, LocalDate data_modificacao) {
+    public Passageiro(int id, String nome, LocalDate nascimento, String documento,LocalDate data_criacao, LocalDate data_modificacao) {
         this.id = id;
         this.nome = nome;
         this.nascimento = nascimento;
         this.documento = documento;
-        this.login = login;
-        this.senha = senha;
         this.data_criacao = data_criacao;
         this.data_modificacao = data_modificacao;
     }
+
+
 
     public int getId() {
         return id;
@@ -71,21 +69,6 @@ public class Passageiro {
         this.documento = documento;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
 
     public LocalDate getData_criacao() {
         return data_criacao;
