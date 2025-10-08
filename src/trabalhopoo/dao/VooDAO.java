@@ -173,54 +173,51 @@ public class VooDAO {
     }
 
     public static Voo escolherVoo(Voo[] voos, Scanner scan) {
-        listarOrigens(voos);
-        System.out.print("\nDigite a origem desejada: ");
-        String origem = scan.nextLine();
+        while (true) {
+            listarOrigens(voos);
+            System.out.print("\nDigite a origem desejada: ");
+            String origem = scan.nextLine();
 
-        listarDestinos(voos);
-        System.out.print("\nDigite o destino desejado: ");
-        String destino = scan.nextLine();
+            listarDestinos(voos);
+            System.out.print("\nDigite o destino desejado: ");
+            String destino = scan.nextLine();
 
-        System.out.println("\nVoos encontrados:");
-        boolean achou = false;
+            // Cria um array temporário para armazenar os voos encontrados
+            Voo[] encontrados = new Voo[voos.length];
+            int count = 0;
 
-        // Cria um array temporário para armazenar os voos encontrados
-        Voo[] encontrados = new Voo[voos.length];
-        int count = 0;
+            for (Voo v : voos) {
+                if (v != null && v.getOrigem().equalsIgnoreCase(origem) && v.getDestino().equalsIgnoreCase(destino)) {
+                    System.out.println(" ===== Voo encontrado ====="
+                            + "\n| Numero: " + v.getId()
+                            + "\n| Origem: " + v.getOrigem()
+                            + "\n| Destino: " + v.getDestino()
+                            + "\n| Data: " + v.getData()
+                            + "\n| Duracao: " + v.getDuracao()
+                            + "\n| Companhia: " + v.getCompanhiaAerea().getNome()
+                            + "\n| Capacidade: " + v.getCapacidade()
+                            + "\n| Estado: " + v.getEstado()
+                    );
+                    encontrados[count++] = v; // adiciona aos encontrados
+                }
+            }
 
-        for (Voo v : voos) {
-            if (v != null && v.getOrigem().equalsIgnoreCase(origem) && v.getDestino().equalsIgnoreCase(destino)) {
-                System.out.println("\n| Numero: " + v.getId()
-                        + "\n| Origem: " + v.getOrigem()
-                        + "\n| Destino: " + v.getDestino()
-                        + "\n| Data: " + v.getData()
-                        + "\n| Duracao: " + v.getDuracao()
-                        + "\n| Companhia: " + v.getCompanhiaAerea().getNome()
-                        + "\n| Capacidade: " + v.getCapacidade()
-                        + "\n| Estado: " + v.getEstado()
-                );
-                encontrados[count++] = v; // adiciona aos encontrados
-                achou = true;
+            if (count == 0) {
+                System.out.println("\nNenhum voo encontrado para essa rota. Tente novamente.\n");
+            } else {
+                System.out.print("\nDigite o numero do voo que deseja embarcar: ");
+                int idEscolhido = scan.nextInt();
+                scan.nextLine(); // limpar buffer
+
+                for (int i = 0; i < count; i++) {
+                    if (encontrados[i].getId() == idEscolhido) {
+                        System.out.println("\nPassagem comprada com sucesso");
+                        return encontrados[i];
+                    }
+                }
+
+                System.out.println("ID inválido. Tente novamente.\n");
             }
         }
-
-        if (!achou) {
-            System.out.println("Nenhum voo encontrado para essa rota.");
-            return null;
-        }
-
-        // Pergunta qual voo o usuário quer embarcar
-        System.out.print("\nDigite o número do voo que deseja embarcar: ");
-        int idEscolhido = scan.nextInt();
-        scan.nextLine(); // limpar buffer
-
-        for (int i = 0; i < count; i++) {
-            if (encontrados[i].getId() == idEscolhido) {
-                return encontrados[i]; // retorna o voo selecionado
-            }
-        }
-
-        System.out.println("ID inválido. Nenhum voo selecionado.");
-        return null;
     }
 }
