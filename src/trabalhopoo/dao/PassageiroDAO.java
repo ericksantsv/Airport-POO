@@ -6,17 +6,22 @@ import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Voo;
 
 public class PassageiroDAO {
-    
+
     // ---------------- Compra de passagem ----------------
     public static void comprarPassagem(Scanner scan, Passageiro[] passageiros, Voo[] voos) {
         System.out.println("\n--- Compra de Passagem ---");
-        System.out.print("Digite seu nome: "); String nome = scan.nextLine();
-        System.out.print("Digite seu documento: "); String doc = scan.nextLine();
+        System.out.print("Digite seu nome: ");
+        String nome = scan.nextLine();
+        System.out.print("Digite seu documento: ");
+        String doc = scan.nextLine();
 
         // Procura passageiro
         Passageiro p = null;
         for (Passageiro pass : passageiros) {
-            if (pass != null && pass.getDocumento().equals(doc)) { p = pass; break; }
+            if (pass != null && pass.getDocumento().equals(doc)) {
+                p = pass;
+                break;
+            }
         }
 
         if (p == null) {
@@ -33,10 +38,14 @@ public class PassageiroDAO {
         // Lista voos disponíveis
         VooDAO.listar(voos);
         System.out.print("Escolha o ID do voo para comprar: ");
-        int idVoo = scan.nextInt(); scan.nextLine();
+        int idVoo = scan.nextInt();
+        scan.nextLine();
         Voo vooEscolhido = null;
         for (Voo v : voos) {
-            if (v != null && v.getId() == idVoo) { vooEscolhido = v; break; }
+            if (v != null && v.getId() == idVoo) {
+                vooEscolhido = v;
+                break;
+            }
         }
 
         if (vooEscolhido != null) {
@@ -58,8 +67,30 @@ public class PassageiroDAO {
                 System.out.print("Documento: ");
                 String doc = scan.nextLine();
 
+                passageiros[i] = new Passageiro(i + 1, nome, nasc, doc, nasc, nasc);
+                System.out.println("Passageiro cadastrado!");
+                break;
+            }
+        }
+    }
+    
+    public static void cadastrarSemLogin(Passageiro[] passageiros, Voo[] voos, Scanner scan) {
+        for (int i = 0; i < passageiros.length; i++) {
+            if (passageiros[i] == null) {
+                System.out.print("Nome: ");
+                String nome = scan.nextLine();
+
+                System.out.print("Nascimento (AAAA-MM-DD): ");
+                LocalDate nasc = LocalDate.parse(scan.nextLine());
+
+                System.out.print("Documento: ");
+                String doc = scan.nextLine();
+
                 passageiros[i] = new Passageiro(i, nome, nasc, doc, nasc, nasc);
                 System.out.println("Passageiro cadastrado!");
+                
+                TicketDAO.criar(passageiros[i].getTicket(), passageiros[i], voos, scan);
+                
                 break;
             }
         }
@@ -79,13 +110,7 @@ public class PassageiroDAO {
         int idEdit = scan.nextInt();
         scan.nextLine();
 
-        Passageiro pEdit = null;
-        for (Passageiro p : passageiros) {
-            if (p != null && p.getId() == idEdit) {
-                pEdit = p;
-                break;
-            }
-        }
+        Passageiro pEdit = buscarPorId(passageiros, idEdit);
 
         if (pEdit != null) {
             System.out.print("Novo nome: ");
@@ -114,5 +139,14 @@ public class PassageiroDAO {
                 break;
             }
         }
+    }
+
+    public static Passageiro buscarPorId(Passageiro[] passageiros, int id) {
+        for (Passageiro p : passageiros) {
+            if (p != null && p.getId() == id) {
+                return p;
+            }
+        }
+        return null;
     }
 }

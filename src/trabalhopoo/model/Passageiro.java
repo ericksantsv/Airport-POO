@@ -24,6 +24,7 @@ public class Passageiro {
     String nome;
     LocalDate nascimento;
     String documento;
+    Ticket[] ticket;
     LocalDate data_criacao;
     LocalDate data_modificacao;
     
@@ -36,6 +37,7 @@ public class Passageiro {
         this.nome = nome;
         this.nascimento = nascimento;
         this.documento = documento;
+         this.ticket = new Ticket[10];
         this.data_criacao = data_criacao;
         this.data_modificacao = data_modificacao;
     }
@@ -91,13 +93,21 @@ public class Passageiro {
         this.data_modificacao = data_modificacao;
     }
 
+    public Ticket[] getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(Ticket[] ticket) {
+        this.ticket = ticket;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 41 * hash + Objects.hashCode(this.documento);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

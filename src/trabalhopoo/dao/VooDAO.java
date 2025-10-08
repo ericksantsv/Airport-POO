@@ -103,4 +103,124 @@ public class VooDAO {
             }
         }
     }
+
+    public static void listarOrigens(Voo[] voos) {
+        System.out.println("\nOrigens disponíveis:");
+        for (int i = 0; i < voos.length; i++) {
+            if (voos[i] != null) {
+                boolean repetido = false;
+                // Verifica se já foi exibida
+                for (int j = 0; j < i; j++) {
+                    if (voos[j] != null && voos[j].getOrigem().equalsIgnoreCase(voos[i].getOrigem())) {
+                        repetido = true;
+                        break;
+                    }
+                }
+                if (!repetido) {
+                    System.out.println("- " + voos[i].getOrigem());
+                }
+            }
+        }
+    }
+
+    public static void listarDestinos(Voo[] voos) {
+        System.out.println("\nDestinos disponíveis:");
+        for (int i = 0; i < voos.length; i++) {
+            if (voos[i] != null) {
+                boolean repetido = false;
+                for (int j = 0; j < i; j++) {
+                    if (voos[j] != null && voos[j].getDestino().equalsIgnoreCase(voos[i].getDestino())) {
+                        repetido = true;
+                        break;
+                    }
+                }
+                if (!repetido) {
+                    System.out.println("- " + voos[i].getDestino());
+                }
+            }
+        }
+    }
+
+    public static void buscarVoos(Voo[] voos, Scanner scan) {
+        listarOrigens(voos);
+        System.out.print("\nDigite a origem desejada: ");
+        String origem = scan.nextLine();
+
+        listarDestinos(voos);
+        System.out.print("\nDigite o destino desejado: ");
+        String destino = scan.nextLine();
+
+        System.out.println("\nVoos encontrados:");
+        boolean achou = false;
+        for (Voo v : voos) {
+            if (v != null && v.getOrigem().equalsIgnoreCase(origem) && v.getDestino().equalsIgnoreCase(destino)) {
+                System.out.println("\n| Numero: " + v.getId()
+                        + "\n| Origem: " + v.getOrigem()
+                        + "\n| Destino: " + v.getDestino()
+                        + "\n| Data: " + v.getData()
+                        + "\n| Duracao: " + v.getDuracao()
+                        + "\n| Companhia: " + v.getCompanhiaAerea().getNome()
+                        + "\n| Capacidade: " + v.getCapacidade()
+                        + "\n| Estado: " + v.getEstado()
+                );
+                achou = true;
+            }
+        }
+
+        if (!achou) {
+            System.out.println("Nenhum voo encontrado para essa rota.");
+        }
+    }
+
+    public static Voo escolherVoo(Voo[] voos, Scanner scan) {
+        listarOrigens(voos);
+        System.out.print("\nDigite a origem desejada: ");
+        String origem = scan.nextLine();
+
+        listarDestinos(voos);
+        System.out.print("\nDigite o destino desejado: ");
+        String destino = scan.nextLine();
+
+        System.out.println("\nVoos encontrados:");
+        boolean achou = false;
+
+        // Cria um array temporário para armazenar os voos encontrados
+        Voo[] encontrados = new Voo[voos.length];
+        int count = 0;
+
+        for (Voo v : voos) {
+            if (v != null && v.getOrigem().equalsIgnoreCase(origem) && v.getDestino().equalsIgnoreCase(destino)) {
+                System.out.println("\n| Numero: " + v.getId()
+                        + "\n| Origem: " + v.getOrigem()
+                        + "\n| Destino: " + v.getDestino()
+                        + "\n| Data: " + v.getData()
+                        + "\n| Duracao: " + v.getDuracao()
+                        + "\n| Companhia: " + v.getCompanhiaAerea().getNome()
+                        + "\n| Capacidade: " + v.getCapacidade()
+                        + "\n| Estado: " + v.getEstado()
+                );
+                encontrados[count++] = v; // adiciona aos encontrados
+                achou = true;
+            }
+        }
+
+        if (!achou) {
+            System.out.println("Nenhum voo encontrado para essa rota.");
+            return null;
+        }
+
+        // Pergunta qual voo o usuário quer embarcar
+        System.out.print("\nDigite o número do voo que deseja embarcar: ");
+        int idEscolhido = scan.nextInt();
+        scan.nextLine(); // limpar buffer
+
+        for (int i = 0; i < count; i++) {
+            if (encontrados[i].getId() == idEscolhido) {
+                return encontrados[i]; // retorna o voo selecionado
+            }
+        }
+
+        System.out.println("ID inválido. Nenhum voo selecionado.");
+        return null;
+    }
 }

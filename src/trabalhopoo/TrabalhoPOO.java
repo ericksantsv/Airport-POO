@@ -45,12 +45,15 @@ public class TrabalhoPOO {
         boolean menu = true;
         while (menu) {
             System.out.println("\n\n===== Menu Principal =====");
-            System.out.println("1 - Painel de voo");
-            System.out.println("2 - Administração");
+            System.out.println("1 - Ver Painel de voo");
+            System.out.println("2 - Buscar voos");
             System.out.println("3 - Compra de passagem");
-            System.out.println("4 - Gestão de passagem");
-            System.out.println("5 - Sair");
-            System.out.print("Escolha uma opção: ");
+            System.out.println("4 - Gestao de passagem");
+            System.out.println("5 - Login administrador");
+            System.out.println("6 - Login funcionario");
+            System.out.println("7 - Login passageiro");
+            System.out.println("8 - Sair");
+            System.out.print("Escolha uma opcao: ");
             int opc = scan.nextInt();
             scan.nextLine();
 
@@ -59,6 +62,16 @@ public class TrabalhoPOO {
                     VooDAO.listar(voos);
                     break;
                 case 2:
+                    VooDAO.buscarVoos(voos, scan);
+                    break;
+                case 3:
+                    PassageiroDAO.cadastrarSemLogin(passageiros, voos, scan);
+                    break;
+                case 4:
+                    //consulta e cancela passsagem passageiro
+                    System.out.println("Funcionalidade de gestao de passagem ainda nao implementada.");
+                    break;
+                case 5:
                     Usuario admin = UsuarioDAO.loginAdmin(scan, usuarios);
                     if (admin != null) {
                         Usuario.menuAdmin(scan, passageiros, voos, companhiaAerea);
@@ -66,13 +79,13 @@ public class TrabalhoPOO {
                         System.out.println("Login ou senha incorretos!");
                     }
                     break;
-                case 3:
-                    PassageiroDAO.cadastrar(passageiros, scan);
+                case 6:
+                    System.out.println("Funcionalidade de login funcionario ainda na3o implementada.");
                     break;
-                case 4:
-                    System.out.println("Funcionalidade de gestão de passagem ainda não implementada.");
+                case 7:
+                    System.out.println("Funcionalidade de login passageiro ainda não implementada.");
                     break;
-                case 5:
+                case 8:
                     System.out.println("Saindo do programa...");
                     menu = false;
                     break;
