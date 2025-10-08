@@ -22,11 +22,11 @@ public class TrabalhoPOO {
         Usuario[] usuarios = new Usuario[10];
 
         // --- Companhias Pré-criadas ---
-        companhiaAerea[0] = new CompanhiaAerea("AzulRio", "AZR", LocalDate.now(), LocalDate.now());
-        companhiaAerea[1] = new CompanhiaAerea("LatamAir", "LTA", LocalDate.now(), LocalDate.now());
-        companhiaAerea[2] = new CompanhiaAerea("SolAereo", "SLA", LocalDate.now(), LocalDate.now());
-        companhiaAerea[3] = new CompanhiaAerea("VentoLeste", "VLE", LocalDate.now(), LocalDate.now());
-        companhiaAerea[4] = new CompanhiaAerea("NorteSky", "NSK", LocalDate.now(), LocalDate.now());
+        companhiaAerea[0] = new CompanhiaAerea(1,"AzulRio", "AZR", LocalDate.now(), LocalDate.now());
+        companhiaAerea[1] = new CompanhiaAerea(2,"LatamAir", "LTA", LocalDate.now(), LocalDate.now());
+        companhiaAerea[2] = new CompanhiaAerea(3,"SolAereo", "SLA", LocalDate.now(), LocalDate.now());
+        companhiaAerea[3] = new CompanhiaAerea(4,"VentoLeste", "VLE", LocalDate.now(), LocalDate.now());
+        companhiaAerea[4] = new CompanhiaAerea(5,"NorteSky", "NSK", LocalDate.now(), LocalDate.now());
 
         // --- Voos Pré-criados ---
         voos[0] = new Voo(1, "Uberaba", "São Paulo", LocalDate.parse("2025-10-10"), 2.5, companhiaAerea[0], 5, "Programado", LocalDate.now(), LocalDate.now());

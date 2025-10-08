@@ -6,24 +6,27 @@ package trabalhopoo.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Scanner;
+import trabalhopoo.dao.CompanhiaAereaDAO;
 
 /**
  *
- 
-@author Gonçalves*/
+ *
+ * @author Gonçalves
+ */
 public class CompanhiaAerea {
-    
+
 //atributos
     int id;
     String nome;
     String abreviacao;
     LocalDate data_criacao;
     LocalDate data_modificacao;
-    
+
     //construtor vazio
-     public CompanhiaAerea() {
+    public CompanhiaAerea() {
     }
-     
+
     //construtor para criar um novo
     public CompanhiaAerea(String nome, String abreviacao, LocalDate data_criacao, LocalDate data_modificacao) {
         this.nome = nome;
@@ -31,7 +34,7 @@ public class CompanhiaAerea {
         this.data_criacao = data_criacao;
         this.data_modificacao = data_modificacao;
     }
-    
+
     //construtor completo
     public CompanhiaAerea(int id, String nome, String abreviacao, LocalDate data_criacao, LocalDate data_modificacao) {
         this.id = id;
@@ -40,7 +43,7 @@ public class CompanhiaAerea {
         this.data_criacao = data_criacao;
         this.data_modificacao = data_modificacao;
     }
-   
+
     //getters e setters
     public int getId() {
         return id;
@@ -81,16 +84,16 @@ public class CompanhiaAerea {
     public void setData_modificacao(LocalDate data_modificacao) {
         this.data_modificacao = data_modificacao;
     }
-    
+
     // toString bonito para exibir informações da companhia
     @Override
     public String toString() {
-        return "Companhia Aérea:\n" +
-               "ID: " + id + "\n" +
-               "Nome: " + nome + "\n" +
-               "Abreviação: " + abreviacao + "\n" +
-               "Data de Criação: " + data_criacao + "\n" +
-               "Data de Modificação: " + data_modificacao + "\n";
+        return "Companhia Aérea:\n"
+                + "ID: " + id + "\n"
+                + "Nome: " + nome + "\n"
+                + "Abreviação: " + abreviacao + "\n"
+                + "Data de Criação: " + data_criacao + "\n"
+                + "Data de Modificação: " + data_modificacao + "\n";
     }
 
     @Override
@@ -114,5 +117,39 @@ public class CompanhiaAerea {
         final CompanhiaAerea other = (CompanhiaAerea) obj;
         return Objects.equals(this.abreviacao, other.abreviacao);
     }
-    
+
+    public static void crudCompanhiaAerea(CompanhiaAerea[] companhias, Scanner scan) {
+        boolean menu = true;
+        while (menu) {
+            System.out.println("\n--- CRUD Companhias Aéreas ---");
+            System.out.println("1 - Cadastrar");
+            System.out.println("2 - Listar");
+            System.out.println("3 - Editar");
+            System.out.println("4 - Deletar");
+            System.out.println("5 - Voltar");
+            System.out.print("Escolha: ");
+            int op = scan.nextInt();
+            scan.nextLine();
+
+            switch (op) {
+                case 1:
+                    CompanhiaAereaDAO.cadastrar(companhias, scan);
+                    break;
+                case 2:
+                    CompanhiaAereaDAO.listar(companhias);
+                    break;
+                case 3:
+                    CompanhiaAereaDAO.listar(companhias);
+                    break;
+                case 4:
+                    CompanhiaAereaDAO.deletar(companhias, scan);
+                    break;
+                case 5:
+                    menu = false;
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+    }
 }

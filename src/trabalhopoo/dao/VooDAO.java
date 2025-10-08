@@ -26,20 +26,36 @@ public class VooDAO {
                 System.out.println("Escolha a companhia aérea:");
                 for (int j = 0; j < companhias.length; j++) {
                     if (companhias[j] != null) {
-                        System.out.println(j + " - " + companhias[j].getNome());
+                        System.out.println(companhias[j].getId() + " - " + companhias[j].getNome());
                     }
                 }
 
-                int c = scan.nextInt();
-                scan.nextLine();
+                CompanhiaAerea companhiaEscolhida = null;
+                while (companhiaEscolhida == null) {
+                    System.out.print("Digite o ID da companhia: ");
+                    int idEscolhido = scan.nextInt();
+                    scan.nextLine();
+
+                    // Procura a companhia com o ID digitado
+                    for (CompanhiaAerea comp : companhias) {
+                        if (comp != null && comp.getId() == idEscolhido) {
+                            companhiaEscolhida = comp;
+                            break;
+                        }
+                    }
+
+                    if (companhiaEscolhida == null) {
+                        System.out.println("ID inválido. Tente novamente.\n");
+                    }
+                }
 
                 System.out.print("Capacidade: ");
                 int cap = scan.nextInt();
                 scan.nextLine();
 
-                voos[i] = new Voo(i + 1, origem, destino, data, dur, companhias[c], cap, "Programado", LocalDate.now(), LocalDate.now());
+                voos[i] = new Voo(i + 1, origem, destino, data, dur, companhiaEscolhida, cap, "Programado", LocalDate.now(), LocalDate.now());
 
-                System.out.println("Voo cadastrado!");
+                System.out.println("\nVoo cadastrado com sucesso!");
                 break;
             }
         }
@@ -172,7 +188,7 @@ public class VooDAO {
         }
     }
 
-   public static Voo escolherVoo(Voo[] voos, Scanner scan) {
+    public static Voo escolherVoo(Voo[] voos, Scanner scan) {
         while (true) {
             listarOrigens(voos);
             System.out.print("\nDigite a origem desejada: ");

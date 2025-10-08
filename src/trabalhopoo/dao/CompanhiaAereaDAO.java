@@ -6,41 +6,6 @@ import trabalhopoo.model.CompanhiaAerea;
 
 public class CompanhiaAereaDAO {
 
-    public static void crudCompanhia(CompanhiaAerea[] companhias, Scanner scan) {
-        boolean menu = true;
-        while (menu) {
-            System.out.println("\n--- CRUD Companhias Aéreas ---");
-            System.out.println("1 - Cadastrar");
-            System.out.println("2 - Listar");
-            System.out.println("3 - Editar");
-            System.out.println("4 - Deletar");
-            System.out.println("5 - Voltar");
-            System.out.print("Escolha: ");
-            int op = scan.nextInt();
-            scan.nextLine();
-
-            switch (op) {
-                case 1:
-                    cadastrar(companhias, scan);
-                    break;
-                case 2:
-                    listar(companhias);
-                    break;
-                case 3:
-                    editar(companhias, scan);
-                    break;
-                case 4:
-                    deletar(companhias, scan);
-                    break;
-                case 5:
-                    menu = false;
-                    break;
-                default:
-                    System.out.println("Opção inválida!");
-            }
-        }
-    }
-
     public static void cadastrar(CompanhiaAerea[] companhias, Scanner scan) {
         for (int i = 0; i < companhias.length; i++) {
             if (companhias[i] == null) {

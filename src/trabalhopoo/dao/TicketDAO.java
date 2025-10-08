@@ -5,7 +5,6 @@
 package trabalhopoo.dao;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Scanner;
 import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Ticket;

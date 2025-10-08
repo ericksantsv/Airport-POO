@@ -7,10 +7,7 @@ package trabalhopoo.model;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Scanner;
-import static trabalhopoo.dao.PassageiroDAO.cadastrar;
-import static trabalhopoo.dao.PassageiroDAO.deletar;
-import static trabalhopoo.dao.PassageiroDAO.editar;
-import static trabalhopoo.dao.PassageiroDAO.listar;
+import trabalhopoo.dao.PassageiroDAO;
 
 /**
  * CRUD de passageiro. 
@@ -138,19 +135,19 @@ public class Passageiro {
 
             switch (op) {
                 case 1:
-                    cadastrar(passageiros, scan);
+                    PassageiroDAO.cadastrar(passageiros, scan);
                     break;
 
                 case 2:
-                    listar(passageiros);
+                    PassageiroDAO.listar(passageiros);
                     break;
 
                 case 3:
-                    editar(passageiros, scan);
+                    PassageiroDAO.editar(passageiros, scan);
                     break;
 
                 case 4:
-                    deletar(passageiros, scan);
+                    PassageiroDAO.deletar(passageiros, scan);
                     break;
 
                 case 5:

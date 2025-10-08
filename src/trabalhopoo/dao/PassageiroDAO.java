@@ -7,7 +7,6 @@ import trabalhopoo.model.Voo;
 
 public class PassageiroDAO {
 
-    // ---------------- Compra de passagem ----------------
     public static void comprarPassagem(Scanner scan, Passageiro[] passageiros, Voo[] voos) {
         System.out.println("\n--- Compra de Passagem ---");
         System.out.print("Digite seu nome: ");

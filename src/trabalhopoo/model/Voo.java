@@ -7,10 +7,8 @@ package trabalhopoo.model;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Scanner;
-import static trabalhopoo.dao.VooDAO.cadastrar;
-import static trabalhopoo.dao.VooDAO.deletar;
-import static trabalhopoo.dao.VooDAO.editar;
-import static trabalhopoo.dao.VooDAO.listar;
+import trabalhopoo.dao.VooDAO;
+
 
 /**
  * =>CRUD de voo. Informações importantes: id, origem, destino, data, duração,
@@ -175,19 +173,19 @@ public class Voo {
 
             switch (op) {
                 case 1:
-                    cadastrar(voos, companhias, scan);
+                    VooDAO.cadastrar(voos, companhias, scan);
                     break;
 
                 case 2:
-                    listar(voos);
+                    VooDAO.listar(voos);
                     break;
 
                 case 3:
-                    editar(voos, scan);
+                    VooDAO.editar(voos, scan);
                     break;
 
                 case 4:
-                    deletar(voos, scan);
+                    VooDAO.deletar(voos, scan);
                     break;
 
                 case 5:
