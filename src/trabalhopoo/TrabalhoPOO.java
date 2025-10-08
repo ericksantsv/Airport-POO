@@ -80,7 +80,8 @@ public class TrabalhoPOO {
                     }
                     break;
                 case 6:
-                    System.out.println("Funcionalidade de login funcionario ainda na3o implementada.");
+                       
+                            
                     break;
                 case 7:
                     System.out.println("Funcionalidade de login passageiro ainda não implementada.");

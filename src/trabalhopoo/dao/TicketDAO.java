@@ -5,6 +5,7 @@
 package trabalhopoo.dao;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Scanner;
 import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Ticket;
@@ -12,6 +13,8 @@ import trabalhopoo.model.Voo;
 
 /**
  *
+ * int id; double valor; Voo voo; Passageiro passageiro; //Codigo id + voo
+ * LocalDate dataCriacao; LocalDate dataModificacao;
  *
  * @author erick
  */
@@ -26,7 +29,7 @@ public class TicketDAO {
 
                 ticket[i] = new Ticket(i + 1, valor, voo, passageiro, LocalDate.now(), LocalDate.now());
                 passageiro.setTicket(ticket);
-                
+
                 break;
             }
         }

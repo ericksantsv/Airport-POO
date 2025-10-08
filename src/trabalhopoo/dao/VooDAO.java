@@ -172,7 +172,7 @@ public class VooDAO {
         }
     }
 
-    public static Voo escolherVoo(Voo[] voos, Scanner scan) {
+   public static Voo escolherVoo(Voo[] voos, Scanner scan) {
         while (true) {
             listarOrigens(voos);
             System.out.print("\nDigite a origem desejada: ");
@@ -211,7 +211,7 @@ public class VooDAO {
 
                 for (int i = 0; i < count; i++) {
                     if (encontrados[i].getId() == idEscolhido) {
-                        System.out.println("\nPassagem comprada com sucesso");
+                        System.out.println("\n Passagem comprada com sucesso");
                         return encontrados[i];
                     }
                 }
