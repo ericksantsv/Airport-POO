@@ -139,7 +139,7 @@ public class CompanhiaAerea {
                     CompanhiaAereaDAO.listar(companhias);
                     break;
                 case 3:
-                    CompanhiaAereaDAO.listar(companhias);
+                    CompanhiaAereaDAO.editar(companhias, scan);
                     break;
                 case 4:
                     CompanhiaAereaDAO.deletar(companhias, scan);

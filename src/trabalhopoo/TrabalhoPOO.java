@@ -33,7 +33,7 @@ public class TrabalhoPOO {
         voos[1] = new Voo(2, "Uberaba", "Rio de Janeiro", LocalDate.parse("2025-10-11"), 3.0, companhiaAerea[1], 3, "Programado", LocalDate.now(), LocalDate.now());
         voos[2] = new Voo(3, "Uberaba", "Belo Horizonte", LocalDate.parse("2025-10-12"), 1.5, companhiaAerea[2], 4, "Programado", LocalDate.now(), LocalDate.now());
         voos[3] = new Voo(4, "Uberaba", "Brasília", LocalDate.parse("2025-10-13"), 4.0, companhiaAerea[3], 6, "Programado", LocalDate.now(), LocalDate.now());
-        voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDate.parse("2025-10-14"), 3.5, companhiaAerea[4], 5, "Programado", LocalDate.now(), LocalDate.now());
+        voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDate.parse("2025-10-14"), 3.5, companhiaAerea[4], 30, "Programado", LocalDate.now(), LocalDate.now());
 
         // --- Usuários Pré-criados ---
         usuarios[0] = new Usuario("goncalves", "goncalves");

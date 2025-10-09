@@ -6,98 +6,147 @@ import trabalhopoo.model.*;
 
 public class VooAssentosDAO {
 
-    public static void crudAssentos(VooAssentos[] assentos, Voo[] voos, Passageiro[] passageiros, Scanner scan) {
-        boolean menu = true;
-        while (menu) {
-            System.out.println("\n--- CRUD Assentos de Voo ---");
-            System.out.println("1 - Reservar Assento");
-            System.out.println("2 - Listar Assentos");
-            System.out.println("3 - Deletar Assento");
-            System.out.println("4 - Voltar");
-            System.out.print("Escolha: ");
-            int op = scan.nextInt();
-            scan.nextLine();
-
-            switch (op) {
-                case 1:
-                    reservarAssento(assentos, voos, passageiros, scan);
-                    break;
-                case 2:
-                    listarAssentos(assentos);
-                    break;
-                case 3:
-                    deletarAssento(assentos, scan);
-                    break;
-                case 4:
-                    menu = false;
-                    break;
-                default:
-                    System.out.println("Opção inválida!");
-            }
-        }
-    }
-
-    public static void reservarAssento(VooAssentos[] assentos, Voo[] voos, Passageiro[] passageiros, Scanner scan) {
-        for (int i = 0; i < assentos.length; i++) {
-            if (assentos[i] == null) {
-                System.out.print("ID do voo: ");
-                int idVoo = scan.nextInt();
-                scan.nextLine();
-                Voo v = null;
-                for (Voo voo : voos) {
-                    if (voo != null && voo.getId() == idVoo) {
-                        v = voo;
-                        break;
-                    }
-                }
-                if (v == null) {
-                    System.out.println("Voo não encontrado!");
-                    return;
-                }
-                System.out.print("ID do passageiro: ");
-                int idPass = scan.nextInt();
-                scan.nextLine();
-                Passageiro p = null;
-                for (Passageiro pass : passageiros) {
-                    if (pass != null && pass.getId() == idPass) {
-                        p = pass;
-                        break;
-                    }
-                }
-                if (p == null) {
-                    System.out.println("Passageiro não encontrado!");
-                    return;
-                }
-                //tratar esse erro
-                assentos[i] = new VooAssentos(i, v, null, p, LocalDate.MIN, LocalDate.MIN);
-                System.out.println("Assento reservado!");
-                return;
-            }
-        }
-        System.out.println("Não há espaço para novos assentos!");
-    }
-
-    public static void listarAssentos(VooAssentos[] assentos) {
-        System.out.println("\n--- Lista de Assentos ---");
-        for (VooAssentos a : assentos) {
-            if (a != null) {
-                System.out.println("ID: " + a.getId() + " | Voo: " + a.getVoo().getOrigem() + "->" + a.getVoo().getDestino() +
-                        " | Passageiro: " + a.getPassageiro().getNome());
-            }
-        }
-    }
-
-    public static void deletarAssento(VooAssentos[] assentos, Scanner scan) {
-        System.out.print("ID do assento para deletar: ");
-        int id = scan.nextInt();
+    public static void reservarAssento(Voo[] voos, Passageiro[] passageiros, Scanner scan) {
+        System.out.print("ID do voo: ");
+        int idVoo = scan.nextInt();
         scan.nextLine();
+
+        Voo vooSelecionado = null;
+        for (Voo voo : voos) {
+            if (voo != null && voo.getId() == idVoo) {
+                vooSelecionado = voo;
+                break;
+            }
+        }
+
+        if (vooSelecionado == null) {
+            System.out.println("Voo não encontrado!");
+            return;
+        }
+
+        VooAssentos[] assentos = vooSelecionado.getVooAssentos();
+
+        System.out.println("\nAssentos disponíveis:");
         for (int i = 0; i < assentos.length; i++) {
-            if (assentos[i] != null && assentos[i].getId() == id) {
-                assentos[i] = null;
-                System.out.println("Assento deletado!");
+            if (assentos[i].getPassageiro() == null) {
+                System.out.println(i + " - " + assentos[i].getCodigoAssento() + " [LIVRE]");
+            } else {
+                System.out.println(i + " - " + assentos[i].getCodigoAssento() + " [OCUPADO]");
+            }
+        }
+
+        System.out.print("Número do assento a reservar: ");
+        int numAssento = scan.nextInt();
+        scan.nextLine();
+
+        if (numAssento < 0 || numAssento >= assentos.length) {
+            System.out.println("Assento inválido!");
+            return;
+        }
+
+        if (assentos[numAssento].getPassageiro() != null) {
+            System.out.println("Assento já ocupado!");
+            return;
+        }
+
+        System.out.print("ID do passageiro: ");
+        int idPass = scan.nextInt();
+        scan.nextLine();
+
+        Passageiro passageiroSelecionado = null;
+        for (Passageiro pass : passageiros) {
+            if (pass != null && pass.getId() == idPass) {
+                passageiroSelecionado = pass;
+                break;
+            }
+        }
+
+        if (passageiroSelecionado == null) {
+            System.out.println("Passageiro não encontrado!");
+            return;
+        }
+
+        assentos[numAssento].setPassageiro(passageiroSelecionado);
+        assentos[numAssento].setDataModificacao(LocalDate.now());
+
+        System.out.println("Assento reservado com sucesso!");
+    }
+
+    public static void listarAssentos(Voo[] voos, Scanner scan) {
+    System.out.print("ID do voo: ");
+    int idVoo = scan.nextInt();
+    scan.nextLine();
+
+    Voo vooSelecionado = null;
+    for (Voo voo : voos) {
+        if (voo != null && voo.getId() == idVoo) {
+            vooSelecionado = voo;
+            break;
+        }
+    }
+
+    if (vooSelecionado == null) {
+        System.out.println("Voo não encontrado!");
+        return;
+    }
+
+    VooAssentos[] assentos = vooSelecionado.getVooAssentos();
+
+    System.out.println("\n--- Lista de Assentos do Voo ---");
+
+    for (VooAssentos assento : assentos) {
+        if (assento != null) {
+            String status = (assento.getPassageiro() == null)
+                    ? "LIVRE"
+                    : "OCUPADO por " + assento.getPassageiro().getNome();
+
+            System.out.println("ID: " + assento.getId()
+                    + " | Código: " + assento.getCodigoAssento()
+                    + " | Status: " + status);
+        }
+    }
+}
+
+    
+
+    public static void deletarAssento(Voo[] voos, Scanner scan) {
+        System.out.print("ID do voo: ");
+        int idVoo = scan.nextInt();
+        scan.nextLine();
+
+        Voo vooSelecionado = null;
+        for (Voo voo : voos) {
+            if (voo != null && voo.getId() == idVoo) {
+                vooSelecionado = voo;
+                break;
+            }
+        }
+
+        if (vooSelecionado == null) {
+            System.out.println("Voo não encontrado!");
+            return;
+        }
+
+        VooAssentos[] assentos = vooSelecionado.getVooAssentos();
+
+        System.out.print("ID do assento para desocupar: ");
+        int idAssento = scan.nextInt();
+        scan.nextLine();
+
+        for (VooAssentos a : assentos) {
+            if (a != null && a.getId() == idAssento) {
+                if (a.getPassageiro() == null) {
+                    System.out.println("Esse assento já está vazio.");
+                } else {
+                    a.setPassageiro(null);
+                    a.setDataModificacao(LocalDate.now());
+                    System.out.println("Assento desocupado com sucesso!");
+                }
                 return;
             }
         }
-        System.out.println("Assento não encontrado!");
+
+        System.out.println("Assento não encontrado.");
     }
+
 }

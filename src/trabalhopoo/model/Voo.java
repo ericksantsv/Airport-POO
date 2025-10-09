@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Scanner;
 import trabalhopoo.dao.VooDAO;
 
-
 /**
  * =>CRUD de voo. Informações importantes: id, origem, destino, data, duração,
  * companhia aérea, capacidade, estado (programado, embarque, decolado,
@@ -26,6 +25,7 @@ public class Voo {
     LocalDate data;
     double duracao;
     CompanhiaAerea companhiaAerea;
+    VooAssentos[] vooAssentos;
     int capacidade;
     String estado;
     LocalDate dataCriacao;
@@ -46,6 +46,11 @@ public class Voo {
         this.estado = estado;
         this.dataCriacao = dataCriacao;
         this.dataModificacao = dataModificacao;
+        this.vooAssentos = new VooAssentos[capacidade];
+        for (int i = 0; i < capacidade; i++) {
+            String codigo = gerarCodigoAssento(i); // Ex: A1, A2, B1, etc.
+            this.vooAssentos[i] = new VooAssentos(i + 1, this, codigo, null, LocalDate.now(), null);
+        }
     }
 
     public int getId() {
@@ -128,6 +133,14 @@ public class Voo {
         this.dataModificacao = dataModificacao;
     }
 
+    public VooAssentos[] getVooAssentos() {
+        return vooAssentos;
+    }
+
+    public void setVooAssentos(VooAssentos[] vooAssentos) {
+        this.vooAssentos = vooAssentos;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -157,7 +170,7 @@ public class Voo {
         }
         return Objects.equals(this.data, other.data);
     }
-    
+
     public static void crudVoo(Voo[] voos, CompanhiaAerea[] companhias, Scanner scan) {
         boolean menu = true;
         while (menu) {
@@ -198,5 +211,12 @@ public class Voo {
             }
         }
     }
+    
+    private String gerarCodigoAssento(int index) {
+    char letra = (char) ('A' + (index / 6)); // 6 assentos por fileira
+    int numero = (index % 6) + 1;
+    return letra + String.valueOf(numero); // Ex: A1, A2, B3...
+}
+
 
 }

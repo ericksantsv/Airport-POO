@@ -5,6 +5,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this t
 package trabalhopoo.model;
 
 import java.time.LocalDate;
+import java.util.Scanner;
+import trabalhopoo.dao.VooAssentosDAO;
 
 public class VooAssentos {
     int id;
@@ -74,4 +76,36 @@ public class VooAssentos {
         this.dataCriacao = dataCriacao;
         this.dataModificacao = dataModificacao;
     } 
+    
+    public static void crudAssentos(Voo[] voos, Passageiro[] passageiros, Scanner scan) {
+        boolean menu = true;
+        while (menu) {
+            System.out.println("\n--- CRUD Assentos de Voo ---");
+            System.out.println("1 - Reservar Assento");
+            System.out.println("2 - Listar Assentos");
+            System.out.println("3 - Deletar Assento");
+            System.out.println("4 - Voltar");
+            System.out.print("Escolha: ");
+            int op = scan.nextInt();
+            scan.nextLine();
+
+            switch (op) {
+                case 1:
+                    VooAssentosDAO.reservarAssento(voos, passageiros, scan);
+                    break;
+                case 2:
+                    VooAssentosDAO.listarAssentos(voos, scan);
+                    break;
+                case 3:
+                    VooAssentosDAO.deletarAssento(voos, scan);
+                    break;
+                case 4:
+                    menu = false;
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+            }
+        }
+    }
+    
 }

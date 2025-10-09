@@ -95,8 +95,7 @@ public class Usuario {
                     System.out.println("Gerenciamento de Tickets ainda não implementado.");
                     break;
                 case 6:
-                    // Ainda não implementado
-                    System.out.println("Gerenciamento de Assentos de Voo ainda não implementado.");
+                    VooAssentos.crudAssentos(voos, passageiros, scan);
                     break;
                 case 7:
                     // Chama Relatórios (a implementar)

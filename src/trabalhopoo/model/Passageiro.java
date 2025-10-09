@@ -34,7 +34,7 @@ public class Passageiro {
         this.nome = nome;
         this.nascimento = nascimento;
         this.documento = documento;
-         this.ticket = new Ticket[10];
+        this.ticket = new Ticket[10];
         this.data_criacao = data_criacao;
         this.data_modificacao = data_modificacao;
     }
