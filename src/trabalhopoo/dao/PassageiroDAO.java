@@ -72,7 +72,7 @@ public class PassageiroDAO {
             }
         }
     }
-    
+
     public static void cadastrarSemLogin(Passageiro[] passageiros, Voo[] voos, Scanner scan) {
         for (int i = 0; i < passageiros.length; i++) {
             if (passageiros[i] == null) {
@@ -87,8 +87,13 @@ public class PassageiroDAO {
 
                 passageiros[i] = new Passageiro(i, nome, nasc, doc, nasc, nasc);
                 System.out.println("Passageiro cadastrado!");
-                
-                TicketDAO.criar(passageiros[i].getTicket(), passageiros[i], voos, scan);
+
+                Voo vooEscolhido = TicketDAO.criarRetornandoVoo(passageiros[i].getTicket(), passageiros[i], voos, scan);
+
+                if (vooEscolhido != null) {
+                    // Agora chama a reserva de assento passando o voo selecionado
+                    VooAssentosDAO.reservarAssentoSemLogin(vooEscolhido, passageiros[i], scan);
+                }
                 
                 break;
             }
