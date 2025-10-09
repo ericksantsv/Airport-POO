@@ -22,6 +22,7 @@ public class Passageiro {
     LocalDate nascimento;
     String documento;
     Ticket[] ticket;
+    Usuario usuario;
     LocalDate data_criacao;
     LocalDate data_modificacao;
     
@@ -98,6 +99,14 @@ public class Passageiro {
         this.ticket = ticket;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -155,7 +164,7 @@ public class Passageiro {
                     break;
 
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opcao invalida!");
                     break;
             }
         }

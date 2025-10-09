@@ -69,16 +69,6 @@ public class CheckIn {
     }
 
     @Override
-    public String toString() {
-        return "CheckIn:\n"
-                + "ID: " + id + "\n"
-                + "Ticket: " + ticket + "\n"
-                + "Documento: " + documento + "\n"
-                + "Data de Criação: " + dataCriacao + "\n"
-                + "Data de Modificação: " + dataModificacao + "\n";
-    }
-
-    @Override
     public int hashCode() {
         int hash = 7;
         hash = 97 * hash + this.id;

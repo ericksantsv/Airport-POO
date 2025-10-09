@@ -19,11 +19,11 @@ public class VooDAO {
                 System.out.print("Data (AAAA-MM-DD): ");
                 LocalDate data = LocalDate.parse(scan.nextLine());
 
-                System.out.print("Duração (horas): ");
+                System.out.print("Duracao (horas): ");
                 double dur = scan.nextDouble();
                 scan.nextLine();
 
-                System.out.println("Escolha a companhia aérea:");
+                System.out.println("Escolha a companhia aerea:");
                 for (int j = 0; j < companhias.length; j++) {
                     if (companhias[j] != null) {
                         System.out.println(companhias[j].getId() + " - " + companhias[j].getNome());
@@ -45,7 +45,7 @@ public class VooDAO {
                     }
 
                     if (companhiaEscolhida == null) {
-                        System.out.println("ID inválido. Tente novamente.\n");
+                        System.out.println("ID invalido. Tente novamente.\n");
                     }
                 }
 
@@ -85,7 +85,7 @@ public class VooDAO {
 
             System.out.println("Voo atualizado!");
         } else {
-            System.out.println("Voo não encontrado!");
+            System.out.println("Voo nao encontrado!");
         }
     }
 
@@ -121,7 +121,7 @@ public class VooDAO {
     }
 
     public static void listarOrigens(Voo[] voos) {
-        System.out.println("\nOrigens disponíveis:");
+        System.out.println("\nOrigens disponiveis:");
         for (int i = 0; i < voos.length; i++) {
             if (voos[i] != null) {
                 boolean repetido = false;
@@ -140,7 +140,7 @@ public class VooDAO {
     }
 
     public static void listarDestinos(Voo[] voos) {
-        System.out.println("\nDestinos disponíveis:");
+        System.out.println("\nDestinos disponiveis:");
         for (int i = 0; i < voos.length; i++) {
             if (voos[i] != null) {
                 boolean repetido = false;
@@ -232,7 +232,7 @@ public class VooDAO {
                     }
                 }
 
-                System.out.println("ID inválido. Tente novamente.\n");
+                System.out.println("ID invalido. Tente novamente.\n");
             }
         }
     }

@@ -11,7 +11,7 @@ public class CompanhiaAereaDAO {
             if (companhias[i] == null) {
                 System.out.print("Nome da Companhia: ");
                 String nome = scan.nextLine();
-                System.out.print("Abreviação: ");
+                System.out.print("Abreviacao: ");
                 String abreviacao = scan.nextLine();
                 companhias[i] = new CompanhiaAerea(i + 1, nome, abreviacao, LocalDate.now(), LocalDate.now());
                 System.out.println("Companhia cadastrada!");
@@ -37,7 +37,7 @@ public class CompanhiaAereaDAO {
             if (c != null && c.getId() == id) {
                 System.out.print("Novo nome: ");
                 c.setNome(scan.nextLine());
-                System.out.print("Nova abreviação: ");
+                System.out.print("Nova abreviacao: ");
                 c.setAbreviacao(scan.nextLine());
                 c.setData_modificacao(LocalDate.now());
                 System.out.println("Companhia atualizada!");
@@ -58,6 +58,6 @@ public class CompanhiaAereaDAO {
                 return;
             }
         }
-        System.out.println("Companhia não encontrada!");
+        System.out.println("Companhia nao encontrada!");
     }
 }

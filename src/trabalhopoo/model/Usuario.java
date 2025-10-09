@@ -2,6 +2,7 @@ package trabalhopoo.model;
 
 import java.util.Objects;
 import java.util.Scanner;
+import trabalhopoo.dao.UsuarioDAO;
 
 public class Usuario {
 
@@ -58,16 +59,16 @@ public class Usuario {
     }
 
     // ---------------- Menu Admin ----------------
-    public static void menuAdmin(Scanner scan, Passageiro[] passageiros, Voo[] voos, CompanhiaAerea[] companhias) {
+    public static void menuAdmin(Scanner scan, Passageiro[] passageiros, Voo[] voos, CompanhiaAerea[] companhias, Usuario[] usuarios) {
         boolean admMenu = true;
         while (admMenu) {
             System.out.println("\n--- MENU ADMINISTRADOR ---");
             System.out.println("1 - Gerenciar Passageiros");
-            System.out.println("2 - Gerenciar Aeroportos");
-            System.out.println("3 - Gerenciar Companhias Aéreas");
-            System.out.println("4 - Gerenciar Voos");
-            System.out.println("5 - Gerenciar Tickets");
-            System.out.println("6 - Gerenciar Assentos de Voo");
+            System.out.println("2 - Gerenciar Companhias Aéreas");
+            System.out.println("3 - Gerenciar Voos");
+            System.out.println("4 - Gerenciar Tickets");
+            System.out.println("5 - Gerenciar Assentos de Voo");
+            System.out.println("6 - Gerenciar usuarios");
             System.out.println("7 - Relatórios Gerenciais");
             System.out.println("8 - Voltar");
             System.out.print("Escolha uma opção: ");
@@ -81,21 +82,21 @@ public class Usuario {
                     break;
                 case 2:
                     // Ainda não implementado
-                    System.out.println("Gerenciamento de Aeroportos ainda não implementado.");
-                    break;
-                case 3:
                     CompanhiaAerea.crudCompanhiaAerea(companhias, scan);
                     break;
-                case 4:
-                    // Chama CRUD de Voos
+                case 3:
                     Voo.crudVoo(voos, companhias, scan);
+                    break;
+                case 4:
+                    //Ticket
+                    
                     break;
                 case 5:
                     // Ainda não implementado
-                    System.out.println("Gerenciamento de Tickets ainda não implementado.");
+                    VooAssentos.crudAssentos(voos, passageiros, scan);
                     break;
                 case 6:
-                    VooAssentos.crudAssentos(voos, passageiros, scan);
+                    crudUsuario(usuarios, scan);
                     break;
                 case 7:
                     // Chama Relatórios (a implementar)
@@ -110,4 +111,29 @@ public class Usuario {
             }
         }
     }
+
+    public static void crudUsuario(Usuario[] usuarios, Scanner scan) {
+        boolean userMenu = true;
+        while (userMenu) {
+            System.out.println("\n--- CRUD Usuarios ---");
+            System.out.println("1 - Listar Users");
+            System.out.println("2 - Voltar");
+            System.out.print("Escolha uma opcao: ");
+            int usrOpc = scan.nextInt();
+            scan.nextLine();
+
+            switch (usrOpc) {
+                case 1:
+                    UsuarioDAO.listarUsuario(usuarios);
+                    break;
+                case 2:
+                    userMenu = false;
+                    break;
+                default:
+                    System.out.println("Opcao invalida!");
+                    break;
+            }
+        }
+    }
+
 }

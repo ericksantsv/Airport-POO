@@ -3,6 +3,7 @@ package trabalhopoo.dao;
 import java.time.LocalDate;
 import java.util.Scanner;
 import trabalhopoo.model.Passageiro;
+import trabalhopoo.model.Usuario;
 import trabalhopoo.model.Voo;
 
 public class PassageiroDAO {
@@ -24,7 +25,7 @@ public class PassageiroDAO {
         }
 
         if (p == null) {
-            System.out.println("Passageiro não encontrado. Cadastrando novo...");
+            System.out.println("Passageiro nao encontrado. Cadastrando novo...");
             for (int i = 0; i < passageiros.length; i++) {
                 if (passageiros[i] == null) {
                     p = new Passageiro(i + 1, nome, LocalDate.MIN, doc, LocalDate.MIN, LocalDate.MIN);
@@ -50,7 +51,7 @@ public class PassageiroDAO {
         if (vooEscolhido != null) {
             System.out.println("Passagem comprada com sucesso para " + vooEscolhido.getDestino() + "!");
         } else {
-            System.out.println("Voo inválido!");
+            System.out.println("Voo invalido!");
         }
     }
 
@@ -73,7 +74,7 @@ public class PassageiroDAO {
         }
     }
 
-    public static void cadastrarSemLogin(Passageiro[] passageiros, Voo[] voos, Scanner scan) {
+    public static void cadastrarSemLogin(Passageiro[] passageiros, Voo[] voos, Usuario[] usuarios, Scanner scan) {
         for (int i = 0; i < passageiros.length; i++) {
             if (passageiros[i] == null) {
                 System.out.print("Nome: ");
@@ -94,7 +95,13 @@ public class PassageiroDAO {
                     // Agora chama a reserva de assento passando o voo selecionado
                     VooAssentosDAO.reservarAssentoSemLogin(vooEscolhido, passageiros[i], scan);
                 }
-                
+
+                System.out.println("\nQuase finalizado! Vamos registrar o seu usuario agora\n");
+                Usuario usuarioCriado = UsuarioDAO.criaUsuario(scan, usuarios);
+                if (usuarioCriado != null) {
+                    passageiros[i].setUsuario(usuarioCriado);
+                }
+
                 break;
             }
         }
@@ -127,7 +134,7 @@ public class PassageiroDAO {
 
             System.out.println("Passageiro atualizado!");
         } else {
-            System.out.println("Passageiro não encontrado!");
+            System.out.println("Passageiro nao encontrado!");
         }
     }
 

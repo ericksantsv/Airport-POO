@@ -206,7 +206,7 @@ public class Voo {
                     break;
 
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opcao invalida!");
                     break;
             }
         }

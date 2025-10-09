@@ -20,13 +20,13 @@ public class VooAssentosDAO {
         }
 
         if (vooSelecionado == null) {
-            System.out.println("Voo não encontrado!");
+            System.out.println("Voo nao encontrado!");
             return;
         }
 
         VooAssentos[] assentos = vooSelecionado.getVooAssentos();
 
-        System.out.println("\nAssentos disponíveis:");
+        System.out.println("\nAssentos disponiveis:");
         for (int i = 0; i < assentos.length; i++) {
             if (assentos[i].getPassageiro() == null) {
                 System.out.println(i + " - " + assentos[i].getCodigoAssento() + " [LIVRE]");
@@ -35,17 +35,17 @@ public class VooAssentosDAO {
             }
         }
 
-        System.out.print("Número do assento a reservar: ");
+        System.out.print("Numero do assento a reservar: ");
         int numAssento = scan.nextInt();
         scan.nextLine();
 
         if (numAssento < 0 || numAssento >= assentos.length) {
-            System.out.println("Assento inválido!");
+            System.out.println("Assento invalido!");
             return;
         }
 
         if (assentos[numAssento].getPassageiro() != null) {
-            System.out.println("Assento já ocupado!");
+            System.out.println("Assento ja ocupado!");
             return;
         }
 
@@ -62,7 +62,7 @@ public class VooAssentosDAO {
         }
 
         if (passageiroSelecionado == null) {
-            System.out.println("Passageiro não encontrado!");
+            System.out.println("Passageiro nao encontrado!");
             return;
         }
 
@@ -74,13 +74,13 @@ public class VooAssentosDAO {
 
     public static void reservarAssentoSemLogin(Voo vooSelecionado, Passageiro passageiro, Scanner scan) {
         if (vooSelecionado == null || passageiro == null) {
-            System.out.println("Voo ou passageiro inválido!");
+            System.out.println("Voo ou passageiro invalido!");
             return;
         }
 
         VooAssentos[] assentos = vooSelecionado.getVooAssentos();
 
-        System.out.println("\nAssentos disponíveis:");
+        System.out.println("\nAssentos disponiveis:");
         for (int i = 0; i < assentos.length; i++) {
             if (assentos[i].getPassageiro() == null) {
                 System.out.println(i + " - " + assentos[i].getCodigoAssento() + " [LIVRE]");
@@ -89,17 +89,17 @@ public class VooAssentosDAO {
             }
         }
 
-        System.out.print("Número do assento a reservar: ");
+        System.out.print("Numero do assento a reservar: ");
         int numAssento = scan.nextInt();
         scan.nextLine();
 
         if (numAssento < 0 || numAssento >= assentos.length) {
-            System.out.println("Assento inválido!");
+            System.out.println("Assento invalido!");
             return;
         }
 
         if (assentos[numAssento].getPassageiro() != null) {
-            System.out.println("Assento já ocupado!");
+            System.out.println("Assento ja ocupado!");
             return;
         }
 
@@ -123,7 +123,7 @@ public class VooAssentosDAO {
         }
 
         if (vooSelecionado == null) {
-            System.out.println("Voo não encontrado!");
+            System.out.println("Voo nao encontrado!");
             return;
         }
 
@@ -138,7 +138,7 @@ public class VooAssentosDAO {
                         : "OCUPADO por " + assento.getPassageiro().getNome();
 
                 System.out.println("ID: " + assento.getId()
-                        + " | Código: " + assento.getCodigoAssento()
+                        + " | Codigo: " + assento.getCodigoAssento()
                         + " | Status: " + status);
             }
         }
@@ -158,7 +158,7 @@ public class VooAssentosDAO {
         }
 
         if (vooSelecionado == null) {
-            System.out.println("Voo não encontrado!");
+            System.out.println("Voo nao encontrado!");
             return;
         }
 
@@ -171,7 +171,7 @@ public class VooAssentosDAO {
         for (VooAssentos a : assentos) {
             if (a != null && a.getId() == idAssento) {
                 if (a.getPassageiro() == null) {
-                    System.out.println("Esse assento já está vazio.");
+                    System.out.println("Esse assento ja está vazio.");
                 } else {
                     a.setPassageiro(null);
                     a.setDataModificacao(LocalDate.now());
@@ -181,7 +181,7 @@ public class VooAssentosDAO {
             }
         }
 
-        System.out.println("Assento não encontrado.");
+        System.out.println("Assento nao encontrado.");
     }
 
 }

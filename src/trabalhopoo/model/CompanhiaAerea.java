@@ -85,17 +85,6 @@ public class CompanhiaAerea {
         this.data_modificacao = data_modificacao;
     }
 
-    // toString bonito para exibir informações da companhia
-    @Override
-    public String toString() {
-        return "Companhia Aérea:\n"
-                + "ID: " + id + "\n"
-                + "Nome: " + nome + "\n"
-                + "Abreviação: " + abreviacao + "\n"
-                + "Data de Criação: " + data_criacao + "\n"
-                + "Data de Modificação: " + data_modificacao + "\n";
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
@@ -121,7 +110,7 @@ public class CompanhiaAerea {
     public static void crudCompanhiaAerea(CompanhiaAerea[] companhias, Scanner scan) {
         boolean menu = true;
         while (menu) {
-            System.out.println("\n--- CRUD Companhias Aéreas ---");
+            System.out.println("\n--- CRUD Companhias Aereas ---");
             System.out.println("1 - Cadastrar");
             System.out.println("2 - Listar");
             System.out.println("3 - Editar");
@@ -148,7 +137,7 @@ public class CompanhiaAerea {
                     menu = false;
                     break;
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opcao invalida!");
             }
         }
     }

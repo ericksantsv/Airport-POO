@@ -29,11 +29,11 @@ public class TrabalhoPOO {
         companhiaAerea[4] = new CompanhiaAerea(5,"NorteSky", "NSK", LocalDate.now(), LocalDate.now());
 
         // --- Voos Pré-criados ---
-        voos[0] = new Voo(1, "Uberaba", "São Paulo", LocalDate.parse("2025-10-10"), 2.5, companhiaAerea[0], 5, "Programado", LocalDate.now(), LocalDate.now());
+        voos[0] = new Voo(1, "Uberaba", "Sao Paulo", LocalDate.parse("2025-10-10"), 2.5, companhiaAerea[0], 5, "Programado", LocalDate.now(), LocalDate.now());
         voos[1] = new Voo(2, "Uberaba", "Rio de Janeiro", LocalDate.parse("2025-10-11"), 3.0, companhiaAerea[1], 3, "Programado", LocalDate.now(), LocalDate.now());
         voos[2] = new Voo(3, "Uberaba", "Belo Horizonte", LocalDate.parse("2025-10-12"), 1.5, companhiaAerea[2], 4, "Programado", LocalDate.now(), LocalDate.now());
-        voos[3] = new Voo(4, "Uberaba", "Brasília", LocalDate.parse("2025-10-13"), 4.0, companhiaAerea[3], 6, "Programado", LocalDate.now(), LocalDate.now());
-        voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDate.parse("2025-10-14"), 3.5, companhiaAerea[4], 30, "Programado", LocalDate.now(), LocalDate.now());
+        voos[3] = new Voo(4, "Uberaba", "Brasilia", LocalDate.parse("2025-10-13"), 4.0, companhiaAerea[3], 6, "Programado", LocalDate.now(), LocalDate.now());
+        voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDate.parse("2025-10-14"), 3.5, companhiaAerea[4], 10, "Programado", LocalDate.now(), LocalDate.now());
 
         // --- Usuários Pré-criados ---
         usuarios[0] = new Usuario("goncalves", "goncalves");
@@ -65,7 +65,7 @@ public class TrabalhoPOO {
                     VooDAO.buscarVoos(voos, scan);
                     break;
                 case 3:
-                    PassageiroDAO.cadastrarSemLogin(passageiros, voos, scan);
+                    PassageiroDAO.cadastrarSemLogin(passageiros, voos, usuarios, scan);
                     break;
                 case 4:
                     //consulta e cancela passsagem passageiro
@@ -74,7 +74,7 @@ public class TrabalhoPOO {
                 case 5:
                     Usuario admin = UsuarioDAO.loginAdmin(scan, usuarios);
                     if (admin != null) {
-                        Usuario.menuAdmin(scan, passageiros, voos, companhiaAerea);
+                        Usuario.menuAdmin(scan, passageiros, voos, companhiaAerea, usuarios);
                     } else {
                         System.out.println("Login ou senha incorretos!");
                     }

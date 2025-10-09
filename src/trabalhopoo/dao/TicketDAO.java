@@ -55,7 +55,7 @@ public class TicketDAO {
             }
         }
 
-        System.out.println("Erro: não há espaço disponível para criar novo ticket.");
+        System.out.println("Erro: nao ha espaço disponível para criar novo ticket.");
         return null;
     }
 
