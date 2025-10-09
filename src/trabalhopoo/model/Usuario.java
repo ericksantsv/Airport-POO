@@ -135,5 +135,39 @@ public class Usuario {
             }
         }
     }
+    // ------------------- Menu Funcionário ---------------
+    public static void menuFuncionario(Scanner scan, Passageiro[] passageiros, Voo[] voos) {
+        boolean funcMenu = true;
+
+        while (funcMenu) {
+            System.out.println("\n--- MENU FUNCIONÁRIO ---");
+            System.out.println("1 - Fazer Check-in de Passageiro");
+            System.out.println("2 - Despachar Bagagem");
+            System.out.println("3 - Emitir Boarding Pass");
+            System.out.println("4 - Voltar");
+            System.out.print("Escolha uma opção: ");
+            int opc = scan.nextInt();
+            scan.nextLine();
+
+            switch (opc) {
+                case 1:
+                    //PassageiroDAO.fazerCheckIn(passageiros, scan);
+                    break;
+                case 2:
+                    //PassageiroDAO.despacharBagagem(passageiros, scan);
+                    break;
+                case 3:
+                    //BoardingPassDAO.emitirBoardingPass(passageiros, voos, scan);
+                    break;
+                case 4:
+                    funcMenu = false;
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    break;
+            }
+        }
+    }
+
 
 }

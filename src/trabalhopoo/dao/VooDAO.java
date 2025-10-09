@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Scanner;
 import trabalhopoo.model.Voo;
 import trabalhopoo.model.CompanhiaAerea;
+import trabalhopoo.model.Passageiro;
 
 public class VooDAO {
 
@@ -236,4 +237,24 @@ public class VooDAO {
             }
         }
     }
+    
+    //alterando aqui para baixo
+    public static void registrarEntradaAviao(Passageiro[] passageiros, Voo[] voos, Scanner scan) {
+    System.out.print("Digite o nome do passageiro: ");
+    String nome = scan.nextLine();
+
+    for (Passageiro p : passageiros) {
+        if (p != null && p.getNome().equalsIgnoreCase(nome)) {
+            //if (!p.isCheckIn()) {
+                System.out.println("️ O passageiro ainda não fez o check-in!");
+                return;
+            }
+           // p.setNoAviao(true);
+            System.out.println("️ Entrada no avião registrada para " + p.getNome());
+            return;
+        }
+    }
+   // System.out.println("Passageiro não encontrado!");
 }
+
+//}

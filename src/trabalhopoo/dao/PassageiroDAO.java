@@ -160,4 +160,34 @@ public class PassageiroDAO {
         }
         return null;
     }
+    
+    //alterando aqui pra baixo
+ public static void fazerCheckIn(Passageiro[] passageiros, Scanner scan) {
+    System.out.print("Digite o nome do passageiro: ");
+    String nome = scan.nextLine();
+
+    for (Passageiro p : passageiros) {
+        if (p != null && p.getNome().equalsIgnoreCase(nome)) {
+           // p.setCheckIn(true);
+            System.out.println(" Check-in realizado para " + p.getNome());
+            return;
+        }
+    }
+    System.out.println("Passageiro não encontrado!");
+}
+
+public static void despacharBagagem(Passageiro[] passageiros, Scanner scan) {
+    System.out.print("Digite o nome do passageiro: ");
+    String nome = scan.nextLine();
+
+    for (Passageiro p : passageiros) {
+        if (p != null && p.getNome().equalsIgnoreCase(nome)) {
+            //p.setBagagemDespachada(true);
+            System.out.println(" Bagagem despachada para " + p.getNome());
+            return;
+        }
+    }
+    System.out.println("Passageiro não encontrado!");
+}
+
 }

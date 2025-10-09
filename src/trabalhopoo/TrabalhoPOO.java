@@ -80,8 +80,7 @@ public class TrabalhoPOO {
                     }
                     break;
                 case 6:
-                       
-                            
+                       Usuario.menuFuncionario(scan, passageiros, voos);
                     break;
                 case 7:
                     System.out.println("Funcionalidade de login passageiro ainda não implementada.");
