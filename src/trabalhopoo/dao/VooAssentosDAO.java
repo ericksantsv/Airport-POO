@@ -7,6 +7,7 @@ import trabalhopoo.model.*;
 public class VooAssentosDAO {
 
     public static void reservarAssento(Voo[] voos, Passageiro[] passageiros, Scanner scan) {
+        VooDAO.listar(voos);
         System.out.print("ID do voo: ");
         int idVoo = scan.nextInt();
         scan.nextLine();
@@ -29,14 +30,14 @@ public class VooAssentosDAO {
         System.out.println("\nAssentos disponiveis:");
         for (int i = 0; i < assentos.length; i++) {
             if (assentos[i].getPassageiro() == null) {
-                System.out.println(i + " - " + assentos[i].getCodigoAssento() + " [LIVRE]");
+                System.out.println((i + 1) + " - " + assentos[i].getCodigoAssento() + " [LIVRE]");
             } else {
-                System.out.println(i + " - " + assentos[i].getCodigoAssento() + " [OCUPADO]");
+                System.out.println((i + 1) + " - " + assentos[i].getCodigoAssento() + " [OCUPADO]");
             }
         }
 
         System.out.print("Numero do assento a reservar: ");
-        int numAssento = scan.nextInt();
+        int numAssento = scan.nextInt() - 1;
         scan.nextLine();
 
         if (numAssento < 0 || numAssento >= assentos.length) {
@@ -48,7 +49,8 @@ public class VooAssentosDAO {
             System.out.println("Assento ja ocupado!");
             return;
         }
-
+            
+        PassageiroDAO.listar(passageiros);
         System.out.print("ID do passageiro: ");
         int idPass = scan.nextInt();
         scan.nextLine();
@@ -83,14 +85,14 @@ public class VooAssentosDAO {
         System.out.println("\nAssentos disponiveis:");
         for (int i = 0; i < assentos.length; i++) {
             if (assentos[i].getPassageiro() == null) {
-                System.out.println(i + " - " + assentos[i].getCodigoAssento() + " [LIVRE]");
+                System.out.println((i + 1) + " - " + assentos[i].getCodigoAssento() + " [LIVRE]");
             } else {
-                System.out.println(i + " - " + assentos[i].getCodigoAssento() + " [OCUPADO]");
+                System.out.println((i + 1) + " - " + assentos[i].getCodigoAssento() + " [OCUPADO]");
             }
         }
 
         System.out.print("Numero do assento a reservar: ");
-        int numAssento = scan.nextInt();
+        int numAssento = scan.nextInt() - 1;
         scan.nextLine();
 
         if (numAssento < 0 || numAssento >= assentos.length) {
@@ -110,6 +112,7 @@ public class VooAssentosDAO {
     }
 
     public static void listarAssentos(Voo[] voos, Scanner scan) {
+        VooDAO.listar(voos);
         System.out.print("ID do voo: ");
         int idVoo = scan.nextInt();
         scan.nextLine();
@@ -145,6 +148,7 @@ public class VooAssentosDAO {
     }
 
     public static void deletarAssento(Voo[] voos, Scanner scan) {
+        VooDAO.listar(voos);
         System.out.print("ID do voo: ");
         int idVoo = scan.nextInt();
         scan.nextLine();
@@ -156,14 +160,28 @@ public class VooAssentosDAO {
                 break;
             }
         }
-
+        
         if (vooSelecionado == null) {
             System.out.println("Voo nao encontrado!");
             return;
         }
 
         VooAssentos[] assentos = vooSelecionado.getVooAssentos();
+  
+        System.out.println("\n--- Lista de Assentos do Voo ---");
 
+        for (VooAssentos assento : assentos) {
+            if (assento != null) {
+                String status = (assento.getPassageiro() == null)
+                        ? "LIVRE"
+                        : "OCUPADO por " + assento.getPassageiro().getNome();
+
+                System.out.println("ID: " + assento.getId()
+                        + " | Codigo: " + assento.getCodigoAssento()
+                        + " | Status: " + status);
+            }
+        }
+        
         System.out.print("ID do assento para desocupar: ");
         int idAssento = scan.nextInt();
         scan.nextLine();
@@ -171,7 +189,7 @@ public class VooAssentosDAO {
         for (VooAssentos a : assentos) {
             if (a != null && a.getId() == idAssento) {
                 if (a.getPassageiro() == null) {
-                    System.out.println("Esse assento ja está vazio.");
+                    System.out.println("Esse assento ja esta vazio.");
                 } else {
                     a.setPassageiro(null);
                     a.setDataModificacao(LocalDate.now());

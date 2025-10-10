@@ -22,11 +22,11 @@ public class TrabalhoPOO {
         Usuario[] usuarios = new Usuario[10];
 
         // --- Companhias Pré-criadas ---
-        companhiaAerea[0] = new CompanhiaAerea(1,"AzulRio", "AZR", LocalDate.now(), LocalDate.now());
-        companhiaAerea[1] = new CompanhiaAerea(2,"LatamAir", "LTA", LocalDate.now(), LocalDate.now());
-        companhiaAerea[2] = new CompanhiaAerea(3,"SolAereo", "SLA", LocalDate.now(), LocalDate.now());
-        companhiaAerea[3] = new CompanhiaAerea(4,"VentoLeste", "VLE", LocalDate.now(), LocalDate.now());
-        companhiaAerea[4] = new CompanhiaAerea(5,"NorteSky", "NSK", LocalDate.now(), LocalDate.now());
+        companhiaAerea[0] = new CompanhiaAerea(1, "AzulRio", "AZR", LocalDate.now(), LocalDate.now());
+        companhiaAerea[1] = new CompanhiaAerea(2, "LatamAir", "LTA", LocalDate.now(), LocalDate.now());
+        companhiaAerea[2] = new CompanhiaAerea(3, "SolAereo", "SLA", LocalDate.now(), LocalDate.now());
+        companhiaAerea[3] = new CompanhiaAerea(4, "VentoLeste", "VLE", LocalDate.now(), LocalDate.now());
+        companhiaAerea[4] = new CompanhiaAerea(5, "NorteSky", "NSK", LocalDate.now(), LocalDate.now());
 
         // --- Voos Pré-criados ---
         voos[0] = new Voo(1, "Uberaba", "Sao Paulo", LocalDate.parse("2025-10-10"), 2.5, companhiaAerea[0], 5, "Programado", LocalDate.now(), LocalDate.now());
@@ -36,11 +36,12 @@ public class TrabalhoPOO {
         voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDate.parse("2025-10-14"), 3.5, companhiaAerea[4], 10, "Programado", LocalDate.now(), LocalDate.now());
 
         // --- Usuários Pré-criados ---
-        usuarios[0] = new Usuario("goncalves", "goncalves");
-        usuarios[1] = new Usuario("erick", "erick");
-        usuarios[2] = new Usuario("nico", "nico");
-        usuarios[3] = new Usuario("bruna", "bruna");
-        usuarios[4] = new Usuario("dudu", "dudu");
+        usuarios[0] = new Usuario("goncalves", "goncalves", "adm");
+        usuarios[1] = new Usuario("erick", "erick", "adm");
+        usuarios[2] = new Usuario("nico", "nico", "passageiro");
+        usuarios[3] = new Usuario("bruna", "bruna", "passageiro");
+        usuarios[4] = new Usuario("dudu", "dudu", "funcionario");
+        
 
         boolean menu = true;
         while (menu) {
@@ -75,15 +76,19 @@ public class TrabalhoPOO {
                     Usuario admin = UsuarioDAO.loginAdmin(scan, usuarios);
                     if (admin != null) {
                         Usuario.menuAdmin(scan, passageiros, voos, companhiaAerea, usuarios);
-                    } else {
-                        System.out.println("Login ou senha incorretos!");
                     }
                     break;
                 case 6:
-                       Usuario.menuFuncionario(scan, passageiros, voos);
+                    Usuario funcionario = UsuarioDAO.loginFuncionario(scan, usuarios);
+                    if (funcionario != null) {
+                        Usuario.menuFuncionario(scan, passageiros, voos);
+                    }
                     break;
                 case 7:
-                    System.out.println("Funcionalidade de login passageiro ainda não implementada.");
+                    Usuario passageiro = UsuarioDAO.loginPassageiro(scan, usuarios);
+                    if(passageiro != null) {
+                        Usuario.menuPassageiro(scan, voos, passageiros);
+                    }
                     break;
                 case 8:
                     System.out.println("Saindo do programa...");
