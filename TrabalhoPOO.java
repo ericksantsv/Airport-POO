@@ -1,0 +1,82 @@
+package trabalhopoo;
+
+import java.util.Scanner;
+import trabalhopoo.dao.CompanhiaAereaDAO;
+import trabalhopoo.dao.PassageiroDAO;
+import trabalhopoo.dao.UsuarioDAO;
+import trabalhopoo.dao.VooDAO;
+import trabalhopoo.model.CompanhiaAerea;
+import trabalhopoo.model.Passageiro;
+import trabalhopoo.model.Usuario;
+import trabalhopoo.model.Voo;
+
+public class TrabalhoPOO {
+
+    public static void main(String[] args) {
+
+        Scanner scan = new Scanner(System.in);
+
+        CompanhiaAerea[] companhiaAerea = CompanhiaAereaDAO.inicializarCompanhias();
+        Voo[] voos = VooDAO.inicializarVoos(companhiaAerea);
+        Usuario[] usuarios = UsuarioDAO.inicializarUsuarios();
+        Passageiro[] passageiros = PassageiroDAO.inicializarPassageiros();
+        
+
+        boolean menu = true;
+        while (menu) {
+            System.out.println("\n\n===== Menu Principal =====");
+            System.out.println("1 - Ver Painel de voo");
+            System.out.println("2 - Buscar voos");
+            System.out.println("3 - Compra de passagem");
+            System.out.println("4 - Gestao de passagem");
+            System.out.println("5 - Login administrador");
+            System.out.println("6 - Login funcionario");
+            System.out.println("7 - Login passageiro");
+            System.out.println("8 - Sair");
+            System.out.print("Escolha uma opcao: ");
+            int opc = scan.nextInt();
+            scan.nextLine();
+
+            switch (opc) {
+                case 1:
+                    VooDAO.listar(voos);
+                    break;
+                case 2:
+                    VooDAO.buscarVoos(voos, scan);
+                    break;
+                case 3:
+                    PassageiroDAO.cadastrarSemLogin(passageiros, voos, usuarios, scan);
+                    break;
+                case 4:
+                    //consulta e cancela passsagem passageiro
+                    System.out.println("Funcionalidade de gestao de passagem ainda nao implementada.");
+                    break;
+                case 5:
+                    Usuario admin = UsuarioDAO.loginAdmin(scan, usuarios);
+                    if (admin != null) {
+                        Usuario.menuAdmin(scan, passageiros, voos, companhiaAerea, usuarios);
+                    }
+                    break;
+                case 6:
+                    Usuario funcionario = UsuarioDAO.loginFuncionario(scan, usuarios);
+                    if (funcionario != null) {
+                        Usuario.menuFuncionario(scan, passageiros, voos);
+                    }
+                    break;
+                case 7:
+                    Usuario passageiroUser = UsuarioDAO.loginPassageiro(scan, usuarios);
+                    if(passageiroUser != null) {
+                        Usuario.menuPassageiro(scan, passageiroUser, voos);
+                    }
+                    break;
+                case 8:
+                    System.out.println("Saindo do programa...");
+                    menu = false;
+                    break;
+                default:
+                    System.out.println("Opção inválida!");
+                    break;
+            }
+        }
+    }
+}
