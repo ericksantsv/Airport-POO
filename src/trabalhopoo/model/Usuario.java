@@ -2,7 +2,10 @@ package trabalhopoo.model;
 
 import java.util.Objects;
 import java.util.Scanner;
+import trabalhopoo.dao.CheckInDAO;
+import trabalhopoo.dao.TicketDAO;
 import trabalhopoo.dao.UsuarioDAO;
+import trabalhopoo.dao.VooDAO;
 
 public class Usuario {
 
@@ -11,6 +14,8 @@ public class Usuario {
     private String login;
     private String senha;
     private String tipo;
+    private Passageiro passageiro;
+    
     //construtores
     public Usuario() {
     }
@@ -54,6 +59,15 @@ public class Usuario {
         this.tipo = tipo;
     }
 
+    public Passageiro getPassageiro() {
+        return passageiro;
+    }
+
+    public void setPassageiro(Passageiro passageiro) {
+        this.passageiro = passageiro;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -157,30 +171,26 @@ public class Usuario {
         }
     }
     // ------------------- Menu Funcionário ---------------
-    public static void menuFuncionario(Scanner scan, Passageiro[] passageiros, Voo[] voos) {
+    public static void menuFuncionario(Scanner scan, Passageiro[] passageiros, Voo[] voos, CheckIn[] checkIns, BoardingPass[] boardingPasses) {
         boolean funcMenu = true;
 
         while (funcMenu) {
             System.out.println("\n--- MENU FUNCIONÁRIO ---");
             System.out.println("1 - Fazer Check-in de Passageiro");
             System.out.println("2 - Despachar Bagagem");
-            System.out.println("3 - Emitir Boarding Pass");
-            System.out.println("4 - Voltar");
+            System.out.println("3 - Voltar");
             System.out.print("Escolha uma opção: ");
             int opc = scan.nextInt();
             scan.nextLine();
 
             switch (opc) {
                 case 1:
-                    //PassageiroDAO.fazerCheckIn(passageiros, scan);
+                    CheckInDAO.aprovarCheckIn(checkIns, boardingPasses, scan);
                     break;
                 case 2:
                     //PassageiroDAO.despacharBagagem(passageiros, scan);
                     break;
                 case 3:
-                    //BoardingPassDAO.emitirBoardingPass(passageiros, voos, scan);
-                    break;
-                case 4:
                     funcMenu = false;
                     break;
                 default:
@@ -191,7 +201,7 @@ public class Usuario {
     }
 
         // ------------------- Menu Passageiro -------------------
-    public static void menuPassageiro(Scanner scan, Voo[] voos, Passageiro[] passageiros) {
+    public static void menuPassageiro(Scanner scan, Usuario usuario, Voo[] voos, CheckIn[] checkIns) {
         boolean menuPass = true;
 
         while (menuPass) {
@@ -208,24 +218,19 @@ public class Usuario {
 
             switch (opc) {
                 case 1:
-                    // Busca de voos por origem/destino
-                    //Voo.buscarVoos(voos, scan);
+                    VooDAO.buscarVoos(voos, scan);
                     break;
                 case 2:
-                    // Compra de passagem
-                    //Ticket.comprarPassagem(voos, passageiros, tickets, scan);
+                    TicketDAO.comprarTicketPassageiro(usuario, voos, scan);
                     break;
                 case 3:
-                    // Consulta de reservas
-                    //Ticket.consultarReservas(passageiros, tickets, scan);
+                    TicketDAO.listarReservas(usuario);
                     break;
                 case 4:
-                    // Cancelamento de passagem
-                    //Ticket.cancelarTicket(tickets, scan);
+                    TicketDAO.cancelarPassagem(usuario, scan);
                     break;
                 case 5:
-                    // Fazer check-in
-                    //CheckIn.realizarCheckIn(tickets, scan);
+                    CheckInDAO.solicitarCheckIn(usuario, checkIns, scan);
                     break;
                 case 6:
                     menuPass = false;

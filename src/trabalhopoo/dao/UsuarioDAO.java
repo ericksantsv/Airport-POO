@@ -5,6 +5,7 @@
 package trabalhopoo.dao;
 
 import java.util.Scanner;
+import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Usuario;
 
 /**
@@ -12,6 +13,19 @@ import trabalhopoo.model.Usuario;
  * @author erick
  */
 public class UsuarioDAO {
+
+    //Inicializa Vetores
+    public static Usuario[] inicializarUsuarios() {
+        Usuario[] usuarios = new Usuario[10];
+
+        usuarios[0] = new Usuario("goncalves", "goncalves", "adm");
+        usuarios[1] = new Usuario("erick", "erick", "adm");
+        usuarios[2] = new Usuario("nico", "nico", "passageiro");
+        usuarios[3] = new Usuario("bruna", "bruna", "passageiro");
+        usuarios[4] = new Usuario("dudu", "dudu", "funcionario");
+
+        return usuarios;
+    }
 
     public static Usuario loginAdmin(Scanner scan, Usuario[] usuarios) {
         System.out.print("Login: ");
@@ -65,13 +79,18 @@ public class UsuarioDAO {
 
         for (Usuario u : usuarios) {
             if (u != null && u.getLogin().equalsIgnoreCase(login) && u.getSenha().equals(senha)) {
-                if (u.getTipo().equalsIgnoreCase("passageiro")) {
-                    System.out.println("Login de passageiro bem-sucedido!");
-                    return u;
-                } else {
-                    System.out.println("Acesso negado! Apenas funcionarios podem entrar aqui.");
+                if (!u.getTipo().equalsIgnoreCase("passageiro")) {
+                    System.out.println("Acesso negado! Apenas passageiros podem entrar aqui.");
                     return null;
                 }
+
+                if (u.getPassageiro() == null) {
+                    System.out.println("Este usuário não está vinculado a um passageiro!");
+                    return null;
+                }
+
+                System.out.println("Login de passageiro bem-sucedido!");
+                return u;
             }
         }
 
@@ -79,7 +98,7 @@ public class UsuarioDAO {
         return null;
     }
 
-    public static Usuario criaUsuario(Scanner scan, Usuario[] usuarios) {
+    public static Usuario criaUsuario(Scanner scan, Usuario[] usuarios, Passageiro passageiro) {
         System.out.println("Registre o seu login e senha");
 
         System.out.print("Usuario: ");
@@ -99,7 +118,8 @@ public class UsuarioDAO {
         // Adiciona no vetor
         for (int i = 0; i < usuarios.length; i++) {
             if (usuarios[i] == null) {
-                usuarios[i] = new Usuario(login, senha, "user");
+                usuarios[i] = new Usuario(login, senha, "passageiro");
+                usuarios[i].setPassageiro(passageiro);
                 System.out.println("Usuario registrado com sucesso!");
                 return usuarios[i];
             }

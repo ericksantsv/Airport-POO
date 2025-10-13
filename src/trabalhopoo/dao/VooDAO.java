@@ -8,6 +8,19 @@ import trabalhopoo.model.Passageiro;
 
 public class VooDAO {
 
+    //Incializa Vetores
+    public static Voo[] inicializarVoos(CompanhiaAerea[] companhiaAerea) {
+        Voo[] voos = new Voo[50];
+
+        voos[0] = new Voo(1, "Uberaba", "Sao Paulo", LocalDate.parse("2025-10-10"), 2.5, companhiaAerea[0], 5, "Programado", LocalDate.now(), LocalDate.now());
+        voos[1] = new Voo(2, "Uberaba", "Rio de Janeiro", LocalDate.parse("2025-10-11"), 3.0, companhiaAerea[1], 3, "Programado", LocalDate.now(), LocalDate.now());
+        voos[2] = new Voo(3, "Uberaba", "Belo Horizonte", LocalDate.parse("2025-10-12"), 1.5, companhiaAerea[2], 4, "Programado", LocalDate.now(), LocalDate.now());
+        voos[3] = new Voo(4, "Uberaba", "Brasilia", LocalDate.parse("2025-10-13"), 4.0, companhiaAerea[3], 6, "Programado", LocalDate.now(), LocalDate.now());
+        voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDate.parse("2025-10-14"), 3.5, companhiaAerea[4], 10, "Programado", LocalDate.now(), LocalDate.now());
+
+        return voos;
+    }
+
     public static void cadastrar(Voo[] voos, CompanhiaAerea[] companhias, Scanner scan) {
         for (int i = 0; i < voos.length; i++) {
             if (voos[i] == null) {
@@ -237,24 +250,24 @@ public class VooDAO {
             }
         }
     }
-    
+
     //alterando aqui para baixo
     public static void registrarEntradaAviao(Passageiro[] passageiros, Voo[] voos, Scanner scan) {
-    System.out.print("Digite o nome do passageiro: ");
-    String nome = scan.nextLine();
+        System.out.print("Digite o nome do passageiro: ");
+        String nome = scan.nextLine();
 
-    for (Passageiro p : passageiros) {
-        if (p != null && p.getNome().equalsIgnoreCase(nome)) {
-            //if (!p.isCheckIn()) {
+        for (Passageiro p : passageiros) {
+            if (p != null && p.getNome().equalsIgnoreCase(nome)) {
+                //if (!p.isCheckIn()) {
                 System.out.println("️ O passageiro ainda não fez o check-in!");
                 return;
             }
-           // p.setNoAviao(true);
+            // p.setNoAviao(true);
             System.out.println("️ Entrada no avião registrada para " + p.getNome());
             return;
         }
     }
-   // System.out.println("Passageiro não encontrado!");
+    // System.out.println("Passageiro não encontrado!");
 }
 
 //}

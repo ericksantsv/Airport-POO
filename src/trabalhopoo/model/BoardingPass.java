@@ -4,20 +4,19 @@ import java.time.LocalDateTime;
 
 public class BoardingPass {
 
-    private int id;                        
-    private Passageiro passageiro;        
-    private Voo voo;                      
-    private String assento;               
-    private LocalDateTime dataEmissao;   
-    private boolean embarcado;             
+    private int id;
+    private Passageiro passageiro;
+    private Voo voo;
+    private String assento;
+    private LocalDateTime dataEmissao;
+    private boolean embarcado;
 
-    // --- Construtor ---
-    public BoardingPass(int id, Passageiro passageiro, Voo voo, String assento, LocalDateTime dataEmissao) {
+    public BoardingPass(int id, Passageiro passageiro, Voo voo, String assento) {
         this.id = id;
         this.passageiro = passageiro;
         this.voo = voo;
         this.assento = assento;
-        this.dataEmissao = dataEmissao;
+        this.dataEmissao = LocalDateTime.now();
         this.embarcado = false;
     }
 

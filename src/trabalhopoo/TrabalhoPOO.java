@@ -1,10 +1,12 @@
 package trabalhopoo;
 
-import java.time.LocalDate;
 import java.util.Scanner;
+import trabalhopoo.dao.CompanhiaAereaDAO;
 import trabalhopoo.dao.PassageiroDAO;
 import trabalhopoo.dao.UsuarioDAO;
 import trabalhopoo.dao.VooDAO;
+import trabalhopoo.model.BoardingPass;
+import trabalhopoo.model.CheckIn;
 import trabalhopoo.model.CompanhiaAerea;
 import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Usuario;
@@ -16,33 +18,13 @@ public class TrabalhoPOO {
 
         Scanner scan = new Scanner(System.in);
 
-        Passageiro[] passageiros = new Passageiro[10];
-        CompanhiaAerea[] companhiaAerea = new CompanhiaAerea[10];
-        Voo[] voos = new Voo[50];
-        Usuario[] usuarios = new Usuario[10];
-
-        // --- Companhias Pré-criadas ---
-        companhiaAerea[0] = new CompanhiaAerea(1, "AzulRio", "AZR", LocalDate.now(), LocalDate.now());
-        companhiaAerea[1] = new CompanhiaAerea(2, "LatamAir", "LTA", LocalDate.now(), LocalDate.now());
-        companhiaAerea[2] = new CompanhiaAerea(3, "SolAereo", "SLA", LocalDate.now(), LocalDate.now());
-        companhiaAerea[3] = new CompanhiaAerea(4, "VentoLeste", "VLE", LocalDate.now(), LocalDate.now());
-        companhiaAerea[4] = new CompanhiaAerea(5, "NorteSky", "NSK", LocalDate.now(), LocalDate.now());
-
-        // --- Voos Pré-criados ---
-        voos[0] = new Voo(1, "Uberaba", "Sao Paulo", LocalDate.parse("2025-10-10"), 2.5, companhiaAerea[0], 5, "Programado", LocalDate.now(), LocalDate.now());
-        voos[1] = new Voo(2, "Uberaba", "Rio de Janeiro", LocalDate.parse("2025-10-11"), 3.0, companhiaAerea[1], 3, "Programado", LocalDate.now(), LocalDate.now());
-        voos[2] = new Voo(3, "Uberaba", "Belo Horizonte", LocalDate.parse("2025-10-12"), 1.5, companhiaAerea[2], 4, "Programado", LocalDate.now(), LocalDate.now());
-        voos[3] = new Voo(4, "Uberaba", "Brasilia", LocalDate.parse("2025-10-13"), 4.0, companhiaAerea[3], 6, "Programado", LocalDate.now(), LocalDate.now());
-        voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDate.parse("2025-10-14"), 3.5, companhiaAerea[4], 10, "Programado", LocalDate.now(), LocalDate.now());
-
-        // --- Usuários Pré-criados ---
-        usuarios[0] = new Usuario("goncalves", "goncalves", "adm");
-        usuarios[1] = new Usuario("erick", "erick", "adm");
-        usuarios[2] = new Usuario("nico", "nico", "passageiro");
-        usuarios[3] = new Usuario("bruna", "bruna", "passageiro");
-        usuarios[4] = new Usuario("dudu", "dudu", "funcionario");
-        
-
+        CompanhiaAerea[] companhiaAerea = CompanhiaAereaDAO.inicializarCompanhias();
+        Voo[] voos = VooDAO.inicializarVoos(companhiaAerea);
+        Usuario[] usuarios = UsuarioDAO.inicializarUsuarios();
+        Passageiro[] passageiros = PassageiroDAO.inicializarPassageiros();
+        CheckIn[] checkIns = new CheckIn[200];
+        BoardingPass[] boardingPasses = new BoardingPass[200];
+      
         boolean menu = true;
         while (menu) {
             System.out.println("\n\n===== Menu Principal =====");
@@ -81,13 +63,13 @@ public class TrabalhoPOO {
                 case 6:
                     Usuario funcionario = UsuarioDAO.loginFuncionario(scan, usuarios);
                     if (funcionario != null) {
-                        Usuario.menuFuncionario(scan, passageiros, voos);
+                        Usuario.menuFuncionario(scan, passageiros, voos, checkIns, boardingPasses);
                     }
                     break;
                 case 7:
-                    Usuario passageiro = UsuarioDAO.loginPassageiro(scan, usuarios);
-                    if(passageiro != null) {
-                        Usuario.menuPassageiro(scan, voos, passageiros);
+                    Usuario passageiroUser = UsuarioDAO.loginPassageiro(scan, usuarios);
+                    if (passageiroUser != null) {
+                        Usuario.menuPassageiro(scan, passageiroUser, voos, checkIns);
                     }
                     break;
                 case 8:

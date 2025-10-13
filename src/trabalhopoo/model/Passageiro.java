@@ -30,7 +30,7 @@ public class Passageiro {
     
     }
     
-    public Passageiro(int id, String nome, LocalDate nascimento, String documento,LocalDate data_criacao, LocalDate data_modificacao) {
+        public Passageiro(int id, String nome, LocalDate nascimento, String documento,LocalDate data_criacao, LocalDate data_modificacao) {
         this.id = id;
         this.nome = nome;
         this.nascimento = nascimento;
@@ -170,8 +170,4 @@ public class Passageiro {
         }
     }
 
-    public void setCheckIn(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
 }

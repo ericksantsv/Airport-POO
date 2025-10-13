@@ -49,7 +49,7 @@ public class VooAssentosDAO {
             System.out.println("Assento ja ocupado!");
             return;
         }
-            
+
         PassageiroDAO.listar(passageiros);
         System.out.print("ID do passageiro: ");
         int idPass = scan.nextInt();
@@ -81,34 +81,34 @@ public class VooAssentosDAO {
         }
 
         VooAssentos[] assentos = vooSelecionado.getVooAssentos();
+        boolean assento = true;
+        while (assento) {
+            System.out.println("\nAssentos disponiveis:");
+            for (int i = 0; i < assentos.length; i++) {
+                if (assentos[i].getPassageiro() == null) {
+                    System.out.println((i + 1) + " - " + assentos[i].getCodigoAssento() + " [LIVRE]");
+                } else {
+                    System.out.println((i + 1) + " - " + assentos[i].getCodigoAssento() + " [OCUPADO]");
+                }
+            }
 
-        System.out.println("\nAssentos disponiveis:");
-        for (int i = 0; i < assentos.length; i++) {
-            if (assentos[i].getPassageiro() == null) {
-                System.out.println((i + 1) + " - " + assentos[i].getCodigoAssento() + " [LIVRE]");
+            System.out.print("Numero do assento a reservar: ");
+            int numAssento = scan.nextInt() - 1;
+            scan.nextLine();
+
+            if (numAssento < 0 || numAssento >= assentos.length) {
+                System.out.println("Assento invalido!, escolha novamente.");
+            } else if (assentos[numAssento].getPassageiro() != null) {
+                System.out.println("Assento ja ocupado! Escolha novamente.");
             } else {
-                System.out.println((i + 1) + " - " + assentos[i].getCodigoAssento() + " [OCUPADO]");
+
+            assentos[numAssento].setPassageiro(passageiro);
+            assentos[numAssento].setDataModificacao(LocalDate.now());
+
+            System.out.println("Assento " + assentos[numAssento].getCodigoAssento() + " reservado com sucesso para " + passageiro.getNome() + "!");
+            assento = false;
             }
         }
-
-        System.out.print("Numero do assento a reservar: ");
-        int numAssento = scan.nextInt() - 1;
-        scan.nextLine();
-
-        if (numAssento < 0 || numAssento >= assentos.length) {
-            System.out.println("Assento invalido!");
-            return;
-        }
-
-        if (assentos[numAssento].getPassageiro() != null) {
-            System.out.println("Assento ja ocupado!");
-            return;
-        }
-
-        assentos[numAssento].setPassageiro(passageiro);
-        assentos[numAssento].setDataModificacao(LocalDate.now());
-
-        System.out.println("Assento " + assentos[numAssento].getCodigoAssento() + " reservado com sucesso para " + passageiro.getNome() + "!");
     }
 
     public static void listarAssentos(Voo[] voos, Scanner scan) {
@@ -160,14 +160,14 @@ public class VooAssentosDAO {
                 break;
             }
         }
-        
+
         if (vooSelecionado == null) {
             System.out.println("Voo nao encontrado!");
             return;
         }
 
         VooAssentos[] assentos = vooSelecionado.getVooAssentos();
-  
+
         System.out.println("\n--- Lista de Assentos do Voo ---");
 
         for (VooAssentos assento : assentos) {
@@ -181,7 +181,7 @@ public class VooAssentosDAO {
                         + " | Status: " + status);
             }
         }
-        
+
         System.out.print("ID do assento para desocupar: ");
         int idAssento = scan.nextInt();
         scan.nextLine();

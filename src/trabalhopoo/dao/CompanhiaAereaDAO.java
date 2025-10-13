@@ -6,6 +6,19 @@ import trabalhopoo.model.CompanhiaAerea;
 
 public class CompanhiaAereaDAO {
 
+    //Incializa vetor com informações
+    public static CompanhiaAerea[] inicializarCompanhias() {
+        CompanhiaAerea[] companhias = new CompanhiaAerea[10];
+
+        companhias[0] = new CompanhiaAerea(1, "AzulRio", "AZR", LocalDate.now(), LocalDate.now());
+        companhias[1] = new CompanhiaAerea(2, "LatamAir", "LTA", LocalDate.now(), LocalDate.now());
+        companhias[2] = new CompanhiaAerea(3, "SolAereo", "SLA", LocalDate.now(), LocalDate.now());
+        companhias[3] = new CompanhiaAerea(4, "VentoLeste", "VLE", LocalDate.now(), LocalDate.now());
+        companhias[4] = new CompanhiaAerea(5, "NorteSky", "NSK", LocalDate.now(), LocalDate.now());
+
+        return companhias;
+    }
+    
     public static void cadastrar(CompanhiaAerea[] companhias, Scanner scan) {
         for (int i = 0; i < companhias.length; i++) {
             if (companhias[i] == null) {

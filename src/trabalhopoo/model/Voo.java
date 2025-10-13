@@ -141,6 +141,8 @@ public class Voo {
         this.vooAssentos = vooAssentos;
     }
     
+    
+    
     @Override
     public int hashCode() {
         int hash = 7;

@@ -11,13 +11,13 @@ import java.time.LocalDate;
  
 @author Gonçalves*/
 public class Ticket {
-    int id;
-    double valor;
-    Voo voo;
-    Passageiro passageiro;
+    private int id;
+    private double valor;
+    private Voo voo;
+    private Passageiro passageiro;
     //Codigo    id + voo
-    LocalDate dataCriacao;
-    LocalDate dataModificacao;
+    private LocalDate dataCriacao;
+    private LocalDate dataModificacao;
 
     public int getId() {
         return id;

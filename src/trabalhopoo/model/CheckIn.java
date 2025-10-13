@@ -20,12 +20,21 @@ import java.util.Objects;
  */
 public class CheckIn {
 
-    //atributos 
-    int id;
-    Ticket ticket;
-    String documento;
-    LocalDate dataCriacao;
-    LocalDate dataModificacao;
+    private int id;
+    private Ticket ticket;
+    private String documento;
+    private boolean aprovado; // novo: indica se o funcionário aprovou
+    private LocalDate dataCriacao;
+    private LocalDate dataModificacao;
+
+    public CheckIn(int id, Ticket ticket, String documento) {
+        this.id = id;
+        this.ticket = ticket;
+        this.documento = documento;
+        this.aprovado = false;
+        this.dataCriacao = LocalDate.now();
+        this.dataModificacao = LocalDate.now();
+    }
 
     //getters e setters
     public int getId() {
@@ -54,6 +63,14 @@ public class CheckIn {
 
     public LocalDate getDataCriacao() {
         return dataCriacao;
+    }
+
+    public boolean isAprovado() {
+        return aprovado;
+    }
+
+    public void setAprovado(boolean aprovado) {
+        this.aprovado = aprovado;
     }
 
     public void setDataCriacao(LocalDate dataCriacao) {
