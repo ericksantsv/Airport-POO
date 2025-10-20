@@ -101,16 +101,23 @@ public class UsuarioDAO {
     public static Usuario criaUsuario(Scanner scan, Usuario[] usuarios, Passageiro passageiro) {
         System.out.println("Registre o seu login e senha");
 
-        System.out.print("Usuario: ");
-        String login = scan.nextLine().trim();
+        String login;
+        boolean loginExistente;
 
-        // Verifica se já existe esse login
-        for (Usuario u : usuarios) {
-            if (u != null && u.getLogin().equalsIgnoreCase(login)) {
-                System.out.println("Esse login ja esta em uso. Tente outro.");
-                return null;
+        do {
+            System.out.print("Digite o login: ");
+            login = scan.nextLine();
+            loginExistente = false;
+
+            for (Usuario u : usuarios) {
+                if (u != null && u.getLogin().equalsIgnoreCase(login)) {
+                    System.out.println("Esse login já está em uso. Tente outro.");
+                    loginExistente = true;
+                    break;
+                }
             }
-        }
+
+        } while (loginExistente);
 
         System.out.print("Senha: ");
         String senha = scan.nextLine().trim();

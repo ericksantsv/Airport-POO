@@ -3,6 +3,7 @@ package trabalhopoo.model;
 import java.util.Objects;
 import java.util.Scanner;
 import trabalhopoo.dao.CheckInDAO;
+import trabalhopoo.dao.DespachoBagagemDAO;
 import trabalhopoo.dao.TicketDAO;
 import trabalhopoo.dao.UsuarioDAO;
 import trabalhopoo.dao.VooDAO;
@@ -171,7 +172,7 @@ public class Usuario {
         }
     }
     // ------------------- Menu Funcionário ---------------
-    public static void menuFuncionario(Scanner scan, Passageiro[] passageiros, Voo[] voos, CheckIn[] checkIns, BoardingPass[] boardingPasses) {
+    public static void menuFuncionario(Scanner scan, Passageiro[] passageiros, Voo[] voos, CheckIn[] checkIns, BoardingPass[] boardingPasses, DespachoBagagem[] bagagens) {
         boolean funcMenu = true;
 
         while (funcMenu) {
@@ -188,7 +189,7 @@ public class Usuario {
                     CheckInDAO.aprovarCheckIn(checkIns, boardingPasses, scan);
                     break;
                 case 2:
-                    //PassageiroDAO.despacharBagagem(passageiros, scan);
+                    DespachoBagagemDAO.despacharBagagem(checkIns, bagagens, scan);
                     break;
                 case 3:
                     funcMenu = false;
@@ -201,7 +202,7 @@ public class Usuario {
     }
 
         // ------------------- Menu Passageiro -------------------
-    public static void menuPassageiro(Scanner scan, Usuario usuario, Voo[] voos, CheckIn[] checkIns) {
+    public static void menuPassageiro(Scanner scan, Usuario usuario, Voo[] voos, CheckIn[] checkIns, DespachoBagagem[] bagagens) {
         boolean menuPass = true;
 
         while (menuPass) {
@@ -224,10 +225,10 @@ public class Usuario {
                     TicketDAO.comprarTicketPassageiro(usuario, voos, scan);
                     break;
                 case 3:
-                    TicketDAO.listarReservas(usuario);
+                    TicketDAO.listarReservas(usuario, checkIns, bagagens);
                     break;
                 case 4:
-                    TicketDAO.cancelarPassagem(usuario, scan);
+                    TicketDAO.cancelarPassagem(usuario, checkIns, bagagens, scan);
                     break;
                 case 5:
                     CheckInDAO.solicitarCheckIn(usuario, checkIns, scan);

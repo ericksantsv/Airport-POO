@@ -23,7 +23,7 @@ public class CheckIn {
     private int id;
     private Ticket ticket;
     private String documento;
-    private boolean aprovado; // novo: indica se o funcionário aprovou
+    private boolean aprovado; 
     private LocalDate dataCriacao;
     private LocalDate dataModificacao;
 

@@ -9,19 +9,17 @@ import java.util.Objects;
 
 /**
  *
- 
-@author Gonçalves*/
+ *
+ * @author Gonçalves
+ */
 public class DespachoBagagem {
-    
+
     //atributos
-    int id;
-    Ticket ticket;
-    String documento;
-    LocalDate dataCriacao;
-    LocalDate dataModificacao;
-    
-    public DespachoBagagem() {
-    }
+    private int id;
+    private Ticket ticket;
+    private String documento;
+    private LocalDate dataCriacao;
+    private LocalDate dataModificacao;
 
     public DespachoBagagem(int id, Ticket ticket, String documento, LocalDate dataCriacao, LocalDate dataModificacao) {
         this.id = id;
@@ -31,13 +29,6 @@ public class DespachoBagagem {
         this.dataModificacao = dataModificacao;
     }
 
-    public DespachoBagagem(Ticket ticket, String documento, LocalDate dataCriacao, LocalDate dataModificacao) {
-        this.ticket = ticket;
-        this.documento = documento;
-        this.dataCriacao = dataCriacao;
-        this.dataModificacao = dataModificacao;
-    }
-    
     public int getId() {
         return id;
     }
@@ -77,8 +68,7 @@ public class DespachoBagagem {
     public void setDataModificacao(LocalDate dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
-    
-    
+
     //usamos o ticket e documento se caso nao tivemos o ID aainda
     @Override
     public int hashCode() {
@@ -110,5 +100,4 @@ public class DespachoBagagem {
         return Objects.equals(this.ticket, other.ticket);
     }
 
-    
 }

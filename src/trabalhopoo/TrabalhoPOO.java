@@ -8,6 +8,7 @@ import trabalhopoo.dao.VooDAO;
 import trabalhopoo.model.BoardingPass;
 import trabalhopoo.model.CheckIn;
 import trabalhopoo.model.CompanhiaAerea;
+import trabalhopoo.model.DespachoBagagem;
 import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Usuario;
 import trabalhopoo.model.Voo;
@@ -24,6 +25,9 @@ public class TrabalhoPOO {
         Passageiro[] passageiros = PassageiroDAO.inicializarPassageiros();
         CheckIn[] checkIns = new CheckIn[200];
         BoardingPass[] boardingPasses = new BoardingPass[200];
+        DespachoBagagem[] bagagens = new DespachoBagagem[100];
+        
+
       
         boolean menu = true;
         while (menu) {
@@ -39,7 +43,9 @@ public class TrabalhoPOO {
             System.out.print("Escolha uma opcao: ");
             int opc = scan.nextInt();
             scan.nextLine();
-
+            
+            
+            
             switch (opc) {
                 case 1:
                     VooDAO.listar(voos);
@@ -63,13 +69,13 @@ public class TrabalhoPOO {
                 case 6:
                     Usuario funcionario = UsuarioDAO.loginFuncionario(scan, usuarios);
                     if (funcionario != null) {
-                        Usuario.menuFuncionario(scan, passageiros, voos, checkIns, boardingPasses);
+                        Usuario.menuFuncionario(scan, passageiros, voos, checkIns, boardingPasses, bagagens);
                     }
                     break;
                 case 7:
                     Usuario passageiroUser = UsuarioDAO.loginPassageiro(scan, usuarios);
                     if (passageiroUser != null) {
-                        Usuario.menuPassageiro(scan, passageiroUser, voos, checkIns);
+                        Usuario.menuPassageiro(scan, passageiroUser, voos, checkIns, bagagens);
                     }
                     break;
                 case 8:

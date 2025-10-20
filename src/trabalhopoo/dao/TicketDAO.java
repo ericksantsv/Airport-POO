@@ -6,6 +6,8 @@ package trabalhopoo.dao;
 
 import java.time.LocalDate;
 import java.util.Scanner;
+import trabalhopoo.model.CheckIn;
+import trabalhopoo.model.DespachoBagagem;
 import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Ticket;
 import trabalhopoo.model.Usuario;
@@ -28,7 +30,7 @@ public class TicketDAO {
                 double valor = 10;
                 Voo voo = VooDAO.escolherVoo(voos, scan);
 
-                ticket[i] = new Ticket(i + 1, valor, voo, passageiro, LocalDate.now(), LocalDate.now());
+                ticket[i] = new Ticket(i + 1, valor, voo, passageiro);
                 passageiro.setTicket(ticket);
 
                 break;
@@ -36,7 +38,7 @@ public class TicketDAO {
         }
     }
 
-    public static void listarReservas(Usuario usuario) {
+    public static void listarReservas(Usuario usuario, CheckIn[] checkIns, DespachoBagagem[] bagagens) {
 
         Ticket[] tickets = usuario.getPassageiro().getTicket();
         System.out.println("\n--- Lista de passagens ---");
@@ -45,8 +47,9 @@ public class TicketDAO {
             if (t != null) {
                 Voo v = t.getVoo();
 
+                // ---------------- Assento ----------------
                 String codigoAssento = "Não reservado";
-                VooAssentos[] assentos = v.getVooAssentos(); // vetor de assentos do voo
+                VooAssentos[] assentos = v.getVooAssentos();
                 if (assentos != null) {
                     for (VooAssentos a : assentos) {
                         if (a != null && a.getPassageiro() == usuario.getPassageiro()) {
@@ -55,14 +58,40 @@ public class TicketDAO {
                         }
                     }
                 }
-                System.out.println("\nNumero: " + t.getId()
+
+                // ---------------- Check-in ----------------
+                String statusCheckIn = "Não solicitado";
+                for (CheckIn c : checkIns) {
+                    if (c != null && c.getTicket() == t) {
+                        if (c.isAprovado()) {
+                            statusCheckIn = "Aprovado";
+                        } else {
+                            statusCheckIn = "Aguardando aprovação";
+                        }
+                        break;
+                    }
+                }
+
+                // ---------------- Despacho de Bagagem ----------------
+                String statusBagagem = "Não despachada";
+                for (DespachoBagagem d : bagagens) {
+                    if (d != null && d.getTicket() == t) {
+                        statusBagagem = "Despachada em " + d.getDataCriacao();
+                        break;
+                    }
+                }
+
+                // ---------------- Exibição ----------------
+                System.out.println("\n| Código: " + t.getCodigo()
                         + "\n| Origem: " + v.getOrigem()
                         + "\n| Destino: " + v.getDestino()
-                        + "\n| Duracao: " + v.getDuracao()
-                        + "\n| Companhia aerea" + v.getCompanhiaAerea().getNome()
+                        + "\n| Duração: " + v.getDuracao()
+                        + "\n| Companhia aérea: " + v.getCompanhiaAerea().getNome()
                         + "\n| Data: " + v.getData()
-                        + "\n| Status: " + v.getEstado()
+                        + "\n| Status do voo: " + v.getEstado()
                         + "\n| Assento: " + codigoAssento
+                        + "\n| Check-in: " + statusCheckIn
+                        + "\n| Bagagem: " + statusBagagem
                 );
             }
         }
@@ -79,7 +108,7 @@ public class TicketDAO {
 
                 Voo voo = VooDAO.escolherVoo(voos, scan);
 
-                tickets[i] = new Ticket(i + 1, valor, voo, usuario.getPassageiro(), LocalDate.now(), LocalDate.now());
+                tickets[i] = new Ticket(i + 1, valor, voo, usuario.getPassageiro());
                 VooAssentosDAO.reservarAssentoSemLogin(voo, usuario.getPassageiro(), scan);
                 System.out.println("Passagem criada para " + usuario.getPassageiro().getNome());
                 criado = true;
@@ -100,7 +129,7 @@ public class TicketDAO {
                 Voo vooEscolhido = VooDAO.escolherVoo(voos, scan);
 
                 // Cria o ticket
-                ticket[i] = new Ticket(i + 1, valor, vooEscolhido, passageiro, LocalDate.now(), LocalDate.now());
+                ticket[i] = new Ticket(i + 1, valor, vooEscolhido, passageiro);
 
                 // Vincula o ticket ao passageiro
                 passageiro.setTicket(ticket);
@@ -116,9 +145,13 @@ public class TicketDAO {
         return null;
     }
 
-    public static void cancelarPassagem(Usuario usuario, Scanner scan) {
-        listarReservas(usuario);
-        Ticket[] tickets = usuario.getPassageiro().getTicket();
+    public static void cancelarPassagem(Usuario usuario, CheckIn[] checkIns, DespachoBagagem[] bagagens, Scanner scan) {
+        Passageiro passageiro = usuario.getPassageiro();
+        Ticket[] tickets = passageiro.getTicket();
+
+        // Mostra as reservas atuais
+        listarReservas(usuario, checkIns, bagagens);
+
         System.out.print("\nDigite o número da passagem que deseja cancelar: ");
         int num = scan.nextInt();
         scan.nextLine();
@@ -131,26 +164,35 @@ public class TicketDAO {
                 encontrado = true;
                 Voo voo = t.getVoo();
 
-                // Libera o assento correspondente
-                VooAssentos[] assentos = voo.getVooAssentos();
-                for (int j = 0; j < assentos.length; j++) {
-                    VooAssentos a = assentos[j];
-                    if (a != null && a.getPassageiro() == usuario.getPassageiro()) {
-                        assentos[j].setPassageiro(null); // libera o assento
+                // 🔹 1. Cancela o check-in, se existir
+                for (int j = 0; j < checkIns.length; j++) {
+                    CheckIn c = checkIns[j];
+                    if (c != null && c.getTicket() == t) {
+                        checkIns[j] = null;
+                        System.out.println("Check-in associado foi cancelado.");
                         break;
                     }
                 }
 
-                tickets[i] = null; // remove o ticket
+                // 🔹 2. Libera o assento
+                VooAssentos[] assentos = voo.getVooAssentos();
+                for (VooAssentos a : assentos) {
+                    if (a != null && a.getPassageiro() == passageiro) {
+                        a.setPassageiro(null);
+                        break;
+                    }
+                }
+
+                // 🔹 3. Remove o ticket
+                tickets[i] = null;
                 System.out.println("Passagem cancelada com sucesso!");
                 break;
             }
         }
 
         if (!encontrado) {
-            System.out.println("❌ Nenhuma passagem encontrada com esse número.");
+            System.out.println("Nenhuma passagem encontrada com esse número.");
         }
-
     }
 
 }
