@@ -74,7 +74,7 @@ public class DespachoBagagemDAO {
         }
 
         if (ticketSelecionado == null) {
-            System.out.println("Ticket não encontrado ou já despachado.");
+            System.out.println("Ticket nao encontrado ou ja despachado.");
             return;
         }
 
@@ -94,8 +94,8 @@ public class DespachoBagagemDAO {
                 System.out.println("ID do Despacho: " + bagagens[i].getId());
                 System.out.println("Passageiro: " + ticketSelecionado.getPassageiro().getNome());
                 System.out.println("Documento: " + ticketSelecionado.getPassageiro().getDocumento());
-                System.out.println("Voo: " + ticketSelecionado.getVoo().getOrigem() + " → " + ticketSelecionado.getVoo().getDestino());
-                System.out.println("Data de Criação: " + bagagens[i].getDataCriacao());
+                System.out.println("Voo: " + ticketSelecionado.getVoo().getOrigem() + " -> " + ticketSelecionado.getVoo().getDestino());
+                System.out.println("Data de criacao: " + bagagens[i].getDataCriacao());
                 System.out.println("-------------------------------------------");
 
                 return;

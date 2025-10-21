@@ -22,7 +22,7 @@ public class BoardingPassDAO {
             }
         }
 
-        System.out.println("Passageiro não encontrado!");
+        System.out.println("Passageiro nao encontrado!");
     }
     
     // Método para listar todos os boarding passes
@@ -42,8 +42,8 @@ public class BoardingPassDAO {
                 System.out.println("Documento: " + p.getDocumento());
                 System.out.println("Voo: " + v.getOrigem() + " → " + v.getDestino());
                 System.out.println("Assento: " + bp.getAssento());
-                System.out.println("Data de Emissão: " + bp.getDataEmissao());
-                System.out.println("Embarcado: " + (bp.isEmbarcado() ? "Sim" : "Não"));
+                System.out.println("Data de emissao: " + bp.getDataEmissao());
+                System.out.println("Embarcado: " + (bp.isEmbarcado() ? "Sim" : "Nao"));
                 System.out.println("-------------------------------------------");
             }
         }
@@ -67,14 +67,14 @@ public class BoardingPassDAO {
                 System.out.println("ID do BP: " + bp.getId());
                 System.out.println("Voo: " + v.getOrigem() + " → " + v.getDestino());
                 System.out.println("Assento: " + bp.getAssento());
-                System.out.println("Data de Emissão: " + bp.getDataEmissao());
-                System.out.println("Embarcado: " + (bp.isEmbarcado() ? "Sim" : "Não"));
+                System.out.println("Data de emissao: " + bp.getDataEmissao());
+                System.out.println("Embarcado: " + (bp.isEmbarcado() ? "Sim" : "Nao"));
                 System.out.println("-------------------------------------------");
             }
         }
 
         if (!temBP) {
-            System.out.println("Nenhum boarding pass encontrado para você.");
+            System.out.println("Nenhum boarding pass encontrado para voce.");
         }
     }
 }

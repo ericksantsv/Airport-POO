@@ -21,57 +21,119 @@ public class PassageiroDAO {
         return passageiros;
     }
 
-    public static void cadastrar(Passageiro[] passageiros, Scanner scan) {
-        for (int i = 0; i < passageiros.length; i++) {
-            if (passageiros[i] == null) {
-                System.out.print("Nome: ");
-                String nome = scan.nextLine();
-
-                System.out.print("Nascimento (AAAA-MM-DD): ");
-                LocalDate nasc = LocalDate.parse(scan.nextLine());
-
-                System.out.print("Documento: ");
-                String doc = scan.nextLine();
-
-                passageiros[i] = new Passageiro(i + 1, nome, nasc, doc, nasc, nasc);
-                System.out.println("Passageiro cadastrado!");
-                break;
+ public static void cadastrar(Passageiro[] passageiros, Scanner scan) {
+    for (int i = 0; i < passageiros.length; i++) {
+        if (passageiros[i] == null) {
+            System.out.print("Nome: ");
+            String nome = scan.nextLine().trim();
+            if (nome.isEmpty()) {
+                System.out.println("O nome nao pode ser vazio.");
+                return;
             }
+
+            System.out.print("Nascimento (AAAA-MM-DD): ");
+            String inputNasc = scan.nextLine().trim();
+            if (inputNasc.isEmpty()) {
+                System.out.println("A data de nascimento nao pode ser vazia.");
+                return;
+            }
+            LocalDate nasc = LocalDate.parse(inputNasc);
+
+            System.out.print("Documento: ");
+            String doc = scan.nextLine().trim();
+            if (doc.isEmpty()) {
+                System.out.println("O documento nao pode ser vazio.");
+                return;
+            }
+
+            for (Passageiro p : passageiros) {
+                if (p != null && p.getDocumento().equalsIgnoreCase(doc)) {
+                    System.out.println("Ja existe um passageiro cadastrado com este documento.");
+                    return;
+                }
+            }
+
+            passageiros[i] = new Passageiro(i + 1, nome, nasc, doc, nasc, nasc);
+            System.out.println("Passageiro cadastrado!");
+            break;
         }
     }
+}
 
-    public static void cadastrarSemLogin(Passageiro[] passageiros, Voo[] voos, Usuario[] usuarios, Scanner scan) {
-        for (int i = 0; i < passageiros.length; i++) {
-            if (passageiros[i] == null) {
+  public static void cadastrarSemLogin(Passageiro[] passageiros, Voo[] voos, Usuario[] usuarios, Scanner scan) {
+    for (int i = 0; i < passageiros.length; i++) {
+        if (passageiros[i] == null) {
+
+            // Validação do nome
+            String nome = "";
+            while (true) {
                 System.out.print("Nome: ");
-                String nome = scan.nextLine();
-
-                System.out.print("Nascimento (AAAA-MM-DD): ");
-                LocalDate nasc = LocalDate.parse(scan.nextLine());
-
-                System.out.print("Documento: ");
-                String doc = scan.nextLine();
-
-                passageiros[i] = new Passageiro(i, nome, nasc, doc, LocalDate.now(), LocalDate.now());
-                System.out.println("Passageiro cadastrado!");
-
-                Voo vooEscolhido = TicketDAO.criarRetornandoVoo(passageiros[i].getTicket(), passageiros[i], voos, scan);
-
-                if (vooEscolhido != null) {
-                    // Agora chama a reserva de assento passando o voo selecionado
-                    VooAssentosDAO.reservarAssentoSemLogin(vooEscolhido, passageiros[i], scan);
+                nome = scan.nextLine().trim();
+                if (nome.isEmpty()) {
+                    System.out.println("O nome nao pode ser vazio. Digite novamente.");
+                } else {
+                    break; // nome válido
                 }
-
-                System.out.println("\nQuase finalizado! Vamos registrar o seu usuario agora\n");
-                Usuario usuarioCriado = UsuarioDAO.criaUsuario(scan, usuarios, passageiros[i]);
-                if (usuarioCriado != null) {
-                    passageiros[i].setUsuario(usuarioCriado);
-                }
-
-                break;
             }
+
+            // Validação da data de nascimento
+            String inputNasc = "";
+            while (true) {
+                System.out.print("Nascimento (AAAA-MM-DD): ");
+                inputNasc = scan.nextLine().trim();
+                if (inputNasc.isEmpty()) {
+                    System.out.println("A data de nascimento nao pode ser vazia. Digite novamente.");
+                } else {
+                    break; // data válida
+                }
+            }
+            LocalDate nasc = LocalDate.parse(inputNasc);
+
+            // Validação do documento
+            String doc = "";
+            while (true) {
+                System.out.print("Documento: ");
+                doc = scan.nextLine().trim();
+                if (doc.isEmpty()) {
+                    System.out.println("O documento nao pode ser vazio. Digite novamente.");
+                } else {
+                    boolean existe = false;
+                    for (Passageiro p : passageiros) {
+                        if (p != null && p.getDocumento().equalsIgnoreCase(doc)) {
+                            existe = true;
+                            break;
+                        }
+                    }
+                    if (existe) {
+                        System.out.println("Ja existe um passageiro cadastrado com este documento. Digite outro.");
+                    } else {
+                        break; // documento válido
+                    }
+                }
+            }
+
+            // Criação do passageiro
+            passageiros[i] = new Passageiro(i, nome, nasc, doc, LocalDate.now(), LocalDate.now());
+            System.out.println("Passageiro cadastrado!");
+
+            // Seleção do voo
+            Voo vooEscolhido = TicketDAO.criarRetornandoVoo(passageiros[i].getTicket(), passageiros[i], voos, scan);
+            if (vooEscolhido != null) {
+                VooAssentosDAO.reservarAssentoSemLogin(vooEscolhido, passageiros[i], scan);
+            }
+
+            // Criação do usuário
+            System.out.println("\nQuase finalizado! Vamos registrar o seu usuario agora\n");
+            Usuario usuarioCriado = UsuarioDAO.criaUsuario(scan, usuarios, passageiros[i]);
+            if (usuarioCriado != null) {
+                passageiros[i].setUsuario(usuarioCriado);
+            }
+
+            break;
         }
     }
+}
+
 
     public static void listar(Passageiro[] passageiros) {
         System.out.println("\n--- Lista de Passageiros ---");
@@ -139,7 +201,7 @@ public class PassageiroDAO {
                 return;
             }
         }
-        System.out.println("Passageiro não encontrado!");
+        System.out.println("Passageiro nao encontrado!");
     }
 
     public static void despacharBagagem(Passageiro[] passageiros, Scanner scan) {
@@ -153,7 +215,7 @@ public class PassageiroDAO {
                 return;
             }
         }
-        System.out.println("Passageiro não encontrado!");
+        System.out.println("Passageiro nao encontrado!");
     }
 
 }

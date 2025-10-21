@@ -259,11 +259,11 @@ public class VooDAO {
         for (Passageiro p : passageiros) {
             if (p != null && p.getNome().equalsIgnoreCase(nome)) {
                 //if (!p.isCheckIn()) {
-                System.out.println("️ O passageiro ainda não fez o check-in!");
+                System.out.println("️ O passageiro ainda nao fez o check-in!");
                 return;
             }
             // p.setNoAviao(true);
-            System.out.println("️ Entrada no avião registrada para " + p.getNome());
+            System.out.println("️ Entrada no aviao registrada para " + p.getNome());
             return;
         }
     }

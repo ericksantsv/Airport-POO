@@ -57,7 +57,7 @@ public class CompanhiaAereaDAO {
                 return;
             }
         }
-        System.out.println("Companhia não encontrada!");
+        System.out.println("Companhia nao encontrada!");
     }
 
     public static void deletar(CompanhiaAerea[] companhias, Scanner scan) {

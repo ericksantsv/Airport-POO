@@ -139,7 +139,7 @@ public class Usuario {
                     admMenu = false;
                     break;
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opcao invalida!");
                     break;
             }
         }
@@ -177,12 +177,12 @@ public class Usuario {
         boolean funcMenu = true;
 
         while (funcMenu) {
-            System.out.println("\n--- MENU FUNCIONÁRIO ---");
+            System.out.println("\n--- MENU FUNCIONARIO ---");
             System.out.println("1 - Fazer Check-in de Passageiro");
             System.out.println("2 - Despachar Bagagem");
             System.out.println("3 - Listar BoardingPass");
             System.out.println("4 - Voltar");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("Escolha uma opcao: ");
             int opc = scan.nextInt();
             scan.nextLine();
 
@@ -200,7 +200,7 @@ public class Usuario {
                     funcMenu = false;
                     break;
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opcao invalida!");
                     break;
             }
         }
@@ -218,7 +218,7 @@ public class Usuario {
             System.out.println("4 - Cancelar Passagem");
             System.out.println("5 - Fazer Check-in");
             System.out.println("6 - Voltar");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("Escolha uma opcao: ");
             int opc = scan.nextInt();
             scan.nextLine();
 
@@ -242,7 +242,7 @@ public class Usuario {
                     menuPass = false;
                     break;
                 default:
-                    System.out.println("Opção inválida!");
+                    System.out.println("Opcao invalida!");
                     break;
             }
         }

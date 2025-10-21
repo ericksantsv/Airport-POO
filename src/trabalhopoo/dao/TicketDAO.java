@@ -48,7 +48,7 @@ public class TicketDAO {
                 Voo v = t.getVoo();
 
                 // ---------------- Assento ----------------
-                String codigoAssento = "Não reservado";
+                String codigoAssento = "Nao reservado";
                 VooAssentos[] assentos = v.getVooAssentos();
                 if (assentos != null) {
                     for (VooAssentos a : assentos) {
@@ -60,7 +60,7 @@ public class TicketDAO {
                 }
 
                 // ---------------- Check-in ----------------
-                String statusCheckIn = "Não solicitado";
+                String statusCheckIn = "Nao solicitado";
                 boolean boardingPassEmitido = false;
                 for (CheckIn c : checkIns) {
                     if (c != null && c.getTicket() == t) {
@@ -68,14 +68,14 @@ public class TicketDAO {
                             statusCheckIn = "Aprovado";
                             boardingPassEmitido = c.isAprovado(); // supondo que tenha esse campo
                         } else {
-                            statusCheckIn = "Aguardando aprovação";
+                            statusCheckIn = "Aguardando aprovacao";
                         }
                         break;
                     }
                 }
 
                 // ---------------- Despacho de Bagagem ----------------
-                String statusBagagem = "Não despachada";
+                String statusBagagem = "Nao despachada";
                 for (DespachoBagagem d : bagagens) {
                     if (d != null && d.getTicket() == t) {
                         statusBagagem = "Despachada em " + d.getDataCriacao();
@@ -84,16 +84,16 @@ public class TicketDAO {
                 }
 
                 // ---------------- Exibição ----------------
-                System.out.println("\n| Código: " + t.getCodigo()
+                System.out.println("\n| Codigo: " + t.getCodigo()
                         + "\n| Origem: " + v.getOrigem()
                         + "\n| Destino: " + v.getDestino()
                         + "\n| Duração: " + v.getDuracao()
-                        + "\n| Companhia aérea: " + v.getCompanhiaAerea().getNome()
+                        + "\n| Companhia aerea: " + v.getCompanhiaAerea().getNome()
                         + "\n| Data: " + v.getData()
                         + "\n| Status do voo: " + v.getEstado()
                         + "\n| Assento: " + codigoAssento
                         + "\n| Check-in: " + statusCheckIn
-                        + "\n| Boarding pass: " + (boardingPassEmitido ? "Emitido" : "Não emitido")
+                        + "\n| Boarding pass: " + (boardingPassEmitido ? "Emitido" : "Nao emitido")
                         + "\n| Bagagem: " + statusBagagem
                 );
             }
@@ -145,7 +145,7 @@ public class TicketDAO {
             }
         }
 
-        System.out.println("Erro: nao ha espaço disponível para criar novo ticket.");
+        System.out.println("Erro: nao ha espaco disponivel para criar novo ticket.");
         return null;
     }
 
@@ -156,7 +156,7 @@ public class TicketDAO {
         // Mostra as reservas atuais
         listarReservas(usuario, checkIns, bagagens);
 
-        System.out.print("\nDigite o número da passagem que deseja cancelar: ");
+        System.out.print("\nDigite o numero da passagem que deseja cancelar: ");
         int num = scan.nextInt();
         scan.nextLine();
 
@@ -195,7 +195,7 @@ public class TicketDAO {
         }
 
         if (!encontrado) {
-            System.out.println("Nenhuma passagem encontrada com esse número.");
+            System.out.println("Nenhuma passagem encontrada com esse numero.");
         }
     }
 

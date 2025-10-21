@@ -25,7 +25,7 @@ public class CheckInDAO {
 
     // 1. Filtra tickets que ainda não possuem check-in
     boolean temTicketDisponivel = false;
-    System.out.println("\n--- Tickets disponíveis para check-in ---");
+    System.out.println("\n--- Tickets disponiveis para check-in ---");
     for (Ticket t : tickets) {
         if (t != null) {
             boolean jaSolicitado = false;
@@ -45,7 +45,7 @@ public class CheckInDAO {
     }
 
     if (!temTicketDisponivel) {
-        System.out.println("Você não possui tickets disponíveis para solicitar check-in.");
+        System.out.println("Voce nao possui tickets disponíveis para solicitar check-in.");
         return; // sai do método
     }
 
@@ -74,7 +74,7 @@ public class CheckInDAO {
     }
 
     if (ticketEscolhido == null) {
-        System.out.println("Ticket não encontrado ou já possui solicitação de check-in.");
+        System.out.println("Ticket nao encontrado ou ja possui solicitacoes de check-in.");
         return;
     }
 
@@ -82,12 +82,12 @@ public class CheckInDAO {
     for (int i = 0; i < checkIns.length; i++) {
         if (checkIns[i] == null) {
             checkIns[i] = new CheckIn(i + 1, ticketEscolhido, passageiro.getDocumento());
-            System.out.println("Solicitação de check-in enviada. Aguarde aprovação.");
+            System.out.println("Solicitacoes de check-in enviada. Aguarde aprovacao.");
             return;
         }
     }
 
-    System.out.println("Erro: capacidade máxima de check-ins atingida.");
+    System.out.println("Erro: capacidade maxima de check-ins atingida.");
 }
 
     
@@ -114,7 +114,7 @@ public class CheckInDAO {
         }
 
         if (!temPendentes) {
-            System.out.println("Não há check-ins pendentes para aprovar.");
+            System.out.println("Nao ha check-ins pendentes para aprovar.");
             return; // sai do método
         }
 
@@ -147,7 +147,7 @@ public class CheckInDAO {
             }
         }
 
-        System.out.println("Check-in não encontrado ou já aprovado.");
+        System.out.println("Check-in nao encontrado ou ja aprovado.");
     }
 
 }

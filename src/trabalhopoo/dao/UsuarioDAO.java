@@ -85,7 +85,7 @@ public class UsuarioDAO {
                 }
 
                 if (u.getPassageiro() == null) {
-                    System.out.println("Este usuário não está vinculado a um passageiro!");
+                    System.out.println("Este usuario nao esta vinculado a um passageiro!");
                     return null;
                 }
 
@@ -97,44 +97,64 @@ public class UsuarioDAO {
         System.out.println("Login ou senha incorretos!");
         return null;
     }
+    
 
     public static Usuario criaUsuario(Scanner scan, Usuario[] usuarios, Passageiro passageiro) {
-        System.out.println("Registre o seu login e senha");
+    System.out.println("Registre o seu login e senha");
 
-        String login;
-        boolean loginExistente;
+    String login;
+    boolean loginExistente;
 
-        do {
-            System.out.print("Digite o login: ");
-            login = scan.nextLine();
+    // Validação do login
+    do {
+        System.out.print("Digite o login: ");
+        login = scan.nextLine().trim();
+
+        if (login.isEmpty()) {
+            System.out.println("O login não pode ser vazio. Digite novamente.");
+            loginExistente = true; // força repetição do loop
+        } else {
             loginExistente = false;
-
             for (Usuario u : usuarios) {
                 if (u != null && u.getLogin().equalsIgnoreCase(login)) {
-                    System.out.println("Esse login já está em uso. Tente outro.");
+                    System.out.println("Esse login ja esta em uso. Tente outro.");
                     loginExistente = true;
                     break;
                 }
             }
-
-        } while (loginExistente);
-
-        System.out.print("Senha: ");
-        String senha = scan.nextLine().trim();
-
-        // Adiciona no vetor
-        for (int i = 0; i < usuarios.length; i++) {
-            if (usuarios[i] == null) {
-                usuarios[i] = new Usuario(login, senha, "passageiro");
-                usuarios[i].setPassageiro(passageiro);
-                System.out.println("Usuario registrado com sucesso!");
-                return usuarios[i];
-            }
         }
 
-        System.out.println("Erro: limite de usuarios atingido!");
-        return null;
+    } while (loginExistente);
+
+    // Validação da senha
+    String senha;
+    while (true) {
+        System.out.print("Senha: ");
+        senha = scan.nextLine().trim();
+
+        if (senha.isEmpty()) {
+            System.out.println("A senha nao pode ser vazia. Digite novamente.");
+        } else {
+            break; // senha válida
+        }
     }
+
+    // Adiciona no vetor
+    for (int i = 0; i < usuarios.length; i++) {
+        if (usuarios[i] == null) {
+            usuarios[i] = new Usuario(login, senha, "passageiro");
+            usuarios[i].setPassageiro(passageiro);
+            System.out.println("Usuario registrado com sucesso!");
+            return usuarios[i];
+        }
+    }
+
+    System.out.println("Erro: limite de usuarios atingido!");
+    return null;
+}
+
+
+
 
     public static Usuario criaUsuarioAdm(Scanner scan, Usuario[] usuarios) {
         System.out.println("Registre o seu login e senha");
@@ -157,14 +177,14 @@ public class UsuarioDAO {
         String[] tipos = {"passageiro", "adm", "funcionario"};
 
         // Mostra opções para o usuário escolher
-        System.out.println("Escolha o tipo de usuário:");
+        System.out.println("Escolha o tipo de usuario:");
         for (int i = 0; i < tipos.length; i++) {
             System.out.println((i + 1) + " - " + tipos[i]);
         }
 
         int escolha = 0;
         while (true) {
-            System.out.print("Digite o número correspondente: ");
+            System.out.print("Digite o numero correspondente: ");
             if (scan.hasNextInt()) {
                 escolha = scan.nextInt();
                 scan.nextLine(); // limpar buffer
@@ -174,7 +194,7 @@ public class UsuarioDAO {
             } else {
                 scan.nextLine(); // limpar entrada inválida
             }
-            System.out.println("Opção inválida. Tente novamente.");
+            System.out.println("Opcao invalida. Tente novamente.");
         }
 
         String tipoSelecionado = tipos[escolha - 1]; // pega o tipo correspondente
