@@ -17,15 +17,16 @@ public class Usuario {
     private String senha;
     private String tipo;
     private Passageiro passageiro;
-    
+
     //construtores
     public Usuario() {
     }
 
-    public Usuario(String login, String senha, String tipo) {
+    public Usuario(int id, String login, String senha, String tipo) {
         this.login = login;
         this.senha = senha;
         this.tipo = tipo;
+        this.id = id;
     }
 
     //getters e setters
@@ -69,7 +70,6 @@ public class Usuario {
         this.passageiro = passageiro;
     }
 
-    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -122,7 +122,7 @@ public class Usuario {
                     break;
                 case 4:
                     //Ticket
-                    
+
                     break;
                 case 5:
                     // Ainda não implementado
@@ -149,21 +149,33 @@ public class Usuario {
         boolean userMenu = true;
         while (userMenu) {
             System.out.println("\n--- CRUD Usuarios ---");
-            System.out.println("1 - Criar Users");
-            System.out.println("2 - Listar Users");
-            System.out.println("3 - Voltar");
+            System.out.println("1 - Criar usuario");
+            System.out.println("2 - Listar usuario");
+            System.out.println("3 - Editar usuario");
+            System.out.println("4 - Deletar usuario");
+            System.out.println("5 - Voltar");
             System.out.print("Escolha uma opcao: ");
             int usrOpc = scan.nextInt();
             scan.nextLine();
 
             switch (usrOpc) {
                 case 1:
+                    //mexer aqui
                     UsuarioDAO.criaUsuarioAdm(scan, usuarios);
                     break;
                 case 2:
                     UsuarioDAO.listarUsuario(usuarios);
                     break;
                 case 3:
+                    UsuarioDAO.listarUsuario(usuarios);
+                    UsuarioDAO.editarUsuario(scan, usuarios);
+                    break;
+                case 4:
+                    UsuarioDAO.listarUsuario(usuarios);
+                    UsuarioDAO.deletarUsuario(scan, usuarios);
+                    break;
+                case 5:
+                    System.out.println("Saindo...");
                     userMenu = false;
                     break;
                 default:
@@ -172,6 +184,7 @@ public class Usuario {
             }
         }
     }
+
     // ------------------- Menu Funcionário ---------------
     public static void menuFuncionario(Scanner scan, Passageiro[] passageiros, Voo[] voos, CheckIn[] checkIns, BoardingPass[] boardingPasses, DespachoBagagem[] bagagens) {
         boolean funcMenu = true;
@@ -206,7 +219,7 @@ public class Usuario {
         }
     }
 
-        // ------------------- Menu Passageiro -------------------
+    // ------------------- Menu Passageiro -------------------
     public static void menuPassageiro(Scanner scan, Usuario usuario, Voo[] voos, CheckIn[] checkIns, DespachoBagagem[] bagagens) {
         boolean menuPass = true;
 
@@ -247,6 +260,5 @@ public class Usuario {
             }
         }
     }
-
 
 }

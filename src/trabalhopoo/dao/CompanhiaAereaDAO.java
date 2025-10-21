@@ -42,23 +42,47 @@ public class CompanhiaAereaDAO {
         }
     }
 
-    public static void editar(CompanhiaAerea[] companhias, Scanner scan) {
-        System.out.print("ID da companhia para editar: ");
-        int id = scan.nextInt();
-        scan.nextLine();
-        for (CompanhiaAerea c : companhias) {
-            if (c != null && c.getId() == id) {
+   public static void editar(CompanhiaAerea[] companhias, Scanner scan) {
+    System.out.print("ID da companhia para editar: ");
+    int id = scan.nextInt();
+    scan.nextLine();
+
+    for (CompanhiaAerea c : companhias) {
+        if (c != null && c.getId() == id) {
+            String novoNome;
+            while (true) {
                 System.out.print("Novo nome: ");
-                c.setNome(scan.nextLine());
-                System.out.print("Nova abreviacao: ");
-                c.setAbreviacao(scan.nextLine());
-                c.setData_modificacao(LocalDate.now());
-                System.out.println("Companhia atualizada!");
-                return;
+                novoNome = scan.nextLine().trim();
+                if (novoNome.isEmpty()) {
+                    System.out.println("O nome nao pode ser vazio. Digite novamente.");
+                } else {
+                    break;
+                }
             }
+
+            String novaAbrev;
+            while (true) {
+                System.out.print("Nova abreviacao: ");
+                novaAbrev = scan.nextLine().trim();
+                if (novaAbrev.isEmpty()) {
+                    System.out.println("A abreviacao nao pode ser vazia. Digite novamente.");
+                } else {
+                    break;
+                }
+            }
+
+            c.setNome(novoNome);
+            c.setAbreviacao(novaAbrev);
+            c.setData_modificacao(LocalDate.now());
+            System.out.println("Companhia atualizada!");
+            return;
         }
-        System.out.println("Companhia nao encontrada!");
     }
+
+    System.out.println("Companhia nao encontrada!");
+}
+
+
 
     public static void deletar(CompanhiaAerea[] companhias, Scanner scan) {
         System.out.print("ID da companhia para deletar: ");

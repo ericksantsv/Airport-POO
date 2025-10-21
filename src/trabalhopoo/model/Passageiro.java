@@ -152,10 +152,12 @@ public class Passageiro {
                     break;
 
                 case 3:
+                    PassageiroDAO.listar(passageiros);
                     PassageiroDAO.editar(passageiros, scan);
                     break;
 
                 case 4:
+                    PassageiroDAO.listar(passageiros);
                     PassageiroDAO.deletar(passageiros, scan);
                     break;
 

@@ -75,33 +75,56 @@ public class VooDAO {
         }
     }
 
-    public static void editar(Voo[] voos, Scanner scan) {
-        System.out.print("Informe o ID do voo para editar: ");
-        int idEdit = scan.nextInt();
-        scan.nextLine();
+   public static void editar(Voo[] voos, Scanner scan) {
+    System.out.print("Informe o ID do voo para editar: ");
+    int idEdit = scan.nextInt();
+    scan.nextLine();
 
-        Voo vEdit = null;
-        for (Voo v : voos) {
-            if (v != null && v.getId() == idEdit) {
-                vEdit = v;
-                break;
-            }
-        }
-
-        if (vEdit != null) {
-            System.out.print("Nova origem: ");
-            vEdit.setOrigem(scan.nextLine());
-
-            System.out.print("Novo destino: ");
-            vEdit.setDestino(scan.nextLine());
-
-            vEdit.setDataModificacao(LocalDate.now());
-
-            System.out.println("Voo atualizado!");
-        } else {
-            System.out.println("Voo nao encontrado!");
+    Voo vEdit = null;
+    for (Voo v : voos) {
+        if (v != null && v.getId() == idEdit) {
+            vEdit = v;
+            break;
         }
     }
+
+    if (vEdit != null) {
+        String novaOrigem;
+        do {
+            System.out.print("Nova origem: ");
+            novaOrigem = scan.nextLine().trim();
+            if (novaOrigem.isEmpty()) {
+                System.out.println("A origem nao pode ser vazia. Digite novamente.");
+            } else if (novaOrigem.equalsIgnoreCase(vEdit.getOrigem())) {
+                System.out.println("A nova origem nao pode ser igual a atual. Digite novamente.");
+            } else {
+                break;
+            }
+        } while (true);
+        vEdit.setOrigem(novaOrigem);
+
+        String novoDestino;
+        do {
+            System.out.print("Novo destino: ");
+            novoDestino = scan.nextLine().trim();
+            if (novoDestino.isEmpty()) {
+                System.out.println("O destino nao pode ser vazio. Digite novamente.");
+            } else if (novoDestino.equalsIgnoreCase(vEdit.getDestino())) {
+                System.out.println("O novo destino nao pode ser igual ao atual. Digite novamente.");
+            } else {
+                break;
+            }
+        } while (true);
+        vEdit.setDestino(novoDestino);
+
+        vEdit.setDataModificacao(LocalDate.now());
+
+        System.out.println("Voo atualizado!");
+    } else {
+        System.out.println("Voo nao encontrado!");
+    }
+}
+
 
     public static void deletar(Voo[] voos, Scanner scan) {
         System.out.print("Informe o ID do voo para deletar: ");

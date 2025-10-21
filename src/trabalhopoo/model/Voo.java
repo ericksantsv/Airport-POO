@@ -196,10 +196,12 @@ public class Voo {
                     break;
 
                 case 3:
+                    VooDAO.listar(voos);
                     VooDAO.editar(voos, scan);
                     break;
 
                 case 4:
+                    VooDAO.listar(voos);
                     VooDAO.deletar(voos, scan);
                     break;
 

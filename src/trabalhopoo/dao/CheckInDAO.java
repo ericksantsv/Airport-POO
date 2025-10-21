@@ -45,12 +45,12 @@ public class CheckInDAO {
     }
 
     if (!temTicketDisponivel) {
-        System.out.println("Voce nao possui tickets disponíveis para solicitar check-in.");
+        System.out.println("Voce nao possui tickets disponiveis para solicitar check-in.");
         return; // sai do método
     }
 
     // 2. Solicita o número do ticket
-    System.out.print("Digite o número do ticket que deseja fazer check-in: ");
+    System.out.print("Digite o numero do ticket que deseja fazer check-in: ");
     int idTicket = scan.nextInt();
     scan.nextLine();
 

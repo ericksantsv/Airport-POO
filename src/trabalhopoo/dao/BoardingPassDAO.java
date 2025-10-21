@@ -40,7 +40,7 @@ public class BoardingPassDAO {
                 System.out.println("ID do BP: " + bp.getId());
                 System.out.println("Passageiro: " + p.getNome());
                 System.out.println("Documento: " + p.getDocumento());
-                System.out.println("Voo: " + v.getOrigem() + " → " + v.getDestino());
+                System.out.println("Voo: " + v.getOrigem() + " -> " + v.getDestino());
                 System.out.println("Assento: " + bp.getAssento());
                 System.out.println("Data de emissao: " + bp.getDataEmissao());
                 System.out.println("Embarcado: " + (bp.isEmbarcado() ? "Sim" : "Nao"));

@@ -87,7 +87,7 @@ public class TicketDAO {
                 System.out.println("\n| Codigo: " + t.getCodigo()
                         + "\n| Origem: " + v.getOrigem()
                         + "\n| Destino: " + v.getDestino()
-                        + "\n| Duração: " + v.getDuracao()
+                        + "\n| Duracao: " + v.getDuracao()
                         + "\n| Companhia aerea: " + v.getCompanhiaAerea().getNome()
                         + "\n| Data: " + v.getData()
                         + "\n| Status do voo: " + v.getEstado()

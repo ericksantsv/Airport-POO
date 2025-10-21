@@ -145,26 +145,50 @@ public class PassageiroDAO {
     }
 
     public static void editar(Passageiro[] passageiros, Scanner scan) {
-        System.out.print("Informe o ID do passageiro para editar: ");
-        int idEdit = scan.nextInt();
-        scan.nextLine();
+    System.out.print("Informe o ID do passageiro para editar: ");
+    int idEdit = scan.nextInt();
+    scan.nextLine();
 
-        Passageiro pEdit = buscarPorId(passageiros, idEdit);
-
-        if (pEdit != null) {
-            System.out.print("Novo nome: ");
-            pEdit.setNome(scan.nextLine());
-
-            System.out.print("Novo documento: ");
-            pEdit.setDocumento(scan.nextLine());
-
-            pEdit.setData_modificacao(LocalDate.now());
-
-            System.out.println("Passageiro atualizado!");
-        } else {
-            System.out.println("Passageiro nao encontrado!");
-        }
+    if (idEdit <= 0) {
+        System.out.println("ID invalido. Deve ser um numero positivo.");
+        return;
     }
+
+    Passageiro pEdit = buscarPorId(passageiros, idEdit);
+
+    if (pEdit != null) {
+        System.out.print("Novo nome: ");
+        String novoNome = scan.nextLine().trim();
+        if (novoNome.isEmpty()) {
+            System.out.println("O nome nao pode ser vazio.");
+            return;
+        }
+
+        System.out.print("Novo documento: ");
+        String novoDoc = scan.nextLine().trim();
+        if (novoDoc.isEmpty()) {
+            System.out.println("O documento nao pode ser vazio.");
+            return;
+        }
+
+        // Verifica se o documento já existe em outro passageiro
+        for (Passageiro p : passageiros) {
+            if (p != null && p != pEdit && p.getDocumento().equalsIgnoreCase(novoDoc)) {
+                System.out.println("Ja existe outro passageiro com este documento.");
+                return;
+            }
+        }
+
+        pEdit.setNome(novoNome);
+        pEdit.setDocumento(novoDoc);
+        pEdit.setData_modificacao(LocalDate.now());
+
+        System.out.println("Passageiro atualizado!");
+    } else {
+        System.out.println("Passageiro nao encontrado!");
+    }
+}
+
 
     public static void deletar(Passageiro[] passageiros, Scanner scan) {
         System.out.print("Informe o ID do passageiro para deletar: ");
