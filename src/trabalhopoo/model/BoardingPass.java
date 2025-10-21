@@ -61,7 +61,7 @@ public class BoardingPass {
         System.out.println("Data do Voo: " + voo.getData());
         System.out.println("Assento: " + assento);
         System.out.println("Data de Emissão: " + dataEmissao);
-        System.out.println("Embarcado: " + (embarcado ? "✅ Sim" : "❌ Não"));
+        System.out.println("Embarcado: " + (embarcado ? " Sim" : " Não"));
         System.out.println("==========================\n");
     }
 }

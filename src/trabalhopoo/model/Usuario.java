@@ -2,6 +2,7 @@ package trabalhopoo.model;
 
 import java.util.Objects;
 import java.util.Scanner;
+import trabalhopoo.dao.BoardingPassDAO;
 import trabalhopoo.dao.CheckInDAO;
 import trabalhopoo.dao.DespachoBagagemDAO;
 import trabalhopoo.dao.TicketDAO;
@@ -179,7 +180,8 @@ public class Usuario {
             System.out.println("\n--- MENU FUNCIONÁRIO ---");
             System.out.println("1 - Fazer Check-in de Passageiro");
             System.out.println("2 - Despachar Bagagem");
-            System.out.println("3 - Voltar");
+            System.out.println("3 - Listar BoardingPass");
+            System.out.println("4 - Voltar");
             System.out.print("Escolha uma opção: ");
             int opc = scan.nextInt();
             scan.nextLine();
@@ -192,6 +194,9 @@ public class Usuario {
                     DespachoBagagemDAO.despacharBagagem(checkIns, bagagens, scan);
                     break;
                 case 3:
+                    BoardingPassDAO.listarBoardingPasses(boardingPasses);
+                    break;
+                case 4:
                     funcMenu = false;
                     break;
                 default:

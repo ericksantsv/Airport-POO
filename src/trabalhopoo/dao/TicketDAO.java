@@ -61,10 +61,12 @@ public class TicketDAO {
 
                 // ---------------- Check-in ----------------
                 String statusCheckIn = "Não solicitado";
+                boolean boardingPassEmitido = false;
                 for (CheckIn c : checkIns) {
                     if (c != null && c.getTicket() == t) {
                         if (c.isAprovado()) {
                             statusCheckIn = "Aprovado";
+                            boardingPassEmitido = c.isAprovado(); // supondo que tenha esse campo
                         } else {
                             statusCheckIn = "Aguardando aprovação";
                         }
@@ -91,10 +93,12 @@ public class TicketDAO {
                         + "\n| Status do voo: " + v.getEstado()
                         + "\n| Assento: " + codigoAssento
                         + "\n| Check-in: " + statusCheckIn
+                        + "\n| Boarding pass: " + (boardingPassEmitido ? "Emitido" : "Não emitido")
                         + "\n| Bagagem: " + statusBagagem
                 );
             }
         }
+
     }
 
     //Cadastra um novo ticket para passageiro
