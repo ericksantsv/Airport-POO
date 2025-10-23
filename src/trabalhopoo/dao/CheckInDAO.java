@@ -4,7 +4,8 @@
  */
 package trabalhopoo.dao;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import trabalhopoo.model.BoardingPass;
 import trabalhopoo.model.CheckIn;
@@ -19,86 +20,118 @@ import trabalhopoo.model.Voo;
  */
 public class CheckInDAO {
 
-   public static void solicitarCheckIn(Usuario usuario, CheckIn[] checkIns, Scanner scan) {
-    Passageiro passageiro = usuario.getPassageiro();
-    Ticket[] tickets = passageiro.getTicket();
+    public static void solicitarCheckIn(Usuario usuario, CheckIn[] checkIns, Scanner scan) {
+        Passageiro passageiro = usuario.getPassageiro();
+        Ticket[] tickets = passageiro.getTicket();
 
-    // 1. Filtra tickets que ainda não possuem check-in
-    boolean temTicketDisponivel = false;
-    System.out.println("\n--- Tickets disponiveis para check-in ---");
-    for (Ticket t : tickets) {
-        if (t != null) {
-            boolean jaSolicitado = false;
-            for (CheckIn c : checkIns) {
-                if (c != null && c.getTicket() == t) {
-                    jaSolicitado = true;
-                    break;
+        System.out.println("\n--- Tickets disponiveis para check-in ---");
+        boolean temTicketDisponivel = false;
+
+        LocalDateTime agora = LocalDateTime.now();
+
+        // 1. Filtra tickets válidos para check-in
+        for (Ticket t : tickets) {
+            if (t != null) {
+                boolean jaSolicitado = false;
+                for (CheckIn c : checkIns) {
+                    if (c != null && c.getTicket() == t) {
+                        jaSolicitado = true;
+                        break;
+                    }
                 }
-            }
-            if (!jaSolicitado) {
-                System.out.println("Numero: " + t.getId()
-                        + " | Codigo: " + t.getCodigo()
-                        + " | Voo: " + t.getVoo().getOrigem() + " -> " + t.getVoo().getDestino());
-                temTicketDisponivel = true;
+
+                if (!jaSolicitado) {
+                    Voo voo = t.getVoo();
+                    if (voo != null) {
+                        LocalDateTime dataVoo = voo.getData();
+                        LocalDateTime limiteCheckIn = dataVoo.minusHours(24);
+
+                        // O check-in é permitido se o horário atual estiver entre "limite" e "data do voo"
+                        if (agora.isAfter(limiteCheckIn) && agora.isBefore(dataVoo)) {
+                            System.out.println("Numero: " + t.getId()
+                                    + " | Codigo: " + t.getCodigo()
+                                    + " | Voo: " + voo.getOrigem() + " -> " + voo.getDestino()
+                                    + " | Horario: " + voo.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+                            temTicketDisponivel = true;
+                        }
+                    }
+                }
             }
         }
-    }
 
-    if (!temTicketDisponivel) {
-        System.out.println("Voce nao possui tickets disponiveis para solicitar check-in.");
-        return; // sai do método
-    }
+        if (!temTicketDisponivel) {
+            System.out.println("Nenhum ticket disponivel para check-in (somente nas 24h anteriores ao voo).");
+            return;
+        }
 
-    // 2. Solicita o número do ticket
-    System.out.print("Digite o numero do ticket que deseja fazer check-in: ");
-    int idTicket = scan.nextInt();
-    scan.nextLine();
+        // 2. Solicita o número do ticket
+        System.out.print("\nDigite o numero do ticket que deseja fazer check-in: ");
+        int idTicket = scan.nextInt();
+        scan.nextLine();
 
-    // 3. Procura o ticket escolhido
-    Ticket ticketEscolhido = null;
-    for (Ticket t : tickets) {
-        if (t != null && t.getId() == idTicket) {
-            // verifica se já existe check-in
-            boolean jaSolicitado = false;
-            for (CheckIn c : checkIns) {
-                if (c != null && c.getTicket() == t) {
-                    jaSolicitado = true;
-                    break;
+        // 3. Procura o ticket escolhido e verifica o horário
+        Ticket ticketEscolhido = null;
+        for (Ticket t : tickets) {
+            if (t != null && t.getId() == idTicket) {
+                Voo voo = t.getVoo();
+                if (voo == null) {
+                    continue;
                 }
-            }
-            if (!jaSolicitado) {
+
+                boolean jaSolicitado = false;
+                for (CheckIn c : checkIns) {
+                    if (c != null && c.getTicket() == t) {
+                        jaSolicitado = true;
+                        break;
+                    }
+                }
+
+                if (jaSolicitado) {
+                    System.out.println("Este ticket ja possui solicitacao de check-in.");
+                    return;
+                }
+
+                LocalDateTime dataVoo = voo.getData();
+                LocalDateTime limiteCheckIn = dataVoo.minusHours(24);
+
+                // Regras simples usando comparação direta
+                if (agora.isBefore(limiteCheckIn)) {
+                    System.out.println("Ainda nao e possivel fazer check-in (apenas 24h antes do voo).");
+                    return;
+                } else if (agora.isAfter(dataVoo)) {
+                    System.out.println("O voo ja partiu. Nao e possivel realizar check-in.");
+                    return;
+                }
+
                 ticketEscolhido = t;
                 break;
             }
         }
-    }
 
-    if (ticketEscolhido == null) {
-        System.out.println("Ticket nao encontrado ou ja possui solicitacoes de check-in.");
-        return;
-    }
-
-    // 4. Registra o check-in no primeiro espaço disponível
-    for (int i = 0; i < checkIns.length; i++) {
-        if (checkIns[i] == null) {
-            checkIns[i] = new CheckIn(i + 1, ticketEscolhido, passageiro.getDocumento());
-            System.out.println("Solicitacoes de check-in enviada. Aguarde aprovacao.");
+        if (ticketEscolhido == null) {
+            System.out.println("Ticket nao encontrado ou invalido para check-in.");
             return;
         }
+
+        // 4. Registra o check-in
+        for (int i = 0; i < checkIns.length; i++) {
+            if (checkIns[i] == null) {
+                checkIns[i] = new CheckIn(i + 1, ticketEscolhido, passageiro.getDocumento());
+                System.out.println("Solicitacao de check-in enviada com sucesso!");
+                return;
+            }
+        }
+
+        System.out.println("Erro: capacidade maxima de check-ins atingida.");
     }
 
-    System.out.println("Erro: capacidade maxima de check-ins atingida.");
-}
-
-    
     public static void listarPendentes(CheckIn[] checkIns) {
         System.out.println("\n--- Check-ins pendentes ---");
         for (CheckIn c : checkIns) {
             if (c != null && !c.isAprovado()) {
                 Ticket t = c.getTicket();
                 Voo v = t.getVoo();
-                System.out.println("Numero: " + c.getId() + " | Codigo: " + t.getCodigo() + " | Passageiro: " + t.getPassageiro().getNome()
-                        + " | Voo: " + v.getOrigem() + " -> " + v.getDestino() + " | Data: " + v.getData());
+                System.out.println("Numero: " + c.getId() + " | Codigo: " + t.getCodigo() + " | Passageiro: " + t.getPassageiro().getNome() + " | Voo: " + v.getOrigem() + " -> " + v.getDestino() + " | Data: " + v.getData());
             }
         }
     }
@@ -131,7 +164,7 @@ public class CheckInDAO {
             CheckIn c = checkIns[i];
             if (c != null && c.getId() == id && !c.isAprovado()) {
                 c.setAprovado(true);
-                c.setDataModificacao(LocalDate.now());
+                c.setDataModificacao(LocalDateTime.now());
 
                 Ticket t = c.getTicket();
                 Voo v = t.getVoo();

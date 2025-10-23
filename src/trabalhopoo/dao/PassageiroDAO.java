@@ -1,6 +1,7 @@
 package trabalhopoo.dao;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Usuario;
@@ -12,128 +13,66 @@ public class PassageiroDAO {
     public static Passageiro[] inicializarPassageiros() {
         Passageiro[] passageiros = new Passageiro[10];
 
-        passageiros[0] = new Passageiro(1, "João Silva", LocalDate.parse("1990-05-12"), "123.456.789-00", LocalDate.now(), LocalDate.now());
-        passageiros[1] = new Passageiro(2, "Maria Oliveira", LocalDate.parse("1988-11-30"), "987.654.321-00", LocalDate.now(), LocalDate.now());
-        passageiros[2] = new Passageiro(3, "Carlos Pereira", LocalDate.parse("1995-02-20"), "321.987.654-11", LocalDate.now(), LocalDate.now());
-        passageiros[3] = new Passageiro(4, "Ana Souza", LocalDate.parse("2000-07-10"), "654.321.987-22", LocalDate.now(), LocalDate.now());
-        passageiros[4] = new Passageiro(5, "Bruno Gomes", LocalDate.parse("1998-03-15"), "111.222.333-44", LocalDate.now(), LocalDate.now());
+        passageiros[0] = new Passageiro(1, "Joao Silva", LocalDate.parse("1990-05-12"), "123.456.789-00", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[1] = new Passageiro(2, "Maria Oliveira", LocalDate.parse("1988-11-30"), "987.654.321-00", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[2] = new Passageiro(3, "Carlos Pereira", LocalDate.parse("1995-02-20"), "321.987.654-11", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[3] = new Passageiro(4, "Ana Souza", LocalDate.parse("2000-07-10"), "654.321.987-22", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[4] = new Passageiro(5, "Bruno Gomes", LocalDate.parse("1998-03-15"), "111.222.333-44", LocalDateTime.now(), LocalDateTime.now());
 
         return passageiros;
     }
 
- public static void cadastrar(Passageiro[] passageiros, Scanner scan) {
-    for (int i = 0; i < passageiros.length; i++) {
-        if (passageiros[i] == null) {
-            System.out.print("Nome: ");
-            String nome = scan.nextLine().trim();
-            if (nome.isEmpty()) {
-                System.out.println("O nome nao pode ser vazio.");
-                return;
-            }
-
-            System.out.print("Nascimento (AAAA-MM-DD): ");
-            String inputNasc = scan.nextLine().trim();
-            if (inputNasc.isEmpty()) {
-                System.out.println("A data de nascimento nao pode ser vazia.");
-                return;
-            }
-            LocalDate nasc = LocalDate.parse(inputNasc);
-
-            System.out.print("Documento: ");
-            String doc = scan.nextLine().trim();
-            if (doc.isEmpty()) {
-                System.out.println("O documento nao pode ser vazio.");
-                return;
-            }
-
-            for (Passageiro p : passageiros) {
-                if (p != null && p.getDocumento().equalsIgnoreCase(doc)) {
-                    System.out.println("Ja existe um passageiro cadastrado com este documento.");
-                    return;
-                }
-            }
-
-            passageiros[i] = new Passageiro(i + 1, nome, nasc, doc, nasc, nasc);
-            System.out.println("Passageiro cadastrado!");
-            break;
-        }
-    }
-}
-
-  public static void cadastrarSemLogin(Passageiro[] passageiros, Voo[] voos, Usuario[] usuarios, Scanner scan) {
-    for (int i = 0; i < passageiros.length; i++) {
-        if (passageiros[i] == null) {
-
-            // Validação do nome
-            String nome = "";
-            while (true) {
+    public static void cadastrar(Passageiro[] passageiros, Scanner scan) {
+        for (int i = 0; i < passageiros.length; i++) {
+            if (passageiros[i] == null) {
                 System.out.print("Nome: ");
-                nome = scan.nextLine().trim();
-                if (nome.isEmpty()) {
-                    System.out.println("O nome nao pode ser vazio. Digite novamente.");
-                } else {
-                    break; // nome válido
-                }
-            }
+                String nome = scan.nextLine();
 
-            // Validação da data de nascimento
-            String inputNasc = "";
-            while (true) {
                 System.out.print("Nascimento (AAAA-MM-DD): ");
-                inputNasc = scan.nextLine().trim();
-                if (inputNasc.isEmpty()) {
-                    System.out.println("A data de nascimento nao pode ser vazia. Digite novamente.");
-                } else {
-                    break; // data válida
-                }
-            }
-            LocalDate nasc = LocalDate.parse(inputNasc);
+                LocalDate nasc = LocalDate.parse(scan.nextLine());
 
-            // Validação do documento
-            String doc = "";
-            while (true) {
                 System.out.print("Documento: ");
-                doc = scan.nextLine().trim();
-                if (doc.isEmpty()) {
-                    System.out.println("O documento nao pode ser vazio. Digite novamente.");
-                } else {
-                    boolean existe = false;
-                    for (Passageiro p : passageiros) {
-                        if (p != null && p.getDocumento().equalsIgnoreCase(doc)) {
-                            existe = true;
-                            break;
-                        }
-                    }
-                    if (existe) {
-                        System.out.println("Ja existe um passageiro cadastrado com este documento. Digite outro.");
-                    } else {
-                        break; // documento válido
-                    }
-                }
+                String doc = scan.nextLine();
+
+                passageiros[i] = new Passageiro(i + 1, nome, nasc, doc, LocalDateTime.now(), LocalDateTime.now());
+                System.out.println("Passageiro cadastrado!");
+                break;
             }
-
-            // Criação do passageiro
-            passageiros[i] = new Passageiro(i, nome, nasc, doc, LocalDate.now(), LocalDate.now());
-            System.out.println("Passageiro cadastrado!");
-
-            // Seleção do voo
-            Voo vooEscolhido = TicketDAO.criarRetornandoVoo(passageiros[i].getTicket(), passageiros[i], voos, scan);
-            if (vooEscolhido != null) {
-                VooAssentosDAO.reservarAssentoSemLogin(vooEscolhido, passageiros[i], scan);
-            }
-
-            // Criação do usuário
-            System.out.println("\nQuase finalizado! Vamos registrar o seu usuario agora\n");
-            Usuario usuarioCriado = UsuarioDAO.criaUsuario(scan, usuarios, passageiros[i]);
-            if (usuarioCriado != null) {
-                passageiros[i].setUsuario(usuarioCriado);
-            }
-
-            break;
         }
     }
-}
 
+    public static void cadastrarSemLogin(Passageiro[] passageiros, Voo[] voos, Usuario[] usuarios, Scanner scan) {
+        for (int i = 0; i < passageiros.length; i++) {
+            if (passageiros[i] == null) {
+                System.out.print("Nome: ");
+                String nome = scan.nextLine();
+
+                System.out.print("Nascimento (AAAA-MM-DD): ");
+                LocalDate nasc = LocalDate.parse(scan.nextLine());
+
+                System.out.print("Documento: ");
+                String doc = scan.nextLine();
+
+                passageiros[i] = new Passageiro(i, nome, nasc, doc, LocalDateTime.now(), LocalDateTime.now());
+                System.out.println("Passageiro cadastrado!");
+
+                Voo vooEscolhido = TicketDAO.criarRetornandoVoo(passageiros[i].getTicket(), passageiros[i], voos, scan);
+
+                if (vooEscolhido != null) {
+                    // Agora chama a reserva de assento passando o voo selecionado
+                    VooAssentosDAO.reservarAssentoSemLogin(vooEscolhido, passageiros[i], scan);
+                }
+
+                System.out.println("\nQuase finalizado! Vamos registrar o seu usuario agora\n");
+                Usuario usuarioCriado = UsuarioDAO.criaUsuario(scan, usuarios, passageiros[i]);
+                if (usuarioCriado != null) {
+                    passageiros[i].setUsuario(usuarioCriado);
+                }
+
+                break;
+            }
+        }
+    }
 
     public static void listar(Passageiro[] passageiros) {
         System.out.println("\n--- Lista de Passageiros ---");
@@ -145,50 +84,26 @@ public class PassageiroDAO {
     }
 
     public static void editar(Passageiro[] passageiros, Scanner scan) {
-    System.out.print("Informe o ID do passageiro para editar: ");
-    int idEdit = scan.nextInt();
-    scan.nextLine();
+        System.out.print("Informe o ID do passageiro para editar: ");
+        int idEdit = scan.nextInt();
+        scan.nextLine();
 
-    if (idEdit <= 0) {
-        System.out.println("ID invalido. Deve ser um numero positivo.");
-        return;
+        Passageiro pEdit = buscarPorId(passageiros, idEdit);
+
+        if (pEdit != null) {
+            System.out.print("Novo nome: ");
+            pEdit.setNome(scan.nextLine());
+
+            System.out.print("Novo documento: ");
+            pEdit.setDocumento(scan.nextLine());
+
+            pEdit.setData_modificacao(LocalDateTime.now());
+
+            System.out.println("Passageiro atualizado!");
+        } else {
+            System.out.println("Passageiro nao encontrado!");
+        }
     }
-
-    Passageiro pEdit = buscarPorId(passageiros, idEdit);
-
-    if (pEdit != null) {
-        System.out.print("Novo nome: ");
-        String novoNome = scan.nextLine().trim();
-        if (novoNome.isEmpty()) {
-            System.out.println("O nome nao pode ser vazio.");
-            return;
-        }
-
-        System.out.print("Novo documento: ");
-        String novoDoc = scan.nextLine().trim();
-        if (novoDoc.isEmpty()) {
-            System.out.println("O documento nao pode ser vazio.");
-            return;
-        }
-
-        // Verifica se o documento já existe em outro passageiro
-        for (Passageiro p : passageiros) {
-            if (p != null && p != pEdit && p.getDocumento().equalsIgnoreCase(novoDoc)) {
-                System.out.println("Ja existe outro passageiro com este documento.");
-                return;
-            }
-        }
-
-        pEdit.setNome(novoNome);
-        pEdit.setDocumento(novoDoc);
-        pEdit.setData_modificacao(LocalDate.now());
-
-        System.out.println("Passageiro atualizado!");
-    } else {
-        System.out.println("Passageiro nao encontrado!");
-    }
-}
-
 
     public static void deletar(Passageiro[] passageiros, Scanner scan) {
         System.out.print("Informe o ID do passageiro para deletar: ");

@@ -4,7 +4,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template*/
 package trabalhopoo.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -18,10 +18,10 @@ public class DespachoBagagem {
     private int id;
     private Ticket ticket;
     private String documento;
-    private LocalDate dataCriacao;
-    private LocalDate dataModificacao;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataModificacao;
 
-    public DespachoBagagem(int id, Ticket ticket, String documento, LocalDate dataCriacao, LocalDate dataModificacao) {
+    public DespachoBagagem(int id, Ticket ticket, String documento, LocalDateTime dataCriacao, LocalDateTime dataModificacao) {
         this.id = id;
         this.ticket = ticket;
         this.documento = documento;
@@ -53,19 +53,19 @@ public class DespachoBagagem {
         this.documento = documento;
     }
 
-    public LocalDate getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
-    public LocalDate getDataModificacao() {
+    public LocalDateTime getDataModificacao() {
         return dataModificacao;
     }
 
-    public void setDataModificacao(LocalDate dataModificacao) {
+    public void setDataModificacao(LocalDateTime dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
 

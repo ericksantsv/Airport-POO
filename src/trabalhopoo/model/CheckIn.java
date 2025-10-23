@@ -4,7 +4,7 @@
  */
 package trabalhopoo.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -24,16 +24,16 @@ public class CheckIn {
     private Ticket ticket;
     private String documento;
     private boolean aprovado; 
-    private LocalDate dataCriacao;
-    private LocalDate dataModificacao;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataModificacao;
 
     public CheckIn(int id, Ticket ticket, String documento) {
         this.id = id;
         this.ticket = ticket;
         this.documento = documento;
         this.aprovado = false;
-        this.dataCriacao = LocalDate.now();
-        this.dataModificacao = LocalDate.now();
+        this.dataCriacao = LocalDateTime.now();
+        this.dataModificacao = LocalDateTime.now();
     }
 
     //getters e setters
@@ -61,7 +61,7 @@ public class CheckIn {
         this.documento = documento;
     }
 
-    public LocalDate getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
@@ -73,15 +73,15 @@ public class CheckIn {
         this.aprovado = aprovado;
     }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
-    public LocalDate getDataModificacao() {
+    public LocalDateTime getDataModificacao() {
         return dataModificacao;
     }
 
-    public void setDataModificacao(LocalDate dataModificacao) {
+    public void setDataModificacao(LocalDateTime dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
 

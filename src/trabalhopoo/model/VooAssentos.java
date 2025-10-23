@@ -4,17 +4,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template*/
 package trabalhopoo.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import trabalhopoo.dao.VooAssentosDAO;
 
 public class VooAssentos {
-    int id;
-    Voo voo;
-    String codigoAssento;
-    Passageiro passageiro;
-    LocalDate dataCriacao;
-    LocalDate dataModificacao;
+    private int id;
+    private Voo voo;
+    private String codigoAssento;
+    private Passageiro passageiro;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataModificacao;
 
     public int getId() {
         return id;
@@ -48,19 +48,19 @@ public class VooAssentos {
         this.passageiro = passageiro;
     }
 
-    public LocalDate getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
-    public LocalDate getDataModificacao() {
+    public LocalDateTime getDataModificacao() {
         return dataModificacao;
     }
 
-    public void setDataModificacao(LocalDate dataModificacao) {
+    public void setDataModificacao(LocalDateTime dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
 
@@ -68,7 +68,7 @@ public class VooAssentos {
     }
 
     
-    public VooAssentos(int id, Voo voo, String codigoAssento, Passageiro passageiro, LocalDate dataCriacao, LocalDate dataModificacao) {
+    public VooAssentos(int id, Voo voo, String codigoAssento, Passageiro passageiro, LocalDateTime dataCriacao, LocalDateTime dataModificacao) {
         this.id = id;
         this.voo = voo;
         this.codigoAssento = codigoAssento;
@@ -77,7 +77,7 @@ public class VooAssentos {
         this.dataModificacao = dataModificacao;
     } 
     
-    public static void crudAssentos(Voo[] voos, Passageiro[] passageiros, Scanner scan) {
+    public static void crudAssentos(Voo[] voos, Passageiro[] passageiros, Scanner scan, BoardingPass[] boarding) {
         boolean menu = true;
         while (menu) {
             System.out.println("\n--- CRUD Assentos de Voo ---");
@@ -94,7 +94,7 @@ public class VooAssentos {
                     VooAssentosDAO.reservarAssento(voos, passageiros, scan);
                     break;
                 case 2:
-                    VooAssentosDAO.listarAssentos(voos, scan);
+                    VooAssentosDAO.listarAssentos(voos, boarding, scan);
                     break;
                 case 3:
                     VooAssentosDAO.deletarAssento(voos, scan);

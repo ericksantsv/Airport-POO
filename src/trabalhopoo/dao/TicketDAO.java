@@ -4,7 +4,7 @@
  */
 package trabalhopoo.dao;
 
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import trabalhopoo.model.CheckIn;
 import trabalhopoo.model.DespachoBagagem;
@@ -39,15 +39,19 @@ public class TicketDAO {
     }
 
     public static void listarReservas(Usuario usuario, CheckIn[] checkIns, DespachoBagagem[] bagagens) {
-
         Ticket[] tickets = usuario.getPassageiro().getTicket();
         System.out.println("\n--- Lista de passagens ---");
+
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         for (Ticket t : tickets) {
             if (t != null) {
                 Voo v = t.getVoo();
 
-                // ---------------- Assento ----------------
+                // Atualiza o estado do voo antes de exibir
+                v.atualizarEstadoAutomatico();
+
+                // -------- Assento --------
                 String codigoAssento = "Nao reservado";
                 VooAssentos[] assentos = v.getVooAssentos();
                 if (assentos != null) {
@@ -59,14 +63,14 @@ public class TicketDAO {
                     }
                 }
 
-                // ---------------- Check-in ----------------
+                // -------- Check-in --------
                 String statusCheckIn = "Nao solicitado";
                 boolean boardingPassEmitido = false;
                 for (CheckIn c : checkIns) {
                     if (c != null && c.getTicket() == t) {
                         if (c.isAprovado()) {
                             statusCheckIn = "Aprovado";
-                            boardingPassEmitido = c.isAprovado(); // supondo que tenha esse campo
+                            boardingPassEmitido = true;
                         } else {
                             statusCheckIn = "Aguardando aprovacao";
                         }
@@ -74,22 +78,36 @@ public class TicketDAO {
                     }
                 }
 
-                // ---------------- Despacho de Bagagem ----------------
+                // -------- Despacho de Bagagem --------
                 String statusBagagem = "Nao despachada";
                 for (DespachoBagagem d : bagagens) {
                     if (d != null && d.getTicket() == t) {
-                        statusBagagem = "Despachada em " + d.getDataCriacao();
+                        statusBagagem = "Despachada em " + d.getDataCriacao().format(formato);
                         break;
                     }
                 }
 
-                // ---------------- Exibição ----------------
-                System.out.println("\n| Codigo: " + t.getCodigo()
+                // -------- Formatar duração --------
+                int horas = v.getDuracao().getHour();
+                int minutos = v.getDuracao().getMinute();
+
+                String duracaoFormatada;
+                if (horas > 0 && minutos > 0) {
+                    duracaoFormatada = horas + "h" + minutos + "min";
+                } else if (horas > 0) {
+                    duracaoFormatada = horas + "h";
+                } else {
+                    duracaoFormatada = minutos + "min";
+                }
+
+                // -------- Exibição --------
+                System.out.println("| Numero: " + t.getId()
+                        + "\n| Codigo: " + t.getCodigo()
                         + "\n| Origem: " + v.getOrigem()
                         + "\n| Destino: " + v.getDestino()
-                        + "\n| Duracao: " + v.getDuracao()
+                        + "\n| Duracao: " + duracaoFormatada
                         + "\n| Companhia aerea: " + v.getCompanhiaAerea().getNome()
-                        + "\n| Data: " + v.getData()
+                        + "\n| Data do voo: " + v.getData().format(formato)
                         + "\n| Status do voo: " + v.getEstado()
                         + "\n| Assento: " + codigoAssento
                         + "\n| Check-in: " + statusCheckIn
@@ -98,7 +116,6 @@ public class TicketDAO {
                 );
             }
         }
-
     }
 
     //Cadastra um novo ticket para passageiro
@@ -120,7 +137,7 @@ public class TicketDAO {
             }
         }
         if (!criado) {
-            System.out.println("Erro: nao ha espaço disponível para criar novo ticket.");
+            System.out.println("Erro: nao ha espaco disponivel para criar novo ticket.");
         }
     }
 
@@ -145,7 +162,7 @@ public class TicketDAO {
             }
         }
 
-        System.out.println("Erro: nao ha espaco disponivel para criar novo ticket.");
+        System.out.println("Erro: nao ha espaço disponivel para criar novo ticket.");
         return null;
     }
 

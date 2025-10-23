@@ -4,7 +4,8 @@
  */
 package trabalhopoo.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Objects;
 import java.util.Scanner;
 import trabalhopoo.dao.VooDAO;
@@ -19,23 +20,23 @@ import trabalhopoo.dao.VooDAO;
  */
 public class Voo {
 
-    int id;
-    String origem;
-    String destino;
-    LocalDate data;
-    double duracao;
-    CompanhiaAerea companhiaAerea;
-    VooAssentos[] vooAssentos;
-    int capacidade;
-    String estado;
-    LocalDate dataCriacao;
-    LocalDate dataModificacao;
+    private int id;
+    private String origem;
+    private String destino;
+    private LocalDateTime data;
+    private LocalTime duracao;
+    private CompanhiaAerea companhiaAerea;
+    private VooAssentos[] vooAssentos;
+    private int capacidade;
+    private String estado;
+    private LocalDateTime dataCriacao;
+    private LocalDateTime dataModificacao;
 
     public Voo() {
 
     }
 
-    public Voo(int id, String origem, String destino, LocalDate data, double duracao, CompanhiaAerea companhiaAerea, int capacidade, String estado, LocalDate dataCriacao, LocalDate dataModificacao) {
+    public Voo(int id, String origem, String destino, LocalDateTime data, LocalTime duracao, CompanhiaAerea companhiaAerea, int capacidade, String estado, LocalDateTime dataCriacao, LocalDateTime dataModificacao) {
         this.id = id;
         this.origem = origem;
         this.destino = destino;
@@ -49,7 +50,7 @@ public class Voo {
         this.vooAssentos = new VooAssentos[capacidade];
         for (int i = 0; i < capacidade; i++) {
             String codigo = gerarCodigoAssento(i); // Ex: A1, A2, B1, etc.
-            this.vooAssentos[i] = new VooAssentos(i + 1, this, codigo, null, LocalDate.now(), null);
+            this.vooAssentos[i] = new VooAssentos(i + 1, this, codigo, null, LocalDateTime.now(), null);
         }
     }
 
@@ -77,19 +78,19 @@ public class Voo {
         this.destino = destino;
     }
 
-    public LocalDate getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(LocalDate data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 
-    public double getDuracao() {
+    public LocalTime getDuracao() {
         return duracao;
     }
 
-    public void setDuracao(double duracao) {
+    public void setDuracao(LocalTime duracao) {
         this.duracao = duracao;
     }
 
@@ -117,19 +118,19 @@ public class Voo {
         this.estado = estado;
     }
 
-    public LocalDate getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(LocalDate dataCriacao) {
+    public void setDataCriacao(LocalDateTime dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 
-    public LocalDate getDataModificacao() {
+    public LocalDateTime getDataModificacao() {
         return dataModificacao;
     }
 
-    public void setDataModificacao(LocalDate dataModificacao) {
+    public void setDataModificacao(LocalDateTime dataModificacao) {
         this.dataModificacao = dataModificacao;
     }
 
@@ -140,9 +141,7 @@ public class Voo {
     public void setVooAssentos(VooAssentos[] vooAssentos) {
         this.vooAssentos = vooAssentos;
     }
-    
-    
-    
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -196,12 +195,10 @@ public class Voo {
                     break;
 
                 case 3:
-                    VooDAO.listar(voos);
                     VooDAO.editar(voos, scan);
                     break;
 
                 case 4:
-                    VooDAO.listar(voos);
                     VooDAO.deletar(voos, scan);
                     break;
 
@@ -215,12 +212,33 @@ public class Voo {
             }
         }
     }
-    
-    private String gerarCodigoAssento(int index) {
-    char letra = (char) ('A' + (index / 6)); // 6 assentos por fileira
-    int numero = (index % 6) + 1;
-    return letra + String.valueOf(numero); // Ex: A1, A2, B3...
-}
 
+    private String gerarCodigoAssento(int index) {
+        char letra = (char) ('A' + (index / 6)); // 6 assentos por fileira
+        int numero = (index % 6) + 1;
+        return letra + String.valueOf(numero); // Ex: A1, A2, B3...
+    }
+
+    public void atualizarEstadoAutomatico() {
+        if (this.estado.equalsIgnoreCase("Cancelado")) {
+            return; // não muda se já estiver cancelado
+        }
+
+        LocalDateTime agora = LocalDateTime.now();
+        LocalDateTime partida = this.data;
+        LocalDateTime chegadaPrevista = partida.plusHours(this.duracao.getHour()).plusMinutes(this.duracao.getMinute());
+
+        if (agora.isBefore(partida.minusHours(2))) {
+            this.estado = "Programado";
+        } else if (agora.isAfter(partida.minusHours(2)) && agora.isBefore(partida)) {
+            this.estado = "Embarque";
+        } else if (agora.isAfter(partida) && agora.isBefore(chegadaPrevista)) {
+            this.estado = "Decolado";
+        } else if (agora.isAfter(chegadaPrevista)) {
+            this.estado = "Concluido";
+        } else if (agora.isAfter(partida.plusMinutes(15)) && this.estado.equalsIgnoreCase("Programado")) {
+            this.estado = "Atrasado";
+        }
+    }
 
 }

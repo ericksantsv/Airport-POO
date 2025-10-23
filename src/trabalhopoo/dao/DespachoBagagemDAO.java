@@ -4,7 +4,7 @@
  */
 package trabalhopoo.dao;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import trabalhopoo.model.CheckIn;
 import trabalhopoo.model.DespachoBagagem;
@@ -85,8 +85,8 @@ public class DespachoBagagemDAO {
                         i + 1,
                         ticketSelecionado,
                         ticketSelecionado.getPassageiro().getDocumento(),
-                        LocalDate.now(),
-                        LocalDate.now()
+                        LocalDateTime.now(),
+                        LocalDateTime.now()
                 );
 
                 System.out.println("\nBagagem despachada com sucesso!");
@@ -94,15 +94,15 @@ public class DespachoBagagemDAO {
                 System.out.println("ID do Despacho: " + bagagens[i].getId());
                 System.out.println("Passageiro: " + ticketSelecionado.getPassageiro().getNome());
                 System.out.println("Documento: " + ticketSelecionado.getPassageiro().getDocumento());
-                System.out.println("Voo: " + ticketSelecionado.getVoo().getOrigem() + " -> " + ticketSelecionado.getVoo().getDestino());
-                System.out.println("Data de criacao: " + bagagens[i].getDataCriacao());
+                System.out.println("Voo: " + ticketSelecionado.getVoo().getOrigem() + " → " + ticketSelecionado.getVoo().getDestino());
+                System.out.println("Data de Criacao: " + bagagens[i].getDataCriacao());
                 System.out.println("-------------------------------------------");
 
                 return;
             }
         }
 
-        System.out.println("Erro: limite máximo de bagagens atingido.");
+        System.out.println("Erro: limite maximo de bagagens atingido.");
     }
 
 }

@@ -4,7 +4,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template*/
 package trabalhopoo.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Scanner;
 import trabalhopoo.dao.CompanhiaAereaDAO;
@@ -20,15 +20,15 @@ public class CompanhiaAerea {
     int id;
     String nome;
     String abreviacao;
-    LocalDate data_criacao;
-    LocalDate data_modificacao;
+    LocalDateTime data_criacao;
+    LocalDateTime data_modificacao;
 
     //construtor vazio
     public CompanhiaAerea() {
     }
 
     //construtor para criar um novo
-    public CompanhiaAerea(String nome, String abreviacao, LocalDate data_criacao, LocalDate data_modificacao) {
+    public CompanhiaAerea(String nome, String abreviacao, LocalDateTime data_criacao, LocalDateTime data_modificacao) {
         this.nome = nome;
         this.abreviacao = abreviacao;
         this.data_criacao = data_criacao;
@@ -36,7 +36,7 @@ public class CompanhiaAerea {
     }
 
     //construtor completo
-    public CompanhiaAerea(int id, String nome, String abreviacao, LocalDate data_criacao, LocalDate data_modificacao) {
+    public CompanhiaAerea(int id, String nome, String abreviacao, LocalDateTime data_criacao, LocalDateTime data_modificacao) {
         this.id = id;
         this.nome = nome;
         this.abreviacao = abreviacao;
@@ -69,19 +69,19 @@ public class CompanhiaAerea {
         this.abreviacao = abreviacao;
     }
 
-    public LocalDate getData_criacao() {
+    public LocalDateTime getData_criacao() {
         return data_criacao;
     }
 
-    public void setData_criacao(LocalDate data_criacao) {
+    public void setData_criacao(LocalDateTime data_criacao) {
         this.data_criacao = data_criacao;
     }
 
-    public LocalDate getData_modificacao() {
+    public LocalDateTime getData_modificacao() {
         return data_modificacao;
     }
 
-    public void setData_modificacao(LocalDate data_modificacao) {
+    public void setData_modificacao(LocalDateTime data_modificacao) {
         this.data_modificacao = data_modificacao;
     }
 
@@ -128,11 +128,9 @@ public class CompanhiaAerea {
                     CompanhiaAereaDAO.listar(companhias);
                     break;
                 case 3:
-                    CompanhiaAereaDAO.listar(companhias);
                     CompanhiaAereaDAO.editar(companhias, scan);
                     break;
                 case 4:
-                    CompanhiaAereaDAO.listar(companhias);
                     CompanhiaAereaDAO.deletar(companhias, scan);
                     break;
                 case 5:

@@ -26,7 +26,9 @@ public class TrabalhoPOO {
         CheckIn[] checkIns = new CheckIn[200];
         BoardingPass[] boardingPasses = new BoardingPass[200];
         DespachoBagagem[] bagagens = new DespachoBagagem[100];
+        
 
+      
         boolean menu = true;
         while (menu) {
             System.out.println("\n\n===== Menu Principal =====");
@@ -40,7 +42,7 @@ public class TrabalhoPOO {
             System.out.print("Escolha uma opcao: ");
             int opc = scan.nextInt();
             scan.nextLine();
-
+            
             switch (opc) {
                 case 1:
                     VooDAO.listar(voos);
@@ -54,7 +56,7 @@ public class TrabalhoPOO {
                 case 4:
                     Usuario admin = UsuarioDAO.loginAdmin(scan, usuarios);
                     if (admin != null) {
-                        Usuario.menuAdmin(scan, passageiros, voos, companhiaAerea, usuarios);
+                        Usuario.menuAdmin(scan, passageiros, voos, companhiaAerea, usuarios, boardingPasses);
                     }
                     break;
                 case 5:
@@ -66,7 +68,7 @@ public class TrabalhoPOO {
                 case 6:
                     Usuario passageiroUser = UsuarioDAO.loginPassageiro(scan, usuarios);
                     if (passageiroUser != null) {
-                        Usuario.menuPassageiro(scan, passageiroUser, voos, checkIns, bagagens);
+                        Usuario.menuPassageiro(scan, passageiroUser, voos, checkIns, bagagens, boardingPasses);
                     }
                     break;
                 case 7:
@@ -74,9 +76,8 @@ public class TrabalhoPOO {
                     menu = false;
                     break;
                 default:
-                    System.out.println("Opcao invalida!");
+                    System.out.println("Opção inválida!");
                     break;
-
             }
         }
     }

@@ -1,6 +1,6 @@
 package trabalhopoo.dao;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 import trabalhopoo.model.*;
 
@@ -69,7 +69,7 @@ public class VooAssentosDAO {
         }
 
         assentos[numAssento].setPassageiro(passageiroSelecionado);
-        assentos[numAssento].setDataModificacao(LocalDate.now());
+        assentos[numAssento].setDataModificacao(LocalDateTime.now());
 
         System.out.println("Assento reservado com sucesso!");
     }
@@ -102,16 +102,16 @@ public class VooAssentosDAO {
                 System.out.println("Assento ja ocupado! Escolha novamente.");
             } else {
 
-            assentos[numAssento].setPassageiro(passageiro);
-            assentos[numAssento].setDataModificacao(LocalDate.now());
+                assentos[numAssento].setPassageiro(passageiro);
+                assentos[numAssento].setDataModificacao(LocalDateTime.now());
 
-            System.out.println("Assento " + assentos[numAssento].getCodigoAssento() + " reservado com sucesso para " + passageiro.getNome() + "!");
-            assento = false;
+                System.out.println("Assento " + assentos[numAssento].getCodigoAssento() + " reservado com sucesso para " + passageiro.getNome() + "!");
+                assento = false;
             }
         }
     }
 
-    public static void listarAssentos(Voo[] voos, Scanner scan) {
+    public static void listarAssentos(Voo[] voos, BoardingPass[] boardingPasses, Scanner scan) {
         VooDAO.listar(voos);
         System.out.print("ID do voo: ");
         int idVoo = scan.nextInt();
@@ -136,9 +136,27 @@ public class VooAssentosDAO {
 
         for (VooAssentos assento : assentos) {
             if (assento != null) {
-                String status = (assento.getPassageiro() == null)
-                        ? "LIVRE"
-                        : "OCUPADO por " + assento.getPassageiro().getNome();
+                String status;
+
+                if (assento.getPassageiro() == null) {
+                    status = "LIVRE";
+                } else {
+                    // Procurar boarding pass do passageiro para esse voo
+                    BoardingPass bpDoPassageiro = null;
+                    for (BoardingPass bp : boardingPasses) {
+                        if (bp != null && bp.getPassageiro() == assento.getPassageiro()
+                                && bp.getVoo() == vooSelecionado) {
+                            bpDoPassageiro = bp;
+                            break;
+                        }
+                    }
+
+                    String embarqueStatus = (bpDoPassageiro != null && bpDoPassageiro.isEmbarcado())
+                            ? "embarcado"
+                            : "nao embarcado";
+
+                    status = "OCUPADO por " + assento.getPassageiro().getNome() + " - " + embarqueStatus;
+                }
 
                 System.out.println("ID: " + assento.getId()
                         + " | Codigo: " + assento.getCodigoAssento()
@@ -192,7 +210,7 @@ public class VooAssentosDAO {
                     System.out.println("Esse assento ja esta vazio.");
                 } else {
                     a.setPassageiro(null);
-                    a.setDataModificacao(LocalDate.now());
+                    a.setDataModificacao(LocalDateTime.now());
                     System.out.println("Assento desocupado com sucesso!");
                 }
                 return;

@@ -1,22 +1,26 @@
 package trabalhopoo.dao;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import trabalhopoo.model.BoardingPass;
 import trabalhopoo.model.Voo;
 import trabalhopoo.model.CompanhiaAerea;
-import trabalhopoo.model.Passageiro;
 
 public class VooDAO {
 
     //Incializa Vetores
     public static Voo[] inicializarVoos(CompanhiaAerea[] companhiaAerea) {
         Voo[] voos = new Voo[50];
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        voos[0] = new Voo(1, "Uberaba", "Sao Paulo", LocalDate.parse("2025-10-10"), 2.5, companhiaAerea[0], 5, "Programado", LocalDate.now(), LocalDate.now());
-        voos[1] = new Voo(2, "Uberaba", "Rio de Janeiro", LocalDate.parse("2025-10-11"), 3.0, companhiaAerea[1], 3, "Programado", LocalDate.now(), LocalDate.now());
-        voos[2] = new Voo(3, "Uberaba", "Belo Horizonte", LocalDate.parse("2025-10-12"), 1.5, companhiaAerea[2], 4, "Programado", LocalDate.now(), LocalDate.now());
-        voos[3] = new Voo(4, "Uberaba", "Brasilia", LocalDate.parse("2025-10-13"), 4.0, companhiaAerea[3], 6, "Programado", LocalDate.now(), LocalDate.now());
-        voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDate.parse("2025-10-14"), 3.5, companhiaAerea[4], 10, "Programado", LocalDate.now(), LocalDate.now());
+        voos[0] = new Voo(1, "Uberaba", "Sao Paulo", LocalDateTime.parse("2025-10-10 08:30", formato), LocalTime.of(2, 30), companhiaAerea[0], 5, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[1] = new Voo(2, "Uberaba", "Rio de Janeiro", LocalDateTime.parse("2025-10-11 14:00", formato), LocalTime.of(2, 30), companhiaAerea[1], 3, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[2] = new Voo(3, "Uberaba", "Belo Horizonte", LocalDateTime.parse("2025-10-12 09:15", formato), LocalTime.of(2, 30), companhiaAerea[2], 4, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[3] = new Voo(4, "Uberaba", "Brasilia", LocalDateTime.parse("2025-10-13 18:00", formato), LocalTime.of(2, 30), companhiaAerea[3], 6, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDateTime.parse("2025-10-14 06:45", formato), LocalTime.of(2, 30), companhiaAerea[4], 10, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[5] = new Voo(6, "Roraima", "Paraguai", LocalDateTime.parse("2025-10-23 11:00", formato), LocalTime.of(0, 4), companhiaAerea[2], 5, "Programado", LocalDateTime.now(), LocalDateTime.now());
 
         return voos;
     }
@@ -24,20 +28,25 @@ public class VooDAO {
     public static void cadastrar(Voo[] voos, CompanhiaAerea[] companhias, Scanner scan) {
         for (int i = 0; i < voos.length; i++) {
             if (voos[i] == null) {
+
                 System.out.print("Origem: ");
                 String origem = scan.nextLine();
 
                 System.out.print("Destino: ");
                 String destino = scan.nextLine();
 
-                System.out.print("Data (AAAA-MM-DD): ");
-                LocalDate data = LocalDate.parse(scan.nextLine());
+                // Data e hora completas do voo
+                System.out.print("Data e hora do voo (AAAA-MM-DD HH:MM): ");
+                String dataHoraStr = scan.nextLine();
+                DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+                LocalDateTime dataHora = LocalDateTime.parse(dataHoraStr, formato);
 
-                System.out.print("Duracao (horas): ");
-                double dur = scan.nextDouble();
-                scan.nextLine();
+                // Duração do voo em horas e minutos
+                System.out.print("Duracao (HH:MM): ");
+                String duracaoStr = scan.nextLine();
+                LocalTime duracao = LocalTime.parse(duracaoStr, DateTimeFormatter.ofPattern("HH:mm"));
 
-                System.out.println("Escolha a companhia aerea:");
+                System.out.println("\nEscolha a companhia aérea:");
                 for (int j = 0; j < companhias.length; j++) {
                     if (companhias[j] != null) {
                         System.out.println(companhias[j].getId() + " - " + companhias[j].getNome());
@@ -50,7 +59,6 @@ public class VooDAO {
                     int idEscolhido = scan.nextInt();
                     scan.nextLine();
 
-                    // Procura a companhia com o ID digitado
                     for (CompanhiaAerea comp : companhias) {
                         if (comp != null && comp.getId() == idEscolhido) {
                             companhiaEscolhida = comp;
@@ -64,10 +72,10 @@ public class VooDAO {
                 }
 
                 System.out.print("Capacidade: ");
-                int cap = scan.nextInt();
+                int capacidade = scan.nextInt();
                 scan.nextLine();
 
-                voos[i] = new Voo(i + 1, origem, destino, data, dur, companhiaEscolhida, cap, "Programado", LocalDate.now(), LocalDate.now());
+                voos[i] = new Voo(i + 1, origem, destino, dataHora, duracao, companhiaEscolhida, capacidade, "Programado", LocalDateTime.now(), LocalDateTime.now());
 
                 System.out.println("\nVoo cadastrado com sucesso!");
                 break;
@@ -75,56 +83,33 @@ public class VooDAO {
         }
     }
 
-   public static void editar(Voo[] voos, Scanner scan) {
-    System.out.print("Informe o ID do voo para editar: ");
-    int idEdit = scan.nextInt();
-    scan.nextLine();
+    public static void editar(Voo[] voos, Scanner scan) {
+        System.out.print("Informe o ID do voo para editar: ");
+        int idEdit = scan.nextInt();
+        scan.nextLine();
 
-    Voo vEdit = null;
-    for (Voo v : voos) {
-        if (v != null && v.getId() == idEdit) {
-            vEdit = v;
-            break;
+        Voo vEdit = null;
+        for (Voo v : voos) {
+            if (v != null && v.getId() == idEdit) {
+                vEdit = v;
+                break;
+            }
+        }
+
+        if (vEdit != null) {
+            System.out.print("Nova origem: ");
+            vEdit.setOrigem(scan.nextLine());
+
+            System.out.print("Novo destino: ");
+            vEdit.setDestino(scan.nextLine());
+
+            vEdit.setDataModificacao(LocalDateTime.now());
+
+            System.out.println("Voo atualizado!");
+        } else {
+            System.out.println("Voo nao encontrado!");
         }
     }
-
-    if (vEdit != null) {
-        String novaOrigem;
-        do {
-            System.out.print("Nova origem: ");
-            novaOrigem = scan.nextLine().trim();
-            if (novaOrigem.isEmpty()) {
-                System.out.println("A origem nao pode ser vazia. Digite novamente.");
-            } else if (novaOrigem.equalsIgnoreCase(vEdit.getOrigem())) {
-                System.out.println("A nova origem nao pode ser igual a atual. Digite novamente.");
-            } else {
-                break;
-            }
-        } while (true);
-        vEdit.setOrigem(novaOrigem);
-
-        String novoDestino;
-        do {
-            System.out.print("Novo destino: ");
-            novoDestino = scan.nextLine().trim();
-            if (novoDestino.isEmpty()) {
-                System.out.println("O destino nao pode ser vazio. Digite novamente.");
-            } else if (novoDestino.equalsIgnoreCase(vEdit.getDestino())) {
-                System.out.println("O novo destino nao pode ser igual ao atual. Digite novamente.");
-            } else {
-                break;
-            }
-        } while (true);
-        vEdit.setDestino(novoDestino);
-
-        vEdit.setDataModificacao(LocalDate.now());
-
-        System.out.println("Voo atualizado!");
-    } else {
-        System.out.println("Voo nao encontrado!");
-    }
-}
-
 
     public static void deletar(Voo[] voos, Scanner scan) {
         System.out.print("Informe o ID do voo para deletar: ");
@@ -141,18 +126,35 @@ public class VooDAO {
     }
 
     public static void listar(Voo[] voos) {
-        System.out.println("\n ===== Voos =====");
+        System.out.println("\n===== Lista de Voos =====");
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
         for (Voo v : voos) {
             if (v != null) {
-                System.out.println("\n| Numero: " + v.getId()
-                        + "\n| Origem: " + v.getOrigem()
-                        + "\n| Destino: " + v.getDestino()
-                        + "\n| Data: " + v.getData()
-                        + "\n| Duracao: " + v.getDuracao()
-                        + "\n| Companhia: " + v.getCompanhiaAerea().getNome()
-                        + "\n| Capacidade: " + v.getCapacidade()
-                        + "\n| Estado: " + v.getEstado()
-                );
+                // Atualiza o estado automaticamente antes de exibir
+                v.atualizarEstadoAutomatico();
+
+                int horas = v.getDuracao().getHour();
+                int minutos = v.getDuracao().getMinute();
+
+                String duracaoFormatada;
+                if (horas > 0 && minutos > 0) {
+                    duracaoFormatada = horas + "h" + minutos + "min";
+                } else if (horas > 0) {
+                    duracaoFormatada = horas + "h";
+                } else {
+                    duracaoFormatada = minutos + "min";
+                }
+
+                System.out.println("\n--------------------------------------");
+                System.out.println("| Numero: " + v.getId());
+                System.out.println("| Origem: " + v.getOrigem());
+                System.out.println("| Destino: " + v.getDestino());
+                System.out.println("| Data/Hora: " + v.getData().format(formato));
+                System.out.println("| Duracao: " + duracaoFormatada);
+                System.out.println("| Companhia: " + v.getCompanhiaAerea().getNome());
+                System.out.println("| Capacidade: " + v.getCapacidade());
+                System.out.println("| Estado: " + v.getEstado());
             }
         }
     }
@@ -197,25 +199,46 @@ public class VooDAO {
     public static void buscarVoos(Voo[] voos, Scanner scan) {
         listarOrigens(voos);
         System.out.print("\nDigite a origem desejada: ");
-        String origem = scan.nextLine();
+        String origem = scan.nextLine().trim();
 
         listarDestinos(voos);
         System.out.print("\nDigite o destino desejado: ");
-        String destino = scan.nextLine();
+        String destino = scan.nextLine().trim();
 
-        System.out.println("\nVoos encontrados:");
+        System.out.println("\n===== Voos encontrados =====");
         boolean achou = false;
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
         for (Voo v : voos) {
-            if (v != null && v.getOrigem().equalsIgnoreCase(origem) && v.getDestino().equalsIgnoreCase(destino)) {
-                System.out.println("\n| Numero: " + v.getId()
-                        + "\n| Origem: " + v.getOrigem()
-                        + "\n| Destino: " + v.getDestino()
-                        + "\n| Data: " + v.getData()
-                        + "\n| Duracao: " + v.getDuracao()
-                        + "\n| Companhia: " + v.getCompanhiaAerea().getNome()
-                        + "\n| Capacidade: " + v.getCapacidade()
-                        + "\n| Estado: " + v.getEstado()
-                );
+            if (v != null
+                    && v.getOrigem().equalsIgnoreCase(origem)
+                    && v.getDestino().equalsIgnoreCase(destino)) {
+
+                // Atualiza estado automaticamente
+                v.atualizarEstadoAutomatico();
+
+                // Formatar duração (LocalTime → "2h30min")
+                int horas = v.getDuracao().getHour();
+                int minutos = v.getDuracao().getMinute();
+
+                String duracaoFormatada;
+                if (horas > 0 && minutos > 0) {
+                    duracaoFormatada = horas + "h" + minutos + "min";
+                } else if (horas > 0) {
+                    duracaoFormatada = horas + "h";
+                } else {
+                    duracaoFormatada = minutos + "min";
+                }
+
+                System.out.println("\n--------------------------------------");
+                System.out.println("| Numero: " + v.getId());
+                System.out.println("| Origem: " + v.getOrigem());
+                System.out.println("| Destino: " + v.getDestino());
+                System.out.println("| Data/Hora: " + v.getData().format(formato));
+                System.out.println("| Duracao: " + duracaoFormatada);
+                System.out.println("| Companhia: " + v.getCompanhiaAerea().getNome());
+                System.out.println("| Capacidade: " + v.getCapacidade());
+                System.out.println("| Estado: " + v.getEstado());
                 achou = true;
             }
         }
@@ -226,71 +249,151 @@ public class VooDAO {
     }
 
     public static Voo escolherVoo(Voo[] voos, Scanner scan) {
+        DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter formatoDuracao = DateTimeFormatter.ofPattern("HH:mm");
+
         while (true) {
             listarOrigens(voos);
             System.out.print("\nDigite a origem desejada: ");
-            String origem = scan.nextLine();
+            String origem = scan.nextLine().trim();
 
             listarDestinos(voos);
             System.out.print("\nDigite o destino desejado: ");
-            String destino = scan.nextLine();
+            String destino = scan.nextLine().trim();
 
-            // Cria um array temporário para armazenar os voos encontrados
             Voo[] encontrados = new Voo[voos.length];
             int count = 0;
 
             for (Voo v : voos) {
-                if (v != null && v.getOrigem().equalsIgnoreCase(origem) && v.getDestino().equalsIgnoreCase(destino)) {
-                    System.out.println(" ===== Voo encontrado ====="
-                            + "\n| Numero: " + v.getId()
-                            + "\n| Origem: " + v.getOrigem()
-                            + "\n| Destino: " + v.getDestino()
-                            + "\n| Data: " + v.getData()
-                            + "\n| Duracao: " + v.getDuracao()
-                            + "\n| Companhia: " + v.getCompanhiaAerea().getNome()
-                            + "\n| Capacidade: " + v.getCapacidade()
-                            + "\n| Estado: " + v.getEstado()
-                    );
-                    encontrados[count++] = v; // adiciona aos encontrados
+                if (v != null) {
+                    // Atualiza o estado do voo automaticamente
+                    v.atualizarEstadoAutomatico();
+
+                    String estado = v.getEstado();
+
+                    // Verifica se o voo ainda está disponível
+                    boolean vooDisponivel = !estado.equalsIgnoreCase("Atrasado")
+                            && !estado.equalsIgnoreCase("Cancelado") && !estado.equalsIgnoreCase("Concluido");
+
+                    if (vooDisponivel
+                            && v.getOrigem().equalsIgnoreCase(origem)
+                            && v.getDestino().equalsIgnoreCase(destino)) {
+
+                        int horas = v.getDuracao().getHour();
+                        int minutos = v.getDuracao().getMinute();
+
+                        String duracaoFormatada;
+                        if (horas > 0 && minutos > 0) {
+                            duracaoFormatada = horas + "h" + minutos + "min";
+                        } else if (horas > 0) {
+                            duracaoFormatada = horas + "h";
+                        } else {
+                            duracaoFormatada = minutos + "min";
+                        }
+
+                        System.out.println("\n===== Voo encontrado =====");
+                        System.out.println("| Numero: " + v.getId());
+                        System.out.println("| Origem: " + v.getOrigem());
+                        System.out.println("| Destino: " + v.getDestino());
+                        System.out.println("| Data/Hora: " + v.getData().format(formatoData));
+                        System.out.println("| Duracao: " + duracaoFormatada);
+                        System.out.println("| Companhia: " + v.getCompanhiaAerea().getNome());
+                        System.out.println("| Capacidade: " + v.getCapacidade());
+                        System.out.println("| Estado: " + v.getEstado());
+
+                        encontrados[count] = v;
+                        count++;
+                    }
                 }
             }
 
             if (count == 0) {
-                System.out.println("\nNenhum voo encontrado para essa rota. Tente novamente.\n");
+                System.out.println("\nNenhum voo disponivel para essa rota. Tente novamente.\n");
             } else {
                 System.out.print("\nDigite o numero do voo que deseja embarcar: ");
                 int idEscolhido = scan.nextInt();
-                scan.nextLine(); // limpar buffer
+                scan.nextLine(); // limpa o buffer
 
+                boolean encontrado = false;
                 for (int i = 0; i < count; i++) {
-                    if (encontrados[i].getId() == idEscolhido) {
-                        System.out.println("\n Passagem comprada com sucesso");
+                    if (encontrados[i] != null && encontrados[i].getId() == idEscolhido) {
+                        System.out.println("\nPassagem comprada com sucesso!");
+                        encontrado = true;
                         return encontrados[i];
                     }
                 }
 
-                System.out.println("ID invalido. Tente novamente.\n");
+                if (!encontrado) {
+                    System.out.println("ID invalido. Tente novamente.\n");
+                }
             }
         }
     }
 
-    //alterando aqui para baixo
-    public static void registrarEntradaAviao(Passageiro[] passageiros, Voo[] voos, Scanner scan) {
-        System.out.print("Digite o nome do passageiro: ");
-        String nome = scan.nextLine();
+    public static void cancelarVoo(Voo[] voos, BoardingPass[] boardingPasses, Scanner scan) {
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-        for (Passageiro p : passageiros) {
-            if (p != null && p.getNome().equalsIgnoreCase(nome)) {
-                //if (!p.isCheckIn()) {
-                System.out.println("️ O passageiro ainda nao fez o check-in!");
-                return;
+        // Atualiza estado de todos os voos antes de listar
+        for (Voo v : voos) {
+            if (v != null) {
+                v.atualizarEstadoAutomatico();
             }
-            // p.setNoAviao(true);
-            System.out.println("️ Entrada no aviao registrada para " + p.getNome());
+        }
+
+        System.out.println("\n--- Voos disponiveis para cancelamento ---");
+        boolean temVoo = false;
+        for (Voo v : voos) {
+            if (v != null) {
+                String estado = v.getEstado();
+                if (estado.equalsIgnoreCase("Programado") || estado.equalsIgnoreCase("Embarque")) {
+                    System.out.println("ID: " + v.getId()
+                            + " | Origem: " + v.getOrigem()
+                            + " | Destino: " + v.getDestino()
+                            + " | Data/Hora: " + v.getData().format(formato)
+                            + " | Estado: " + v.getEstado());
+                    temVoo = true;
+                }
+            }
+        }
+
+        if (!temVoo) {
+            System.out.println("Nenhum voo disponivel para cancelamento.");
             return;
         }
-    }
-    // System.out.println("Passageiro não encontrado!");
-}
 
-//}
+        // Solicita ID do voo para cancelar
+        System.out.print("Digite o ID do voo que deseja cancelar: ");
+        int idVoo = scan.nextInt();
+        scan.nextLine(); // limpar buffer
+
+        // Procura o voo escolhido
+        Voo vooCancelar = null;
+        for (Voo v : voos) {
+            if (v != null && v.getId() == idVoo) {
+                vooCancelar = v;
+                break;
+            }
+        }
+
+        if (vooCancelar == null
+                || (!vooCancelar.getEstado().equalsIgnoreCase("Programado")
+                && !vooCancelar.getEstado().equalsIgnoreCase("Embarque"))) {
+            System.out.println("Voo invalido ou nao pode ser cancelado.");
+            return;
+        }
+
+        // Cancela o voo
+        vooCancelar.setEstado("Cancelado");
+        System.out.println("Voo " + vooCancelar.getId() + " cancelado com sucesso.");
+
+        // Atualiza boarding passes relacionados
+        if (boardingPasses != null) {
+            for (BoardingPass bp : boardingPasses) {
+                if (bp != null && bp.getVoo() == vooCancelar) {
+                    bp.setEmbarcado(false);
+                }
+            }
+        }
+    }
+
+}

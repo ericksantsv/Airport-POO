@@ -17,16 +17,15 @@ public class Usuario {
     private String senha;
     private String tipo;
     private Passageiro passageiro;
-
+    
     //construtores
     public Usuario() {
     }
 
-    public Usuario(int id, String login, String senha, String tipo) {
+    public Usuario(String login, String senha, String tipo) {
         this.login = login;
         this.senha = senha;
         this.tipo = tipo;
-        this.id = id;
     }
 
     //getters e setters
@@ -70,6 +69,7 @@ public class Usuario {
         this.passageiro = passageiro;
     }
 
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -92,7 +92,7 @@ public class Usuario {
     }
 
     // ---------------- Menu Admin ----------------
-    public static void menuAdmin(Scanner scan, Passageiro[] passageiros, Voo[] voos, CompanhiaAerea[] companhias, Usuario[] usuarios) {
+    public static void menuAdmin(Scanner scan, Passageiro[] passageiros, Voo[] voos, CompanhiaAerea[] companhias, Usuario[] usuarios, BoardingPass[] boarding) {
         boolean admMenu = true;
         while (admMenu) {
             System.out.println("\n--- MENU ADMINISTRADOR ---");
@@ -122,11 +122,11 @@ public class Usuario {
                     break;
                 case 4:
                     //Ticket
-
+                    
                     break;
                 case 5:
                     // Ainda não implementado
-                    VooAssentos.crudAssentos(voos, passageiros, scan);
+                    VooAssentos.crudAssentos(voos, passageiros, scan, boarding);
                     break;
                 case 6:
                     crudUsuario(usuarios, scan);
@@ -139,7 +139,7 @@ public class Usuario {
                     admMenu = false;
                     break;
                 default:
-                    System.out.println("Opcao invalida!");
+                    System.out.println("Opção inválida!");
                     break;
             }
         }
@@ -149,33 +149,21 @@ public class Usuario {
         boolean userMenu = true;
         while (userMenu) {
             System.out.println("\n--- CRUD Usuarios ---");
-            System.out.println("1 - Criar usuario");
-            System.out.println("2 - Listar usuario");
-            System.out.println("3 - Editar usuario");
-            System.out.println("4 - Deletar usuario");
-            System.out.println("5 - Voltar");
+            System.out.println("1 - Criar Users");
+            System.out.println("2 - Listar Users");
+            System.out.println("3 - Voltar");
             System.out.print("Escolha uma opcao: ");
             int usrOpc = scan.nextInt();
             scan.nextLine();
 
             switch (usrOpc) {
                 case 1:
-                    //mexer aqui
                     UsuarioDAO.criaUsuarioAdm(scan, usuarios);
                     break;
                 case 2:
                     UsuarioDAO.listarUsuario(usuarios);
                     break;
                 case 3:
-                    UsuarioDAO.listarUsuario(usuarios);
-                    UsuarioDAO.editarUsuario(scan, usuarios);
-                    break;
-                case 4:
-                    UsuarioDAO.listarUsuario(usuarios);
-                    UsuarioDAO.deletarUsuario(scan, usuarios);
-                    break;
-                case 5:
-                    System.out.println("Saindo...");
                     userMenu = false;
                     break;
                 default:
@@ -184,17 +172,17 @@ public class Usuario {
             }
         }
     }
-
     // ------------------- Menu Funcionário ---------------
     public static void menuFuncionario(Scanner scan, Passageiro[] passageiros, Voo[] voos, CheckIn[] checkIns, BoardingPass[] boardingPasses, DespachoBagagem[] bagagens) {
         boolean funcMenu = true;
 
         while (funcMenu) {
-            System.out.println("\n--- MENU FUNCIONARIO ---");
+            System.out.println("\n--- MENU FUNCIONaRIO ---");
             System.out.println("1 - Fazer Check-in de Passageiro");
             System.out.println("2 - Despachar Bagagem");
             System.out.println("3 - Listar BoardingPass");
-            System.out.println("4 - Voltar");
+            System.out.println("4 - Cancelar Voo");
+            System.out.println("5 - Voltar");
             System.out.print("Escolha uma opcao: ");
             int opc = scan.nextInt();
             scan.nextLine();
@@ -210,17 +198,20 @@ public class Usuario {
                     BoardingPassDAO.listarBoardingPasses(boardingPasses);
                     break;
                 case 4:
+                    VooDAO.cancelarVoo(voos, boardingPasses, scan);
+                    break;
+                case 5:
                     funcMenu = false;
                     break;
                 default:
-                    System.out.println("Opcao invalida!");
+                    System.out.println("Opção inválida!");
                     break;
             }
         }
     }
 
-    // ------------------- Menu Passageiro -------------------
-    public static void menuPassageiro(Scanner scan, Usuario usuario, Voo[] voos, CheckIn[] checkIns, DespachoBagagem[] bagagens) {
+        // ------------------- Menu Passageiro -------------------
+    public static void menuPassageiro(Scanner scan, Usuario usuario, Voo[] voos, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boarding) {
         boolean menuPass = true;
 
         while (menuPass) {
@@ -230,7 +221,8 @@ public class Usuario {
             System.out.println("3 - Consultar Minhas Reservas");
             System.out.println("4 - Cancelar Passagem");
             System.out.println("5 - Fazer Check-in");
-            System.out.println("6 - Voltar");
+            System.out.println("6 - Embarcar no voo");
+            System.out.println("7 - Voltar");
             System.out.print("Escolha uma opcao: ");
             int opc = scan.nextInt();
             scan.nextLine();
@@ -252,13 +244,17 @@ public class Usuario {
                     CheckInDAO.solicitarCheckIn(usuario, checkIns, scan);
                     break;
                 case 6:
+                    BoardingPassDAO.embarcarNoVoo(usuario, checkIns, bagagens, boarding, scan);
+                    break;
+                case 7:
                     menuPass = false;
                     break;
                 default:
-                    System.out.println("Opcao invalida!");
+                    System.out.println("Opção inválida!");
                     break;
             }
         }
     }
+
 
 }
