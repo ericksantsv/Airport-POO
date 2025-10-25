@@ -11,13 +11,35 @@ public class PassageiroDAO {
 
     //Inicializa vetores
     public static Passageiro[] inicializarPassageiros() {
-        Passageiro[] passageiros = new Passageiro[10];
+        Passageiro[] passageiros = new Passageiro[50];
 
         passageiros[0] = new Passageiro(1, "Joao Silva", LocalDate.parse("1990-05-12"), "123.456.789-00", LocalDateTime.now(), LocalDateTime.now());
         passageiros[1] = new Passageiro(2, "Maria Oliveira", LocalDate.parse("1988-11-30"), "987.654.321-00", LocalDateTime.now(), LocalDateTime.now());
         passageiros[2] = new Passageiro(3, "Carlos Pereira", LocalDate.parse("1995-02-20"), "321.987.654-11", LocalDateTime.now(), LocalDateTime.now());
         passageiros[3] = new Passageiro(4, "Ana Souza", LocalDate.parse("2000-07-10"), "654.321.987-22", LocalDateTime.now(), LocalDateTime.now());
         passageiros[4] = new Passageiro(5, "Bruno Gomes", LocalDate.parse("1998-03-15"), "111.222.333-44", LocalDateTime.now(), LocalDateTime.now());
+
+        // novos passageiros
+        passageiros[5] = new Passageiro(6, "Fernanda Lima", LocalDate.parse("1992-09-08"), "222.333.444-55", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[6] = new Passageiro(7, "Rafael Costa", LocalDate.parse("1985-12-01"), "333.444.555-66", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[7] = new Passageiro(8, "Patricia Martins", LocalDate.parse("1997-04-19"), "444.555.666-77", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[8] = new Passageiro(9, "Lucas Fernandes", LocalDate.parse("1991-06-22"), "555.666.777-88", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[9] = new Passageiro(10, "Carla Ribeiro", LocalDate.parse("1989-03-03"), "666.777.888-99", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[10] = new Passageiro(11, "Marcos Vinicius", LocalDate.parse("1993-07-12"), "777.888.999-00", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[11] = new Passageiro(12, "Juliana Costa", LocalDate.parse("1996-01-28"), "888.999.000-11", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[12] = new Passageiro(13, "Felipe Souza", LocalDate.parse("1994-10-05"), "999.000.111-22", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[13] = new Passageiro(14, "Aline Rodrigues", LocalDate.parse("1990-08-17"), "000.111.222-33", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[14] = new Passageiro(15, "Tiago Almeida", LocalDate.parse("1987-05-25"), "111.222.333-44", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[15] = new Passageiro(16, "Renata Oliveira", LocalDate.parse("1995-02-14"), "222.111.333-55", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[16] = new Passageiro(17, "Bruno Henrique", LocalDate.parse("1988-11-30"), "333.222.444-66", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[17] = new Passageiro(18, "Camila Andrade", LocalDate.parse("1999-09-02"), "444.333.555-77", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[18] = new Passageiro(19, "Gustavo Pereira", LocalDate.parse("1991-07-18"), "555.444.666-88", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[19] = new Passageiro(20, "Natália Rocha", LocalDate.parse("1993-03-09"), "666.555.777-99", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[20] = new Passageiro(21, "Eduardo Lima", LocalDate.parse("1986-12-25"), "777.666.888-00", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[21] = new Passageiro(22, "Letícia Carvalho", LocalDate.parse("1998-06-03"), "888.777.999-11", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[22] = new Passageiro(23, "André Gonçalves", LocalDate.parse("1992-04-27"), "999.888.000-22", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[23] = new Passageiro(24, "Sabrina Torres", LocalDate.parse("1990-10-13"), "000.999.111-33", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[24] = new Passageiro(25, "Rodrigo Barbosa", LocalDate.parse("1989-08-29"), "111.000.222-44", LocalDateTime.now(), LocalDateTime.now());
 
         return passageiros;
     }

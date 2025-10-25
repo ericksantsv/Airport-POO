@@ -92,7 +92,7 @@ public class Usuario {
     }
 
     // ---------------- Menu Admin ----------------
-    public static void menuAdmin(Scanner scan, Passageiro[] passageiros, Voo[] voos, CompanhiaAerea[] companhias, Usuario[] usuarios, BoardingPass[] boarding) {
+    public static void menuAdmin(Scanner scan, Ticket[] tickets, Passageiro[] passageiros, Voo[] voos, CompanhiaAerea[] companhias, Usuario[] usuarios, BoardingPass[] boarding) {
         boolean admMenu = true;
         while (admMenu) {
             System.out.println("\n--- MENU ADMINISTRADOR ---");
@@ -132,8 +132,7 @@ public class Usuario {
                     crudUsuario(usuarios, scan);
                     break;
                 case 7:
-                    // Chama Relatórios (a implementar)
-                    //RelatoriosDAO.gerarRelatorios(passageiros, voos, tickets, scan);
+                    Relatorios.menuRelatorios(voos, tickets, scan);
                     break;
                 case 8:
                     admMenu = false;

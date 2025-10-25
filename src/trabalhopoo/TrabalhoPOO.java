@@ -1,8 +1,12 @@
 package trabalhopoo;
 
 import java.util.Scanner;
+import trabalhopoo.dao.BoardingPassDAO;
+import trabalhopoo.dao.CheckInDAO;
 import trabalhopoo.dao.CompanhiaAereaDAO;
+import trabalhopoo.dao.DespachoBagagemDAO;
 import trabalhopoo.dao.PassageiroDAO;
+import trabalhopoo.dao.TicketDAO;
 import trabalhopoo.dao.UsuarioDAO;
 import trabalhopoo.dao.VooDAO;
 import trabalhopoo.model.BoardingPass;
@@ -10,6 +14,7 @@ import trabalhopoo.model.CheckIn;
 import trabalhopoo.model.CompanhiaAerea;
 import trabalhopoo.model.DespachoBagagem;
 import trabalhopoo.model.Passageiro;
+import trabalhopoo.model.Ticket;
 import trabalhopoo.model.Usuario;
 import trabalhopoo.model.Voo;
 
@@ -21,14 +26,20 @@ public class TrabalhoPOO {
 
         CompanhiaAerea[] companhiaAerea = CompanhiaAereaDAO.inicializarCompanhias();
         Voo[] voos = VooDAO.inicializarVoos(companhiaAerea);
-        Usuario[] usuarios = UsuarioDAO.inicializarUsuarios();
         Passageiro[] passageiros = PassageiroDAO.inicializarPassageiros();
-        CheckIn[] checkIns = new CheckIn[200];
-        BoardingPass[] boardingPasses = new BoardingPass[200];
-        DespachoBagagem[] bagagens = new DespachoBagagem[100];
-        
+        Ticket[] tickets = TicketDAO.inicializarTickets(passageiros, voos);
 
-      
+        Usuario[] usuarios = UsuarioDAO.inicializarUsuariosComPassageiros(passageiros);
+
+        CheckIn[] checkIns = new CheckIn[tickets.length];
+        CheckInDAO.inicializarCheckIns(tickets, checkIns);
+
+        DespachoBagagem[] bagagens = new DespachoBagagem[tickets.length];
+        DespachoBagagemDAO.inicializarBagagens(tickets, checkIns, bagagens);
+        
+        BoardingPass[] boardingPasses = new BoardingPass[tickets.length];
+        BoardingPassDAO.inicializarBoardingPasses(tickets, boardingPasses, checkIns, bagagens);
+
         boolean menu = true;
         while (menu) {
             System.out.println("\n\n===== Menu Principal =====");
@@ -42,7 +53,7 @@ public class TrabalhoPOO {
             System.out.print("Escolha uma opcao: ");
             int opc = scan.nextInt();
             scan.nextLine();
-            
+
             switch (opc) {
                 case 1:
                     VooDAO.listar(voos);
@@ -56,7 +67,7 @@ public class TrabalhoPOO {
                 case 4:
                     Usuario admin = UsuarioDAO.loginAdmin(scan, usuarios);
                     if (admin != null) {
-                        Usuario.menuAdmin(scan, passageiros, voos, companhiaAerea, usuarios, boardingPasses);
+                        Usuario.menuAdmin(scan, tickets, passageiros, voos, companhiaAerea, usuarios, boardingPasses);
                     }
                     break;
                 case 5:

@@ -23,6 +23,69 @@ import trabalhopoo.model.VooAssentos;
  */
 public class TicketDAO {
 
+    public static Ticket[] inicializarTickets(Passageiro[] passageiros, Voo[] voos) {
+        if (voos == null || passageiros == null) {
+            return new Ticket[0];
+        }
+
+        Ticket[] tickets = new Ticket[passageiros.length * 2]; // reserva espaço extra
+        int index = 0;
+        double[] valoresExemplo = {150, 200, 250, 300, 350, 400, 450, 500, 550, 600};
+
+        int contadorVoo = 0; // garante que todos os voos concluidos sejam usados
+
+        for (int i = 0; i < passageiros.length; i++) {
+            Passageiro p = passageiros[i];
+            if (p == null) {
+                continue;
+            }
+
+            // Seleciona voo concluído de forma circular
+            Voo vooPrincipal = null;
+            int tentativas = 0; // evita loop infinito se não houver voos concluídos
+            while (tentativas < voos.length) {
+                Voo v = voos[contadorVoo % voos.length];
+                contadorVoo++;
+                tentativas++;
+                if (v != null && v.getEstado().equalsIgnoreCase("Concluido")) {
+                    vooPrincipal = v;
+                    break;
+                }
+            }
+
+            if (vooPrincipal == null) {
+                continue; // pula passageiro se não houver voo concluído
+            }
+            // Cria ticket principal
+            Ticket t1 = new Ticket(index + 1, valoresExemplo[i % valoresExemplo.length], vooPrincipal, p);
+            tickets[index++] = t1;
+            p.adicionarTicket(t1);
+
+            // Cria ticket extra a cada 3 passageiros, em outro voo concluído
+            if (i % 3 == 0) {
+                Voo vooExtra = null;
+                tentativas = 0;
+                while (tentativas < voos.length) {
+                    Voo v = voos[contadorVoo % voos.length];
+                    contadorVoo++;
+                    tentativas++;
+                    if (v != null && v.getEstado().equalsIgnoreCase("Concluido")) {
+                        vooExtra = v;
+                        break;
+                    }
+                }
+
+                if (vooExtra != null) {
+                    Ticket t2 = new Ticket(index + 1, valoresExemplo[(i + 1) % valoresExemplo.length], vooExtra, p);
+                    tickets[index++] = t2;
+                    p.adicionarTicket(t2);
+                }
+            }
+        }
+
+        return tickets;
+    }
+
     public static void criar(Ticket[] ticket, Passageiro passageiro, Voo[] voos, Scanner scan) {
         for (int i = 0; i < ticket.length; i++) {
             if (ticket[i] == null) {
@@ -101,7 +164,7 @@ public class TicketDAO {
                 }
 
                 // -------- Exibição --------
-                System.out.println("| Numero: " + t.getId()
+                System.out.println("\n| Numero: " + t.getId()
                         + "\n| Codigo: " + t.getCodigo()
                         + "\n| Origem: " + v.getOrigem()
                         + "\n| Destino: " + v.getDestino()

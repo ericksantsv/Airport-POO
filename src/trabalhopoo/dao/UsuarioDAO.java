@@ -15,14 +15,29 @@ import trabalhopoo.model.Usuario;
 public class UsuarioDAO {
 
     //Inicializa Vetores
-    public static Usuario[] inicializarUsuarios() {
-        Usuario[] usuarios = new Usuario[10];
+    public static Usuario[] inicializarUsuariosComPassageiros(Passageiro[] passageiros) {
+        // 3 fixos + passageiros não nulos
+        int countPassageiros = 0;
+        for (Passageiro p : passageiros) {
+            if (p != null) {
+                countPassageiros++;
+            }
+        }
+
+        Usuario[] usuarios = new Usuario[3 * countPassageiros];
 
         usuarios[0] = new Usuario("goncalves", "goncalves", "adm");
         usuarios[1] = new Usuario("erick", "erick", "adm");
-        usuarios[2] = new Usuario("nico", "nico", "passageiro");
-        usuarios[3] = new Usuario("bruna", "bruna", "passageiro");
-        usuarios[4] = new Usuario("dudu", "dudu", "funcionario");
+        usuarios[2] = new Usuario("dudu", "dudu", "funcionario");
+
+        int index = 3; // começa depois dos 3 fixos
+        for (Passageiro p : passageiros) {
+            if (p != null) {
+                usuarios[index] = new Usuario(p.getNome().toLowerCase().replace(" ", ""), "pass" + (index - 2), "passageiro");
+                usuarios[index].setPassageiro(p);
+                index++;
+            }
+        }
 
         return usuarios;
     }

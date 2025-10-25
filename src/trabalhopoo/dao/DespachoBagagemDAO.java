@@ -16,6 +16,30 @@ import trabalhopoo.model.Ticket;
  */
 public class DespachoBagagemDAO {
 
+    public static void inicializarBagagens(Ticket[] tickets, CheckIn[] checkIns, DespachoBagagem[] bagagens) {
+    int bagIndex = 0;
+    for (int i = 0; i < tickets.length && bagIndex < bagagens.length; i++) {
+        Ticket t = tickets[i];
+        if (t == null) continue;
+
+        // Procura o check-in correspondente ao ticket
+        CheckIn checkInRelacionado = null;
+        for (int j = 0; j < checkIns.length; j++) {
+            if (checkIns[j] != null && checkIns[j].getTicket() == t) {
+                checkInRelacionado = checkIns[j];
+                break;
+            }
+        }
+
+        // Se o passageiro tem ticket, cria bagagem mesmo se o check-in ainda não estiver aprovado
+        if (checkInRelacionado == null || checkInRelacionado.isAprovado()) {
+            bagagens[bagIndex] = new DespachoBagagem(bagIndex + 1, t, t.getPassageiro().getDocumento(), t.getVoo().getData(), t.getVoo().getData());
+            bagIndex++;
+        }
+    }
+}
+
+
     public static void despacharBagagem(CheckIn[] checkIns, DespachoBagagem[] bagagens, Scanner scan) {
         System.out.println("\n--- Check-ins aprovados para despacho ---");
         boolean temAprovado = false;
@@ -90,14 +114,6 @@ public class DespachoBagagemDAO {
                 );
 
                 System.out.println("\nBagagem despachada com sucesso!");
-                System.out.println("-------------------------------------------");
-                System.out.println("ID do Despacho: " + bagagens[i].getId());
-                System.out.println("Passageiro: " + ticketSelecionado.getPassageiro().getNome());
-                System.out.println("Documento: " + ticketSelecionado.getPassageiro().getDocumento());
-                System.out.println("Voo: " + ticketSelecionado.getVoo().getOrigem() + " → " + ticketSelecionado.getVoo().getDestino());
-                System.out.println("Data de Criacao: " + bagagens[i].getDataCriacao());
-                System.out.println("-------------------------------------------");
-
                 return;
             }
         }

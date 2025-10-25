@@ -213,10 +213,10 @@ public class Voo {
         }
     }
 
-    private String gerarCodigoAssento(int index) {
-        char letra = (char) ('A' + (index / 6)); // 6 assentos por fileira
+    public static String gerarCodigoAssento(int index) {
+        char letra = (char) ('A' + (index / 6));
         int numero = (index % 6) + 1;
-        return letra + String.valueOf(numero); // Ex: A1, A2, B3...
+        return letra + String.valueOf(numero);
     }
 
     public void atualizarEstadoAutomatico() {

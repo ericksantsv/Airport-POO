@@ -1,5 +1,6 @@
 package trabalhopoo.dao;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import trabalhopoo.model.BoardingPass;
@@ -9,25 +10,70 @@ import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Ticket;
 import trabalhopoo.model.Usuario;
 import trabalhopoo.model.Voo;
+import trabalhopoo.model.VooAssentos;
 
 public class BoardingPassDAO {
 
-    public static void emitirBoardingPass(Passageiro[] passageiros, Voo[] voos, Scanner scan) {
-        System.out.print("Digite o nome do passageiro: ");
-        String nome = scan.nextLine();
+    public static void inicializarBoardingPasses(
+            Ticket[] tickets,
+            BoardingPass[] boardingPasses,
+            CheckIn[] checkIns,
+            DespachoBagagem[] bagagens) {
 
-        for (Passageiro p : passageiros) {
-            if (p != null && p.getNome().equalsIgnoreCase(nome)) {
-                System.out.println("\n===== BOARDING PASS =====");
-                System.out.println("Passageiro: " + p.getNome());
-                //System.out.println("Check-in: " + (p.isCheckIn() ? " Sim" : " Não"));
-                // System.out.println("Bagagem: " + (p.isBagagemDespachada() ? "🧳 Despachada" : "? Não despachada"));
-                System.out.println("=========================\n");
-                return;
+        int bpIndex = 0;
+
+        for (Ticket t : tickets) {
+            if (t != null) {
+                Passageiro p = t.getPassageiro();
+                Voo v = t.getVoo();
+
+                // Verifica se o passageiro fez check-in aprovado
+                boolean checkInOk = false;
+                LocalDateTime dataCheckIn = null;
+
+                for (CheckIn c : checkIns) {
+                    if (c != null && c.getTicket() == t && c.isAprovado()) {
+                        checkInOk = true;
+                        dataCheckIn = c.getDataCriacao(); // usa a data do check-in
+                        break;
+                    }
+                }
+
+                // Verifica se há bagagem despachada
+                boolean bagagemOk = false;
+                for (DespachoBagagem d : bagagens) {
+                    if (d != null && d.getTicket() == t) {
+                        bagagemOk = true;
+                        break;
+                    }
+                }
+
+                if (checkInOk && bagagemOk) {
+                    // Atribui assento livre
+                    for (VooAssentos a : v.getVooAssentos()) {
+                        if (a.getPassageiro() == null) {
+                            a.setPassageiro(p);
+
+                            BoardingPass bp = new BoardingPass(
+                                    bpIndex + 1,
+                                    p,
+                                    v,
+                                    a.getCodigoAssento()
+                            );
+
+                            // ✅ Embarque automático
+                            bp.setEmbarcado(true);
+
+                            // Data de emissão igual à data do check-in
+                            bp.setDataEmissao(dataCheckIn != null ? dataCheckIn : v.getData());
+
+                            boardingPasses[bpIndex++] = bp;
+                            break;
+                        }
+                    }
+                }
             }
         }
-
-        System.out.println("Passageiro nao encontrado!");
     }
 
     // Método para listar todos os boarding passes
@@ -99,101 +145,118 @@ public class BoardingPassDAO {
             System.out.println("Nenhum boarding pass encontrado para voce.");
         }
     }
-    
+
     public static void embarcarNoVoo(Usuario usuario, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boardingPasses, Scanner scan) {
-    Passageiro passageiro = usuario.getPassageiro();
-    Ticket[] tickets = passageiro.getTicket();
+        Passageiro passageiro = usuario.getPassageiro();
+        Ticket[] tickets = passageiro.getTicket();
 
-    System.out.println("\n--- Tickets disponiveis para embarque ---");
+        System.out.println("\n--- Tickets disponíveis para embarque ---");
 
-    DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    boolean temDisponivel = false;
+        boolean temDisponivel = false;
 
-    for (Ticket t : tickets) {
-        if (t != null) {
-            Voo v = t.getVoo();
-            v.atualizarEstadoAutomatico();
+        for (Ticket t : tickets) {
+            if (t != null) {
+                Voo v = t.getVoo();
+                v.atualizarEstadoAutomatico();
 
-            // Verifica se o voo esta em embarque
-            boolean vooEmbarque = v.getEstado().equalsIgnoreCase("Embarque");
-
-            // Verifica check-in aprovado
-            boolean checkInAprovado = false;
-            for (CheckIn c : checkIns) {
-                if (c != null && c.getTicket() == t && c.isAprovado()) {
-                    checkInAprovado = true;
-                    break;
+                // Impede voos cancelados ou concluídos
+                if (v.getEstado().equalsIgnoreCase("Cancelado") || v.getEstado().equalsIgnoreCase("Concluido")) {
+                    continue;
                 }
-            }
 
-            // Verifica boarding pass emitido
-            boolean boardingPassEmitido = false;
-            BoardingPass bpTicket = null;
-            for (BoardingPass bp : boardingPasses) {
-                if (bp != null && bp.getVoo() == v && bp.getPassageiro() == passageiro) {
-                    boardingPassEmitido = true;
-                    bpTicket = bp;
-                    break;
+                // Verifica se o voo está em embarque
+                boolean vooEmbarque = v.getEstado().equalsIgnoreCase("Embarque");
+
+                // Verifica check-in aprovado
+                boolean checkInAprovado = false;
+                for (CheckIn c : checkIns) {
+                    if (c != null && c.getTicket() == t && c.isAprovado()) {
+                        checkInAprovado = true;
+                        break;
+                    }
                 }
-            }
 
-            // Verifica bagagem despachada
-            boolean bagagemDespachada = false;
-            for (DespachoBagagem d : bagagens) {
-                if (d != null && d.getTicket() == t) {
-                    bagagemDespachada = true;
-                    break;
+                // Verifica boarding pass emitido
+                boolean boardingPassEmitido = false;
+                BoardingPass bpTicket = null;
+                for (BoardingPass bp : boardingPasses) {
+                    if (bp != null && bp.getVoo() == v && bp.getPassageiro() == passageiro) {
+                        boardingPassEmitido = true;
+                        bpTicket = bp;
+                        break;
+                    }
                 }
-            }
 
-            // Exibe somente se o passageiro pode embarcar
-            if (vooEmbarque && checkInAprovado && boardingPassEmitido && bagagemDespachada) {
-                System.out.println("\n--------------------------------------");
-                System.out.println("| Numero Ticket: " + t.getId());
-                System.out.println("| Codigo: " + t.getCodigo());
-                System.out.println("| Origem: " + v.getOrigem());
-                System.out.println("| Destino: " + v.getDestino());
-                System.out.println("| Data/Hora: " + v.getData().format(formato));
-                System.out.println("| Companhia: " + v.getCompanhiaAerea().getNome());
-                System.out.println("| Estado do voo: " + v.getEstado());
-                System.out.println("| Check-in: Aprovado");
-                System.out.println("| Boarding pass: Emitido");
-                System.out.println("| Bagagem: Despachada");
-                temDisponivel = true;
+                // Verifica bagagem despachada
+                boolean bagagemDespachada = false;
+                for (DespachoBagagem d : bagagens) {
+                    if (d != null && d.getTicket() == t) {
+                        bagagemDespachada = true;
+                        break;
+                    }
+                }
+
+                // Exibe somente se o passageiro pode embarcar
+                if (vooEmbarque && checkInAprovado && boardingPassEmitido && bagagemDespachada) {
+                    System.out.println("\n--------------------------------------");
+                    System.out.println("| Número Ticket: " + t.getId());
+                    System.out.println("| Código: " + t.getCodigo());
+                    System.out.println("| Origem: " + v.getOrigem());
+                    System.out.println("| Destino: " + v.getDestino());
+                    System.out.println("| Data/Hora: " + v.getData().format(formato));
+                    System.out.println("| Companhia: " + v.getCompanhiaAerea().getNome());
+                    System.out.println("| Estado do voo: " + v.getEstado());
+                    System.out.println("| Check-in: Aprovado");
+                    System.out.println("| Boarding pass: Emitido");
+                    System.out.println("| Bagagem: Despachada");
+                    temDisponivel = true;
+                }
             }
         }
-    }
 
-    if (!temDisponivel) {
-        System.out.println("\nNenhum ticket elegivel para embarque neste momento.");
-        return;
-    }
-
-    // Escolha do ticket
-    System.out.print("\nDigite o numero do ticket que deseja embarcar: ");
-    int idTicket = scan.nextInt();
-    scan.nextLine();
-
-    for (Ticket t : tickets) {
-        if (t != null && t.getId() == idTicket) {
-            Voo v = t.getVoo();
-
-            // Busca boarding pass correspondente
-            for (BoardingPass bp : boardingPasses) {
-                if (bp != null && bp.getVoo() == v && bp.getPassageiro() == passageiro) {
-                    bp.setEmbarcado(true);
-                    System.out.println("\nEmbarque realizado com sucesso! Boa viagem!");
-                    return;
-                }
-            }
-
-            System.out.println("Erro: boarding pass nao encontrado.");
+        if (!temDisponivel) {
+            System.out.println("\nNenhum ticket elegível para embarque neste momento.");
             return;
         }
-    }
 
-    System.out.println("Ticket invalido.");
-}
+        // Escolha do ticket
+        System.out.print("\nDigite o número do ticket que deseja embarcar: ");
+        int idTicket = scan.nextInt();
+        scan.nextLine();
+
+        for (Ticket t : tickets) {
+            if (t != null && t.getId() == idTicket) {
+                Voo v = t.getVoo();
+
+                // Impede embarque em voo cancelado
+                if (v.getEstado().equalsIgnoreCase("Cancelado")) {
+                    System.out.println("❌ Este voo foi cancelado. O embarque não é permitido.");
+                    return;
+                }
+
+                // Impede embarque em voo já concluído
+                if (v.getEstado().equalsIgnoreCase("Concluido")) {
+                    System.out.println("❌ Este voo já foi concluído. O embarque não é possível.");
+                    return;
+                }
+
+                // Busca boarding pass correspondente
+                for (BoardingPass bp : boardingPasses) {
+                    if (bp != null && bp.getVoo() == v && bp.getPassageiro() == passageiro) {
+                        bp.setEmbarcado(true);
+                        System.out.println("\n✅ Embarque realizado com sucesso! Boa viagem!");
+                        return;
+                    }
+                }
+
+                System.out.println("Erro: boarding pass não encontrado.");
+                return;
+            }
+        }
+
+        System.out.println("Ticket inválido.");
+    }
 
 }

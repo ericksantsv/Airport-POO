@@ -13,12 +13,28 @@ import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Ticket;
 import trabalhopoo.model.Usuario;
 import trabalhopoo.model.Voo;
+import trabalhopoo.model.VooAssentos;
 
 /**
  *
  * @author erick
  */
 public class CheckInDAO {
+
+    public static void inicializarCheckIns(Ticket[] tickets, CheckIn[] checkIns) {
+        int ciIndex = 0;
+        for (Ticket t : tickets) {
+            if (t != null) {
+                Voo v = t.getVoo();
+                if (v.getEstado().equalsIgnoreCase("Concluido")) { // só aprova check-in de voos concluídos
+                    checkIns[ciIndex] = new CheckIn(ciIndex + 1, t, t.getPassageiro().getDocumento());
+                    checkIns[ciIndex].setDataCriacao(t.getVoo().getData());
+                    checkIns[ciIndex].setAprovado(true); // aprova automaticamente
+                    ciIndex++;
+                }
+            }
+        }
+    }
 
     public static void solicitarCheckIn(Usuario usuario, CheckIn[] checkIns, Scanner scan) {
         Passageiro passageiro = usuario.getPassageiro();
@@ -127,11 +143,20 @@ public class CheckInDAO {
 
     public static void listarPendentes(CheckIn[] checkIns) {
         System.out.println("\n--- Check-ins pendentes ---");
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
         for (CheckIn c : checkIns) {
             if (c != null && !c.isAprovado()) {
                 Ticket t = c.getTicket();
                 Voo v = t.getVoo();
-                System.out.println("Numero: " + c.getId() + " | Codigo: " + t.getCodigo() + " | Passageiro: " + t.getPassageiro().getNome() + " | Voo: " + v.getOrigem() + " -> " + v.getDestino() + " | Data: " + v.getData());
+
+                String dataFormatada = v.getData() != null ? v.getData().format(formato) : "Data indisponível";
+
+                System.out.println("Número: " + c.getId()
+                        + " | Código: " + t.getCodigo()
+                        + " | Passageiro: " + t.getPassageiro().getNome()
+                        + " | Voo: " + v.getOrigem() + " -> " + v.getDestino()
+                        + " | Data/Hora: " + dataFormatada);
             }
         }
     }
@@ -160,8 +185,7 @@ public class CheckInDAO {
         scan.nextLine();
 
         // 4. Procura o check-in e aprova
-        for (int i = 0; i < checkIns.length; i++) {
-            CheckIn c = checkIns[i];
+        for (CheckIn c : checkIns) {
             if (c != null && c.getId() == id && !c.isAprovado()) {
                 c.setAprovado(true);
                 c.setDataModificacao(LocalDateTime.now());
@@ -169,11 +193,25 @@ public class CheckInDAO {
                 Ticket t = c.getTicket();
                 Voo v = t.getVoo();
 
-                // Gera boarding pass
+                // 5. Procura o assento já ocupado pelo passageiro
+                String codigoAssento = null;
+                for (VooAssentos a : v.getVooAssentos()) {
+                    if (a.getPassageiro() == t.getPassageiro()) {
+                        codigoAssento = a.getCodigoAssento();
+                        break;
+                    }
+                }
+
+                if (codigoAssento == null) {
+                    System.out.println("Erro: assento não encontrado para o passageiro neste voo.");
+                    return;
+                }
+
+                // 6. Cria boarding pass usando o código do assento existente
                 for (int j = 0; j < boardingPasses.length; j++) {
                     if (boardingPasses[j] == null) {
-                        boardingPasses[j] = new BoardingPass(j + 1, t.getPassageiro(), v, "A" + (j + 1));
-                        System.out.println("Check-in aprovado! Boarding pass emitido para " + t.getPassageiro().getNome());
+                        boardingPasses[j] = new BoardingPass(j + 1, t.getPassageiro(), v, codigoAssento);
+                        System.out.println("Check-in aprovado! Boarding pass emitido para " + t.getPassageiro().getNome() + " | Assento: " + codigoAssento);
                         return;
                     }
                 }

@@ -7,6 +7,7 @@ import java.util.Scanner;
 import trabalhopoo.model.BoardingPass;
 import trabalhopoo.model.Voo;
 import trabalhopoo.model.CompanhiaAerea;
+import trabalhopoo.model.VooAssentos;
 
 public class VooDAO {
 
@@ -15,12 +16,19 @@ public class VooDAO {
         Voo[] voos = new Voo[50];
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        voos[0] = new Voo(1, "Uberaba", "Sao Paulo", LocalDateTime.parse("2025-10-10 08:30", formato), LocalTime.of(2, 30), companhiaAerea[0], 5, "Programado", LocalDateTime.now(), LocalDateTime.now());
-        voos[1] = new Voo(2, "Uberaba", "Rio de Janeiro", LocalDateTime.parse("2025-10-11 14:00", formato), LocalTime.of(2, 30), companhiaAerea[1], 3, "Programado", LocalDateTime.now(), LocalDateTime.now());
-        voos[2] = new Voo(3, "Uberaba", "Belo Horizonte", LocalDateTime.parse("2025-10-12 09:15", formato), LocalTime.of(2, 30), companhiaAerea[2], 4, "Programado", LocalDateTime.now(), LocalDateTime.now());
-        voos[3] = new Voo(4, "Uberaba", "Brasilia", LocalDateTime.parse("2025-10-13 18:00", formato), LocalTime.of(2, 30), companhiaAerea[3], 6, "Programado", LocalDateTime.now(), LocalDateTime.now());
-        voos[4] = new Voo(5, "Uberaba", "Curitiba", LocalDateTime.parse("2025-10-14 06:45", formato), LocalTime.of(2, 30), companhiaAerea[4], 10, "Programado", LocalDateTime.now(), LocalDateTime.now());
-        voos[5] = new Voo(6, "Roraima", "Paraguai", LocalDateTime.parse("2025-10-23 11:00", formato), LocalTime.of(0, 4), companhiaAerea[2], 5, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[0] = new Voo(1, "Uberaba", "Sao Paulo", LocalDateTime.parse("2025-10-10 08:30", formato), LocalTime.of(1, 45), companhiaAerea[0], 5, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[1] = new Voo(2, "Sao Paulo", "Rio de Janeiro", LocalDateTime.parse("2025-10-09 14:00", formato), LocalTime.of(2, 10), companhiaAerea[1], 3, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[2] = new Voo(3, "Rio de Janeiro", "Curitiba", LocalDateTime.parse("2025-10-08 09:15", formato), LocalTime.of(1, 25), companhiaAerea[2], 4, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[3] = new Voo(4, "Curitiba", "Brasilia", LocalDateTime.parse("2025-10-07 18:00", formato), LocalTime.of(1, 35), companhiaAerea[3], 6, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
+        voos[4] = new Voo(5, "Brasilia", "Uberaba", LocalDateTime.parse("2025-10-06 06:45", formato), LocalTime.of(1, 50), companhiaAerea[4], 10, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[5] = new Voo(6, "Uberaba", "Curitiba", LocalDateTime.parse("2025-10-05 11:00", formato), LocalTime.of(2, 15), companhiaAerea[2], 5, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
+        voos[6] = new Voo(7, "Sao Paulo", "Brasilia", LocalDateTime.parse("2025-10-04 07:20", formato), LocalTime.of(1, 30), companhiaAerea[0], 8, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[7] = new Voo(8, "Brasilia", "Rio de Janeiro", LocalDateTime.parse("2025-10-03 09:10", formato), LocalTime.of(1, 10), companhiaAerea[1], 6, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[8] = new Voo(9, "Curitiba", "Uberaba", LocalDateTime.parse("2025-10-02 15:45", formato), LocalTime.of(1, 55), companhiaAerea[3], 7, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[9] = new Voo(10, "Rio de Janeiro", "Sao Paulo", LocalDateTime.parse("2025-10-01 21:00", formato), LocalTime.of(1, 40), companhiaAerea[4], 9, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
+        voos[10] = new Voo(11, "Uberaba", "Brasilia", LocalDateTime.parse("2025-11-03 09:10", formato), LocalTime.of(1, 10), companhiaAerea[1], 6, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[11] = new Voo(12, "Sao Paulo", "Uberaba", LocalDateTime.parse("2025-11-02 15:45", formato), LocalTime.of(1, 55), companhiaAerea[3], 7, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[12] = new Voo(13, "Brasilia", "Curitiba", LocalDateTime.parse("2025-10-25 12:11", formato), LocalTime.of(1, 40), companhiaAerea[4], 9, "Programado", LocalDateTime.now(), LocalDateTime.now());
 
         return voos;
     }
@@ -273,7 +281,7 @@ public class VooDAO {
 
                     // Verifica se o voo ainda está disponível
                     boolean vooDisponivel = !estado.equalsIgnoreCase("Atrasado")
-                            && !estado.equalsIgnoreCase("Cancelado") && !estado.equalsIgnoreCase("Concluido");
+                            && !estado.equalsIgnoreCase("Cancelado") && !estado.equalsIgnoreCase("Concluido") && !estado.equalsIgnoreCase("Decolado");
 
                     if (vooDisponivel
                             && v.getOrigem().equalsIgnoreCase(origem)
@@ -340,7 +348,7 @@ public class VooDAO {
             }
         }
 
-        System.out.println("\n--- Voos disponiveis para cancelamento ---");
+        System.out.println("\n--- Voos disponíveis para cancelamento ---");
         boolean temVoo = false;
         for (Voo v : voos) {
             if (v != null) {
@@ -357,7 +365,7 @@ public class VooDAO {
         }
 
         if (!temVoo) {
-            System.out.println("Nenhum voo disponivel para cancelamento.");
+            System.out.println("Nenhum voo disponível para cancelamento.");
             return;
         }
 
@@ -378,13 +386,23 @@ public class VooDAO {
         if (vooCancelar == null
                 || (!vooCancelar.getEstado().equalsIgnoreCase("Programado")
                 && !vooCancelar.getEstado().equalsIgnoreCase("Embarque"))) {
-            System.out.println("Voo invalido ou nao pode ser cancelado.");
+            System.out.println("Voo inválido ou não pode ser cancelado.");
             return;
         }
 
         // Cancela o voo
         vooCancelar.setEstado("Cancelado");
         System.out.println("Voo " + vooCancelar.getId() + " cancelado com sucesso.");
+
+        // Libera todos os assentos ocupados
+        if (vooCancelar.getVooAssentos() != null) {
+            for (VooAssentos a : vooCancelar.getVooAssentos()) {
+                if (a != null && a.getPassageiro() != null) {
+                    a.setPassageiro(null);
+                }
+            }
+            System.out.println("Todos os assentos do voo foram liberados.");
+        }
 
         // Atualiza boarding passes relacionados
         if (boardingPasses != null) {

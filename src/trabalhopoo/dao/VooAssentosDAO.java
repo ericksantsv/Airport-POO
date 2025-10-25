@@ -6,6 +6,33 @@ import trabalhopoo.model.*;
 
 public class VooAssentosDAO {
 
+    public static void inicializarAssentos(Voo[] voos, Ticket[] tickets) {
+        // Inicializa os assentos de cada voo
+        for (Voo v : voos) {
+            if (v != null) {
+                VooAssentos[] assentos = new VooAssentos[v.getCapacidade()];
+                for (int i = 0; i < v.getCapacidade(); i++) {
+                    assentos[i] = new VooAssentos(i + 1, v, Voo.gerarCodigoAssento(i), null, LocalDateTime.now(), LocalDateTime.now());
+                }
+                v.setVooAssentos(assentos);
+            }
+        }
+
+        // Atribui passageiros aos assentos de acordo com os tickets
+        for (Ticket t : tickets) {
+            if (t != null) {
+                Voo voo = t.getVoo();
+                Passageiro passageiro = t.getPassageiro();
+                for (VooAssentos a : voo.getVooAssentos()) {
+                    if (a.getPassageiro() == null) {
+                        a.setPassageiro(passageiro);
+                        break; // cada passageiro ocupa apenas um assento
+                    }
+                }
+            }
+        }
+    }
+
     public static void reservarAssento(Voo[] voos, Passageiro[] passageiros, Scanner scan) {
         VooDAO.listar(voos);
         System.out.print("ID do voo: ");

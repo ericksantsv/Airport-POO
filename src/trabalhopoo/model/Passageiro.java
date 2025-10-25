@@ -170,5 +170,18 @@ public class Passageiro {
             }
         }
     }
+    
+    public void adicionarTicket(Ticket t) {
+    if (this.ticket == null) {
+        this.ticket = new Ticket[10]; // ou outro tamanho suficiente
+    }
+    for (int i = 0; i < ticket.length; i++) {
+        if (ticket[i] == null) {
+            ticket[i] = t;
+            break;
+        }
+    }
+}
+
 
 }

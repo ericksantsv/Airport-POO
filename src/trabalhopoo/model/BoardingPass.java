@@ -53,6 +53,24 @@ public class BoardingPass {
         this.embarcado = embarcado;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPassageiro(Passageiro passageiro) {
+        this.passageiro = passageiro;
+    }
+
+    public void setVoo(Voo voo) {
+        this.voo = voo;
+    }
+
+    public void setDataEmissao(LocalDateTime dataEmissao) {
+        this.dataEmissao = dataEmissao;
+    }
+    
+    
+    
     // --- Método para exibir o cartão ---
     public void exibirBoardingPass() {
         System.out.println("\n===== BOARDING PASS =====");
