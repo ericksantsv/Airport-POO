@@ -44,7 +44,6 @@ public class DespachoBagagemDAO {
         System.out.println("\n--- Check-ins aprovados para despacho ---");
         boolean temAprovado = false;
 
-        // 1. Listar apenas check-ins aprovados que ainda não tiveram bagagem despachada
         for (CheckIn c : checkIns) {
             if (c != null && c.isAprovado()) {
                 boolean jaDespachada = false;
@@ -78,7 +77,6 @@ public class DespachoBagagemDAO {
 
         Ticket ticketSelecionado = null;
 
-        // 2. Procurar o ticket com check-in aprovado que ainda não foi despachado
         for (CheckIn c : checkIns) {
             if (c != null && c.isAprovado() && c.getTicket().getId() == idEscolhido) {
                 boolean jaDespachada = false;
@@ -102,7 +100,6 @@ public class DespachoBagagemDAO {
             return;
         }
 
-        // 3. Registrar o despacho da bagagem
         for (int i = 0; i < bagagens.length; i++) {
             if (bagagens[i] == null) {
                 bagagens[i] = new DespachoBagagem(

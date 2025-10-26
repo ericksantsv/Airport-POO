@@ -26,10 +26,10 @@ public class CheckInDAO {
         for (Ticket t : tickets) {
             if (t != null) {
                 Voo v = t.getVoo();
-                if (v.getEstado().equalsIgnoreCase("Concluido")) { // só aprova check-in de voos concluídos
+                if (v.getEstado().equalsIgnoreCase("Concluido")) { 
                     checkIns[ciIndex] = new CheckIn(ciIndex + 1, t, t.getPassageiro().getDocumento());
                     checkIns[ciIndex].setDataCriacao(t.getVoo().getData());
-                    checkIns[ciIndex].setAprovado(true); // aprova automaticamente
+                    checkIns[ciIndex].setAprovado(true);
                     ciIndex++;
                 }
             }
@@ -45,7 +45,6 @@ public class CheckInDAO {
 
         LocalDateTime agora = LocalDateTime.now();
 
-        // 1. Filtra tickets válidos para check-in
         for (Ticket t : tickets) {
             if (t != null) {
                 boolean jaSolicitado = false;
@@ -62,7 +61,6 @@ public class CheckInDAO {
                         LocalDateTime dataVoo = voo.getData();
                         LocalDateTime limiteCheckIn = dataVoo.minusHours(24);
 
-                        // O check-in é permitido se o horário atual estiver entre "limite" e "data do voo"
                         if (agora.isAfter(limiteCheckIn) && agora.isBefore(dataVoo)) {
                             System.out.println("Numero: " + t.getId()
                                     + " | Codigo: " + t.getCodigo()
@@ -80,12 +78,10 @@ public class CheckInDAO {
             return;
         }
 
-        // 2. Solicita o número do ticket
         System.out.print("\nDigite o numero do ticket que deseja fazer check-in: ");
         int idTicket = scan.nextInt();
         scan.nextLine();
 
-        // 3. Procura o ticket escolhido e verifica o horário
         Ticket ticketEscolhido = null;
         for (Ticket t : tickets) {
             if (t != null && t.getId() == idTicket) {
@@ -110,7 +106,6 @@ public class CheckInDAO {
                 LocalDateTime dataVoo = voo.getData();
                 LocalDateTime limiteCheckIn = dataVoo.minusHours(24);
 
-                // Regras simples usando comparação direta
                 if (agora.isBefore(limiteCheckIn)) {
                     System.out.println("Ainda nao e possivel fazer check-in (apenas 24h antes do voo).");
                     return;
@@ -129,7 +124,6 @@ public class CheckInDAO {
             return;
         }
 
-        // 4. Registra o check-in
         for (int i = 0; i < checkIns.length; i++) {
             if (checkIns[i] == null) {
                 checkIns[i] = new CheckIn(i + 1, ticketEscolhido, passageiro.getDocumento());
@@ -162,7 +156,6 @@ public class CheckInDAO {
     }
 
     public static void aprovarCheckIn(CheckIn[] checkIns, BoardingPass[] boardingPasses, Scanner scan) {
-        // 1. Verifica se existem check-ins pendentes
         boolean temPendentes = false;
         for (CheckIn c : checkIns) {
             if (c != null && !c.isAprovado()) {
@@ -173,18 +166,15 @@ public class CheckInDAO {
 
         if (!temPendentes) {
             System.out.println("Nao ha check-ins pendentes para aprovar.");
-            return; // sai do método
+            return; 
         }
 
-        // 2. Lista os check-ins pendentes
         listarPendentes(checkIns);
 
-        // 3. Solicita o ID do check-in a aprovar
         System.out.print("Digite o ID do check-in para aprovar: ");
         int id = scan.nextInt();
         scan.nextLine();
 
-        // 4. Procura o check-in e aprova
         for (CheckIn c : checkIns) {
             if (c != null && c.getId() == id && !c.isAprovado()) {
                 c.setAprovado(true);
@@ -193,7 +183,6 @@ public class CheckInDAO {
                 Ticket t = c.getTicket();
                 Voo v = t.getVoo();
 
-                // 5. Procura o assento já ocupado pelo passageiro
                 String codigoAssento = null;
                 for (VooAssentos a : v.getVooAssentos()) {
                     if (a.getPassageiro() == t.getPassageiro()) {
@@ -207,7 +196,6 @@ public class CheckInDAO {
                     return;
                 }
 
-                // 6. Cria boarding pass usando o código do assento existente
                 for (int j = 0; j < boardingPasses.length; j++) {
                     if (boardingPasses[j] == null) {
                         boardingPasses[j] = new BoardingPass(j + 1, t.getPassageiro(), v, codigoAssento);

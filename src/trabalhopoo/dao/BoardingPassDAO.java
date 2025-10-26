@@ -27,19 +27,17 @@ public class BoardingPassDAO {
                 Passageiro p = t.getPassageiro();
                 Voo v = t.getVoo();
 
-                // Verifica se o passageiro fez check-in aprovado
                 boolean checkInOk = false;
                 LocalDateTime dataCheckIn = null;
 
                 for (CheckIn c : checkIns) {
                     if (c != null && c.getTicket() == t && c.isAprovado()) {
                         checkInOk = true;
-                        dataCheckIn = c.getDataCriacao(); // usa a data do check-in
+                        dataCheckIn = c.getDataCriacao(); 
                         break;
                     }
                 }
 
-                // Verifica se há bagagem despachada
                 boolean bagagemOk = false;
                 for (DespachoBagagem d : bagagens) {
                     if (d != null && d.getTicket() == t) {
@@ -49,7 +47,6 @@ public class BoardingPassDAO {
                 }
 
                 if (checkInOk && bagagemOk) {
-                    // Atribui assento livre
                     for (VooAssentos a : v.getVooAssentos()) {
                         if (a.getPassageiro() == null) {
                             a.setPassageiro(p);
@@ -61,10 +58,8 @@ public class BoardingPassDAO {
                                     a.getCodigoAssento()
                             );
 
-                            // ✅ Embarque automático
                             bp.setEmbarcado(true);
 
-                            // Data de emissão igual à data do check-in
                             bp.setDataEmissao(dataCheckIn != null ? dataCheckIn : v.getData());
 
                             boardingPasses[bpIndex++] = bp;
@@ -76,7 +71,6 @@ public class BoardingPassDAO {
         }
     }
 
-    // Método para listar todos os boarding passes
     public static void listarBoardingPasses(BoardingPass[] boardingPasses) {
         System.out.println("\n--- Lista de Boarding Passes ---");
 
@@ -113,7 +107,6 @@ public class BoardingPassDAO {
         }
     }
 
-    // Método para listar apenas boarding passes de um passageiro específico
     public static void listarBoardingPasses(BoardingPass[] boardingPasses, Passageiro passageiro) {
         System.out.println("\n--- Seus Boarding Passes ---");
 
@@ -161,15 +154,12 @@ public class BoardingPassDAO {
                 Voo v = t.getVoo();
                 v.atualizarEstadoAutomatico();
 
-                // Impede voos cancelados ou concluídos
                 if (v.getEstado().equalsIgnoreCase("Cancelado") || v.getEstado().equalsIgnoreCase("Concluido")) {
                     continue;
                 }
 
-                // Verifica se o voo está em embarque
                 boolean vooEmbarque = v.getEstado().equalsIgnoreCase("Embarque");
 
-                // Verifica check-in aprovado
                 boolean checkInAprovado = false;
                 for (CheckIn c : checkIns) {
                     if (c != null && c.getTicket() == t && c.isAprovado()) {
@@ -178,7 +168,6 @@ public class BoardingPassDAO {
                     }
                 }
 
-                // Verifica boarding pass emitido
                 boolean boardingPassEmitido = false;
                 BoardingPass bpTicket = null;
                 for (BoardingPass bp : boardingPasses) {
@@ -189,7 +178,6 @@ public class BoardingPassDAO {
                     }
                 }
 
-                // Verifica bagagem despachada
                 boolean bagagemDespachada = false;
                 for (DespachoBagagem d : bagagens) {
                     if (d != null && d.getTicket() == t) {
@@ -221,7 +209,6 @@ public class BoardingPassDAO {
             return;
         }
 
-        // Escolha do ticket
         System.out.print("\nDigite o numero do ticket que deseja embarcar: ");
         int idTicket = scan.nextInt();
         scan.nextLine();
@@ -230,19 +217,16 @@ public class BoardingPassDAO {
             if (t != null && t.getId() == idTicket) {
                 Voo v = t.getVoo();
 
-                // Impede embarque em voo cancelado
                 if (v.getEstado().equalsIgnoreCase("Cancelado")) {
                     System.out.println("Este voo foi cancelado. O embarque nao e permitido.");
                     return;
                 }
 
-                // Impede embarque em voo já concluído
                 if (v.getEstado().equalsIgnoreCase("Concluido")) {
                     System.out.println("Este voo ja foi concluído. O embarque nao e possivel.");
                     return;
                 }
 
-                // Busca boarding pass correspondente
                 for (BoardingPass bp : boardingPasses) {
                     if (bp != null && bp.getVoo() == v && bp.getPassageiro() == passageiro) {
                         bp.setEmbarcado(true);

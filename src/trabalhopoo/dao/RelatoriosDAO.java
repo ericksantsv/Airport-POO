@@ -11,11 +11,11 @@ import trabalhopoo.model.Voo;
 public class RelatoriosDAO {
 
     public static void passageirosQueDeixaramCidade(Voo[] voos, Ticket[] tickets, Scanner scan) {
-        System.out.println("\n===== Cidades de Origem Disponíveis =====");
+        System.out.println("\n===== Cidades de Origem Disponiveis =====");
         String[] origens = new String[voos.length];
         int count = 0;
 
-        // Coleta origens únicas manualmente
+        // Coleta origens unicas manualmente
         for (Voo v : voos) {
             if (v != null && v.getOrigem() != null) {
                 boolean repetido = false;
@@ -146,7 +146,7 @@ public class RelatoriosDAO {
         DateTimeFormatter FORMATO_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
         // Lista companhias
-        System.out.println("\n--- Companhias Aéreas ---");
+        System.out.println("\n--- Companhias Aereas ---");
         for (CompanhiaAerea c : companhias) {
             if (c != null) {
                 System.out.println(c.getId() + " - " + c.getNome() + " (" + c.getAbreviacao() + ")");
