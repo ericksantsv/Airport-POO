@@ -154,24 +154,42 @@ public class UsuarioDAO {
     public static Usuario criaUsuarioAdm(Scanner scan, Usuario[] usuarios) {
         System.out.println("Registre o seu login e senha");
 
-        System.out.print("Usuario: ");
-        String login = scan.nextLine().trim();
+        String login;
+        boolean loginExistente;
 
-        // Verifica se já existe esse login
-        for (Usuario u : usuarios) {
-            if (u != null && u.getLogin().equalsIgnoreCase(login)) {
-                System.out.println("Esse login ja esta em uso. Tente outro.");
-                return null;
+        do {
+            System.out.print("Usuario: ");
+            login = scan.nextLine().trim();
+            if (login.isEmpty()) {
+                System.out.println("Login nao pode ser vazio!");
+                loginExistente = true;
+                continue;
+            }
+            loginExistente = false;
+            for (Usuario u : usuarios) {
+                if (u != null && u.getLogin().equalsIgnoreCase(login)) {
+                    System.out.println("Esse login ja esta em uso. Tente outro.");
+                    loginExistente = true;
+                    break;
+                }
+            }
+        } while (loginExistente);
+
+        String senha;
+        while (true) {
+            System.out.print("Senha: ");
+            senha = scan.nextLine().trim();
+            if (senha.isEmpty()) {
+                System.out.println("Senha nao pode ser vazia!");
+            } else {
+                break;
             }
         }
 
-        System.out.print("Senha: ");
-        String senha = scan.nextLine().trim();
+        // Vetor com os tipos disponiveis
+        String[] tipos = {"adm", "funcionario"};
 
-        // Vetor com os tipos disponíveis
-        String[] tipos = {"passageiro", "adm", "funcionario"};
-
-        // Mostra opções para o usuário escolher
+        // Mostra opcoes para o usuario escolher
         System.out.println("Escolha o tipo de usuario:");
         for (int i = 0; i < tipos.length; i++) {
             System.out.println((i + 1) + " - " + tipos[i]);
@@ -187,14 +205,14 @@ public class UsuarioDAO {
                     break;
                 }
             } else {
-                scan.nextLine(); // limpar entrada inválida
+                scan.nextLine(); // limpar entrada invalida
             }
             System.out.println("Opcao invalida. Tente novamente.");
         }
 
         String tipoSelecionado = tipos[escolha - 1]; // pega o tipo correspondente
 
-        // Adiciona no vetor de usuários
+        // Adiciona no vetor de usuarios
         for (int i = 0; i < usuarios.length; i++) {
             if (usuarios[i] == null) {
                 usuarios[i] = new Usuario(login, senha, tipoSelecionado);
@@ -210,7 +228,7 @@ public class UsuarioDAO {
     public static void listarUsuario(Usuario[] usuarios) {
         System.out.println("\n===== Usuarios =====");
         for (Usuario u : usuarios) {
-            if (u != null) {
+            if (u != null && !u.getTipo().equalsIgnoreCase("passageiro")) { // Apenas ADM/funcionario
                 System.out.println("\n| Login: " + u.getLogin()
                         + "\n| Senha: " + u.getSenha()
                         + "\n| Tipo: " + u.getTipo()
@@ -218,4 +236,107 @@ public class UsuarioDAO {
             }
         }
     }
+
+    public static void editarUsuario(Scanner scan, Usuario[] usuarios) {
+        System.out.print("Digite o login do usuario que deseja editar: ");
+        String login = scan.nextLine();
+
+        Usuario encontrado = null;
+        for (Usuario u : usuarios) {
+            if (u != null && u.getLogin().equalsIgnoreCase(login)) {
+                encontrado = u;
+                break;
+            }
+        }
+
+        if (encontrado == null) {
+            System.out.println("Usuario nao encontrado!");
+            return;
+        }
+        if (encontrado.getTipo().equalsIgnoreCase("passageiro")) {
+            System.out.println("Nao e permitido editar passageiros!");
+            return;
+        }
+
+        // Validacao para login novo nao ser vazio ou repetido
+        String novoLogin;
+        while (true) {
+            System.out.print("Novo login: ");
+            novoLogin = scan.nextLine().trim();
+            if (novoLogin.isEmpty()) {
+                System.out.println("Login nao pode ser vazio!");
+                continue;
+            }
+            boolean repetido = false;
+            for (Usuario u : usuarios) {
+                if (u != null && u != encontrado && u.getLogin().equalsIgnoreCase(novoLogin)) {
+                    repetido = true;
+                    break;
+                }
+            }
+            if (repetido) {
+                System.out.println("Login ja existe! Tente outro.");
+                continue;
+            }
+            break;
+        }
+        encontrado.setLogin(novoLogin);
+
+        // Validacao para senha nao ser vazia
+        String novaSenha;
+        while (true) {
+            System.out.print("Nova senha: ");
+            novaSenha = scan.nextLine().trim();
+            if (novaSenha.isEmpty()) {
+                System.out.println("Senha nao pode ser vazia!");
+            } else {
+                break;
+            }
+        }
+        encontrado.setSenha(novaSenha);
+
+        // Validacao para tipo valido
+        String novoTipo;
+        while (true) {
+            System.out.print("Novo tipo (adm/funcionario): ");
+            novoTipo = scan.nextLine().trim().toLowerCase();
+            if (!novoTipo.equals("adm") && !novoTipo.equals("funcionario")) {
+                System.out.println("Tipo invalido! Escolha 'adm' ou 'funcionario'.");
+            } else {
+                break;
+            }
+        }
+        encontrado.setTipo(novoTipo);
+
+        System.out.println("Usuario atualizado com sucesso!");
+    }
+
+    public static void removerUsuario(Scanner scan, Usuario[] usuarios) {
+        System.out.println("\n=== Remover Usuario ===");
+        System.out.print("Digite o login do usuario que deseja remover: ");
+        String login = scan.nextLine().trim();
+
+        for (int i = 0; i < usuarios.length; i++) {
+            Usuario u = usuarios[i];
+            if (u != null && u.getLogin().equalsIgnoreCase(login)) {
+                if (u.getTipo().equalsIgnoreCase("passageiro")) {
+                    System.out.println("Voce nao pode remover um usuario do tipo Passageiro!");
+                    return;
+                }
+
+                System.out.print("Tem certeza que deseja remover este usuario? (s/n): ");
+                String confirm = scan.nextLine().trim().toLowerCase();
+                if (confirm.equals("s")) {
+                    usuarios[i] = null;
+                    System.out.println("Usuario removido com sucesso!");
+                } else {
+                    System.out.println("Remocao cancelada.");
+                }
+                return;
+            }
+        }
+
+        System.out.println("Usuario nao encontrado!");
+    }
+
 }

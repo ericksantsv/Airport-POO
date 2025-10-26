@@ -17,7 +17,7 @@ public class Usuario {
     private String senha;
     private String tipo;
     private Passageiro passageiro;
-    
+
     //construtores
     public Usuario() {
     }
@@ -69,7 +69,6 @@ public class Usuario {
         this.passageiro = passageiro;
     }
 
-    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -92,7 +91,7 @@ public class Usuario {
     }
 
     // ---------------- Menu Admin ----------------
-    public static void menuAdmin(Scanner scan, Ticket[] tickets, Passageiro[] passageiros, Voo[] voos, CompanhiaAerea[] companhias, Usuario[] usuarios, BoardingPass[] boarding) {
+    public static void menuAdmin(Scanner scan, Ticket[] tickets, Passageiro[] passageiros, Voo[] voos, CheckIn[]checkIns, DespachoBagagem[] bagagens, CompanhiaAerea[] companhias, Usuario[] usuarios, BoardingPass[] boarding) {
         boolean admMenu = true;
         while (admMenu) {
             System.out.println("\n--- MENU ADMINISTRADOR ---");
@@ -111,7 +110,7 @@ public class Usuario {
             switch (admOpc) {
                 case 1:
                     // Chama CRUD de Passageiros
-                    Passageiro.crudPassageiro(passageiros, scan);
+                    Passageiro.crudPassageiro(passageiros, voos, tickets, checkIns, bagagens, boarding, usuarios, scan);
                     break;
                 case 2:
                     // Ainda não implementado
@@ -122,7 +121,7 @@ public class Usuario {
                     break;
                 case 4:
                     //Ticket
-                    
+
                     break;
                 case 5:
                     // Ainda não implementado
@@ -145,17 +144,21 @@ public class Usuario {
     }
 
     public static void crudUsuario(Usuario[] usuarios, Scanner scan) {
-        boolean userMenu = true;
-        while (userMenu) {
-            System.out.println("\n--- CRUD Usuarios ---");
-            System.out.println("1 - Criar Users");
-            System.out.println("2 - Listar Users");
-            System.out.println("3 - Voltar");
-            System.out.print("Escolha uma opcao: ");
-            int usrOpc = scan.nextInt();
+        boolean rodando = true;
+
+        while (rodando) {
+            System.out.println("\n--- CRUID Usuarios ---");
+            System.out.println("1 - Criar Usuario");
+            System.out.println("2 - Listar Usuarios");
+            System.out.println("3 - Editar Usuario");
+            System.out.println("4 - Remover Usuario");
+            System.out.println("5 - Voltar");
+            System.out.print("Escolha uma ocpao: ");
+
+            int opc = scan.nextInt();
             scan.nextLine();
 
-            switch (usrOpc) {
+            switch (opc) {
                 case 1:
                     UsuarioDAO.criaUsuarioAdm(scan, usuarios);
                     break;
@@ -163,7 +166,13 @@ public class Usuario {
                     UsuarioDAO.listarUsuario(usuarios);
                     break;
                 case 3:
-                    userMenu = false;
+                    UsuarioDAO.editarUsuario(scan, usuarios);
+                    break;
+                case 4:
+                    UsuarioDAO.removerUsuario(scan, usuarios);
+                    break;
+                case 5:
+                    rodando = false;
                     break;
                 default:
                     System.out.println("Opcao invalida!");
@@ -171,6 +180,7 @@ public class Usuario {
             }
         }
     }
+
     // ------------------- Menu Funcionário ---------------
     public static void menuFuncionario(Scanner scan, Passageiro[] passageiros, Voo[] voos, CheckIn[] checkIns, BoardingPass[] boardingPasses, DespachoBagagem[] bagagens) {
         boolean funcMenu = true;
@@ -209,7 +219,7 @@ public class Usuario {
         }
     }
 
-        // ------------------- Menu Passageiro -------------------
+    // ------------------- Menu Passageiro -------------------
     public static void menuPassageiro(Scanner scan, Usuario usuario, Voo[] voos, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boarding) {
         boolean menuPass = true;
 
@@ -254,6 +264,5 @@ public class Usuario {
             }
         }
     }
-
 
 }

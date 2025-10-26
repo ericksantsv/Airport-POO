@@ -43,6 +43,8 @@ public class CompanhiaAereaDAO {
     }
 
     public static void editar(CompanhiaAerea[] companhias, Scanner scan) {
+        
+        CompanhiaAereaDAO.listar(companhias);
         System.out.print("ID da companhia para editar: ");
         int id = scan.nextInt();
         scan.nextLine();
@@ -61,6 +63,8 @@ public class CompanhiaAereaDAO {
     }
 
     public static void deletar(CompanhiaAerea[] companhias, Scanner scan) {
+        
+        CompanhiaAereaDAO.listar(companhias);
         System.out.print("ID da companhia para deletar: ");
         int id = scan.nextInt();
         scan.nextLine();

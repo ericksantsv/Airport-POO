@@ -3,9 +3,14 @@ package trabalhopoo.dao;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import trabalhopoo.model.BoardingPass;
+import trabalhopoo.model.CheckIn;
+import trabalhopoo.model.DespachoBagagem;
 import trabalhopoo.model.Passageiro;
+import trabalhopoo.model.Ticket;
 import trabalhopoo.model.Usuario;
 import trabalhopoo.model.Voo;
+import trabalhopoo.model.VooAssentos;
 
 public class PassageiroDAO {
 
@@ -44,7 +49,7 @@ public class PassageiroDAO {
         return passageiros;
     }
 
-    public static void cadastrar(Passageiro[] passageiros, Scanner scan) {
+    public static void cadastrar(Passageiro[] passageiros, Usuario[] usuarios, Scanner scan) {
         for (int i = 0; i < passageiros.length; i++) {
             if (passageiros[i] == null) {
                 System.out.print("Nome: ");
@@ -58,6 +63,9 @@ public class PassageiroDAO {
 
                 passageiros[i] = new Passageiro(i + 1, nome, nasc, doc, LocalDateTime.now(), LocalDateTime.now());
                 System.out.println("Passageiro cadastrado!");
+                
+                UsuarioDAO.criaUsuario(scan, usuarios, passageiros[i]);
+                
                 break;
             }
         }
@@ -127,19 +135,71 @@ public class PassageiroDAO {
         }
     }
 
-    public static void deletar(Passageiro[] passageiros, Scanner scan) {
-        System.out.print("Informe o ID do passageiro para deletar: ");
-        int idDel = scan.nextInt();
-        scan.nextLine();
+    public static void deletar(Passageiro[] passageiros, Ticket[] tickets, Voo[] voos, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boardingPasses, Scanner scan) {
+    
+    PassageiroDAO.listar(passageiros);
+    System.out.print("Informe o ID do passageiro para deletar: ");
+    int idDel = scan.nextInt();
+    scan.nextLine();
 
-        for (int i = 0; i < passageiros.length; i++) {
-            if (passageiros[i] != null && passageiros[i].getId() == idDel) {
-                passageiros[i] = null;
-                System.out.println("Passageiro deletado!");
-                break;
+    Passageiro passageiroDeletar = null;
+
+    // Encontrar e remover o passageiro
+    for (int i = 0; i < passageiros.length; i++) {
+        if (passageiros[i] != null && passageiros[i].getId() == idDel) {
+            passageiroDeletar = passageiros[i];
+            passageiros[i] = null;
+            System.out.println("Passageiro deletado!");
+            break;
+        }
+    }
+
+    if (passageiroDeletar == null) {
+        System.out.println("Passageiro não encontrado!");
+        return;
+    }
+
+    // Remover tickets do passageiro
+    for (int i = 0; i < tickets.length; i++) {
+        if (tickets[i] != null && tickets[i].getPassageiro() == passageiroDeletar) {
+            tickets[i] = null;
+        }
+    }
+
+    // Liberar assentos ocupados pelo passageiro
+    for (Voo v : voos) {
+        if (v != null) {
+            for (VooAssentos a : v.getVooAssentos()) {
+                if (a != null && a.getPassageiro() == passageiroDeletar) {
+                    a.setPassageiro(null);
+                }
             }
         }
     }
+
+    // Remover check-ins do passageiro
+    for (int i = 0; i < checkIns.length; i++) {
+        if (checkIns[i] != null && checkIns[i].getTicket().getPassageiro() == passageiroDeletar) {
+            checkIns[i] = null;
+        }
+    }
+
+    // Remover bagagens do passageiro
+    for (int i = 0; i < bagagens.length; i++) {
+        if (bagagens[i] != null && bagagens[i].getTicket().getPassageiro() == passageiroDeletar) {
+            bagagens[i] = null;
+        }
+    }
+
+    // Remover boarding passes do passageiro
+    for (int i = 0; i < boardingPasses.length; i++) {
+        if (boardingPasses[i] != null && boardingPasses[i].getPassageiro() == passageiroDeletar) {
+            boardingPasses[i] = null;
+        }
+    }
+
+    System.out.println("Todos os registros associados ao passageiro foram removidos.");
+}
 
     public static Passageiro buscarPorId(Passageiro[] passageiros, int id) {
         for (Passageiro p : passageiros) {

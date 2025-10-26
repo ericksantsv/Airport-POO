@@ -67,7 +67,7 @@ public class TrabalhoPOO {
                 case 4:
                     Usuario admin = UsuarioDAO.loginAdmin(scan, usuarios);
                     if (admin != null) {
-                        Usuario.menuAdmin(scan, tickets, passageiros, voos, companhiaAerea, usuarios, boardingPasses);
+                        Usuario.menuAdmin(scan, tickets, passageiros, voos, checkIns, bagagens, companhiaAerea, usuarios, boardingPasses);
                     }
                     break;
                 case 5:

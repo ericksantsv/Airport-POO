@@ -130,7 +130,7 @@ public class Passageiro {
         return Objects.equals(this.documento, other.documento);
     }
     
-    public static void crudPassageiro(Passageiro[] passageiros, Scanner scan) {
+    public static void crudPassageiro(Passageiro[] passageiros, Voo[] voos, Ticket[] tickets, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boardingPasses, Usuario[] usuarios, Scanner scan) {
         boolean menu = true;
         while (menu) {
             System.out.println("\n--- CRUD Passageiro ---");
@@ -145,7 +145,7 @@ public class Passageiro {
 
             switch (op) {
                 case 1:
-                    PassageiroDAO.cadastrar(passageiros, scan);
+                    PassageiroDAO.cadastrar(passageiros, usuarios, scan);
                     break;
 
                 case 2:
@@ -157,7 +157,7 @@ public class Passageiro {
                     break;
 
                 case 4:
-                    PassageiroDAO.deletar(passageiros, scan);
+                    PassageiroDAO.deletar(passageiros, tickets, voos, checkIns, bagagens, boardingPasses, scan);
                     break;
 
                 case 5:
