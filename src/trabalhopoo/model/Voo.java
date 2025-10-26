@@ -25,6 +25,7 @@ public class Voo {
     private String destino;
     private LocalDateTime data;
     private LocalTime duracao;
+    private double valor;
     private CompanhiaAerea companhiaAerea;
     private VooAssentos[] vooAssentos;
     private int capacidade;
@@ -36,8 +37,9 @@ public class Voo {
 
     }
 
-    public Voo(int id, String origem, String destino, LocalDateTime data, LocalTime duracao, CompanhiaAerea companhiaAerea, int capacidade, String estado, LocalDateTime dataCriacao, LocalDateTime dataModificacao) {
+    public Voo(int id,double valor, String origem, String destino, LocalDateTime data, LocalTime duracao, CompanhiaAerea companhiaAerea, int capacidade, String estado, LocalDateTime dataCriacao, LocalDateTime dataModificacao) {
         this.id = id;
+        this.valor = valor;
         this.origem = origem;
         this.destino = destino;
         this.data = data;
@@ -142,6 +144,16 @@ public class Voo {
         this.vooAssentos = vooAssentos;
     }
 
+    public double getValor() {
+        return valor;
+    }
+
+    public void setValor(double valor) {
+        this.valor = valor;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 7;
@@ -239,6 +251,15 @@ public class Voo {
         } else if (agora.isAfter(partida.plusMinutes(15)) && this.estado.equalsIgnoreCase("Programado")) {
             this.estado = "Atrasado";
         }
+    }
+
+    public boolean temAssentoLivre() {
+        for (VooAssentos a : this.vooAssentos) {
+            if (a.getPassageiro() == null) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

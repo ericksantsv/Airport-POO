@@ -28,11 +28,9 @@ public class TicketDAO {
             return new Ticket[0];
         }
 
-        Ticket[] tickets = new Ticket[passageiros.length * 2]; // reserva espaço extra
+        Ticket[] tickets = new Ticket[passageiros.length * 2]; // tamanho máximo estimado
         int index = 0;
-        double[] valoresExemplo = {150, 200, 250, 300, 350, 400, 450, 500, 550, 600};
-
-        int contadorVoo = 0; // garante que todos os voos concluidos sejam usados
+        int contadorVoo = 0;
 
         for (int i = 0; i < passageiros.length; i++) {
             Passageiro p = passageiros[i];
@@ -40,28 +38,42 @@ public class TicketDAO {
                 continue;
             }
 
-            // Seleciona voo concluído de forma circular
+            // Seleciona voo principal concluído, com assento livre e sem o mesmo passageiro
             Voo vooPrincipal = null;
-            int tentativas = 0; // evita loop infinito se não houver voos concluídos
+            int tentativas = 0;
             while (tentativas < voos.length) {
                 Voo v = voos[contadorVoo % voos.length];
                 contadorVoo++;
                 tentativas++;
-                if (v != null && v.getEstado().equalsIgnoreCase("Concluido")) {
-                    vooPrincipal = v;
-                    break;
+
+                if (v != null && v.getEstado().equalsIgnoreCase("Concluido") && v.temAssentoLivre()) {
+                    boolean jaTemNoMesmoVoo = false;
+
+                    for (Ticket t : p.getTicket()) {
+                        if (t != null && t.getVoo() == v) {
+                            jaTemNoMesmoVoo = true;
+                            break;
+                        }
+                    }
+
+                    if (!jaTemNoMesmoVoo) {
+                        vooPrincipal = v;
+                        break;
+                    }
                 }
             }
 
             if (vooPrincipal == null) {
-                continue; // pula passageiro se não houver voo concluído
+                continue;
             }
-            // Cria ticket principal
-            Ticket t1 = new Ticket(index + 1, valoresExemplo[i % valoresExemplo.length], vooPrincipal, p);
+
+            // Cria ticket
+            Ticket t1 = new Ticket(index + 1, vooPrincipal.getValor(), vooPrincipal, p);
             tickets[index++] = t1;
             p.adicionarTicket(t1);
 
-            // Cria ticket extra a cada 3 passageiros, em outro voo concluído
+            // Assento será preenchido depois
+            // Cria ticket extra a cada 3 passageiros
             if (i % 3 == 0) {
                 Voo vooExtra = null;
                 tentativas = 0;
@@ -69,14 +81,26 @@ public class TicketDAO {
                     Voo v = voos[contadorVoo % voos.length];
                     contadorVoo++;
                     tentativas++;
-                    if (v != null && v.getEstado().equalsIgnoreCase("Concluido")) {
-                        vooExtra = v;
-                        break;
+
+                    if (v != null && v.getEstado().equalsIgnoreCase("Concluido") && v.temAssentoLivre()) {
+                        boolean jaTemNoMesmoVoo = false;
+
+                        for (Ticket t : p.getTicket()) {
+                            if (t != null && t.getVoo() == v) {
+                                jaTemNoMesmoVoo = true;
+                                break;
+                            }
+                        }
+
+                        if (!jaTemNoMesmoVoo) {
+                            vooExtra = v;
+                            break;
+                        }
                     }
                 }
 
                 if (vooExtra != null) {
-                    Ticket t2 = new Ticket(index + 1, valoresExemplo[(i + 1) % valoresExemplo.length], vooExtra, p);
+                    Ticket t2 = new Ticket(index + 1, vooExtra.getValor(), vooExtra, p);
                     tickets[index++] = t2;
                     p.adicionarTicket(t2);
                 }
@@ -168,6 +192,7 @@ public class TicketDAO {
                         + "\n| Codigo: " + t.getCodigo()
                         + "\n| Origem: " + v.getOrigem()
                         + "\n| Destino: " + v.getDestino()
+                        + "\n| Valor: R$ " + String.format("%.2f", t.getValor())
                         + "\n| Duracao: " + duracaoFormatada
                         + "\n| Companhia aerea: " + v.getCompanhiaAerea().getNome()
                         + "\n| Data do voo: " + v.getData().format(formato)

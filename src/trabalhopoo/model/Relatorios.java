@@ -13,13 +13,14 @@ import trabalhopoo.dao.RelatoriosDAO;
  */
 public class Relatorios {
     
-    public static void menuRelatorios(Voo[] voos, Ticket[] tickets, Scanner scan) {
+    public static void menuRelatorios(Voo[] voos, Ticket[] tickets, CompanhiaAerea[] companhias, Passageiro[] passageiros, Scanner scan) {
         boolean userMenu = true;
         while (userMenu) {
             System.out.println("\n--- Relatorios ---");
             System.out.println("1 - Passageiros que deixaram em determinada cidade ");
             System.out.println("2 - Passageiros que chegaram em determinada cidade");
             System.out.println("3 - Receita de companhia aerea no periodo");
+            System.out.println("4 - Sair");
             System.out.print("Escolha uma opcao: ");
             int usrOpc = scan.nextInt();
             scan.nextLine();
@@ -29,10 +30,10 @@ public class Relatorios {
                     RelatoriosDAO.passageirosQueDeixaramCidade(voos, tickets, scan);
                     break;
                 case 2:
-
+                    RelatoriosDAO.passageirosQueChegaramCidade(voos, tickets, scan);
                     break;
                 case 3:
-                    
+                    RelatoriosDAO.calcularReceita(companhias, passageiros, scan);
                     break;
                 case 4:
                     userMenu = false;

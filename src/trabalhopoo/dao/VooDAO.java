@@ -16,19 +16,19 @@ public class VooDAO {
         Voo[] voos = new Voo[50];
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        voos[0] = new Voo(1, "Uberaba", "Sao Paulo", LocalDateTime.parse("2025-10-10 08:30", formato), LocalTime.of(1, 45), companhiaAerea[0], 5, "Concluido", LocalDateTime.now(), LocalDateTime.now());
-        voos[1] = new Voo(2, "Sao Paulo", "Rio de Janeiro", LocalDateTime.parse("2025-10-09 14:00", formato), LocalTime.of(2, 10), companhiaAerea[1], 3, "Concluido", LocalDateTime.now(), LocalDateTime.now());
-        voos[2] = new Voo(3, "Rio de Janeiro", "Curitiba", LocalDateTime.parse("2025-10-08 09:15", formato), LocalTime.of(1, 25), companhiaAerea[2], 4, "Concluido", LocalDateTime.now(), LocalDateTime.now());
-        voos[3] = new Voo(4, "Curitiba", "Brasilia", LocalDateTime.parse("2025-10-07 18:00", formato), LocalTime.of(1, 35), companhiaAerea[3], 6, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
-        voos[4] = new Voo(5, "Brasilia", "Uberaba", LocalDateTime.parse("2025-10-06 06:45", formato), LocalTime.of(1, 50), companhiaAerea[4], 10, "Concluido", LocalDateTime.now(), LocalDateTime.now());
-        voos[5] = new Voo(6, "Uberaba", "Curitiba", LocalDateTime.parse("2025-10-05 11:00", formato), LocalTime.of(2, 15), companhiaAerea[2], 5, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
-        voos[6] = new Voo(7, "Sao Paulo", "Brasilia", LocalDateTime.parse("2025-10-04 07:20", formato), LocalTime.of(1, 30), companhiaAerea[0], 8, "Concluido", LocalDateTime.now(), LocalDateTime.now());
-        voos[7] = new Voo(8, "Brasilia", "Rio de Janeiro", LocalDateTime.parse("2025-10-03 09:10", formato), LocalTime.of(1, 10), companhiaAerea[1], 6, "Concluido", LocalDateTime.now(), LocalDateTime.now());
-        voos[8] = new Voo(9, "Curitiba", "Uberaba", LocalDateTime.parse("2025-10-02 15:45", formato), LocalTime.of(1, 55), companhiaAerea[3], 7, "Concluido", LocalDateTime.now(), LocalDateTime.now());
-        voos[9] = new Voo(10, "Rio de Janeiro", "Sao Paulo", LocalDateTime.parse("2025-10-01 21:00", formato), LocalTime.of(1, 40), companhiaAerea[4], 9, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
-        voos[10] = new Voo(11, "Uberaba", "Brasilia", LocalDateTime.parse("2025-11-03 09:10", formato), LocalTime.of(1, 10), companhiaAerea[1], 6, "Programado", LocalDateTime.now(), LocalDateTime.now());
-        voos[11] = new Voo(12, "Sao Paulo", "Uberaba", LocalDateTime.parse("2025-11-02 15:45", formato), LocalTime.of(1, 55), companhiaAerea[3], 7, "Programado", LocalDateTime.now(), LocalDateTime.now());
-        voos[12] = new Voo(13, "Brasilia", "Curitiba", LocalDateTime.parse("2025-10-25 12:11", formato), LocalTime.of(1, 40), companhiaAerea[4], 9, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[0] = new Voo(1, 500.00, "Uberaba", "Sao Paulo", LocalDateTime.parse("2025-10-10 08:30", formato), LocalTime.of(1, 45), companhiaAerea[0], 5, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[1] = new Voo(2, 670.00, "Sao Paulo", "Rio de Janeiro", LocalDateTime.parse("2025-10-09 14:00", formato), LocalTime.of(2, 10), companhiaAerea[1], 3, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[2] = new Voo(3, 800.00, "Rio de Janeiro", "Curitiba", LocalDateTime.parse("2025-10-08 09:15", formato), LocalTime.of(1, 25), companhiaAerea[2], 4, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[3] = new Voo(4, 400.00, "Curitiba", "Brasilia", LocalDateTime.parse("2025-10-07 18:00", formato), LocalTime.of(1, 35), companhiaAerea[3], 6, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
+        voos[4] = new Voo(5, 200.00, "Brasilia", "Uberaba", LocalDateTime.parse("2025-10-06 06:45", formato), LocalTime.of(1, 50), companhiaAerea[4], 10, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[5] = new Voo(6, 350.00, "Uberaba", "Curitiba", LocalDateTime.parse("2025-10-05 11:00", formato), LocalTime.of(2, 15), companhiaAerea[2], 5, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
+        voos[6] = new Voo(7, 250.00, "Sao Paulo", "Brasilia", LocalDateTime.parse("2025-10-04 07:20", formato), LocalTime.of(1, 30), companhiaAerea[0], 8, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[7] = new Voo(8, 100.00, "Brasilia", "Rio de Janeiro", LocalDateTime.parse("2025-10-03 09:10", formato), LocalTime.of(1, 10), companhiaAerea[1], 6, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[8] = new Voo(9, 200.00, "Curitiba", "Uberaba", LocalDateTime.parse("2025-10-02 15:45", formato), LocalTime.of(1, 55), companhiaAerea[3], 7, "Concluido", LocalDateTime.now(), LocalDateTime.now());
+        voos[9] = new Voo(10, 500.00,"Rio de Janeiro", "Sao Paulo", LocalDateTime.parse("2025-10-01 21:00", formato), LocalTime.of(1, 40), companhiaAerea[4], 9, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
+        voos[10] = new Voo(11, 234.00, "Uberaba", "Brasilia", LocalDateTime.parse("2025-11-03 09:10", formato), LocalTime.of(1, 10), companhiaAerea[1], 6, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[11] = new Voo(12, 800.00, "Sao Paulo", "Uberaba", LocalDateTime.parse("2025-11-02 15:45", formato), LocalTime.of(1, 55), companhiaAerea[3], 7, "Programado", LocalDateTime.now(), LocalDateTime.now());
+        voos[12] = new Voo(13, 1000.00, "Brasilia", "Curitiba", LocalDateTime.parse("2025-10-25 12:11", formato), LocalTime.of(1, 40), companhiaAerea[4], 9, "Programado", LocalDateTime.now(), LocalDateTime.now());
 
         return voos;
     }
@@ -42,7 +42,10 @@ public class VooDAO {
 
                 System.out.print("Destino: ");
                 String destino = scan.nextLine();
-
+                
+                System.out.print("Informe o valor da viagem: ");
+                double valor = scan.nextInt();
+                
                 // Data e hora completas do voo
                 System.out.print("Data e hora do voo (AAAA-MM-DD HH:MM): ");
                 String dataHoraStr = scan.nextLine();
@@ -83,7 +86,7 @@ public class VooDAO {
                 int capacidade = scan.nextInt();
                 scan.nextLine();
 
-                voos[i] = new Voo(i + 1, origem, destino, dataHora, duracao, companhiaEscolhida, capacidade, "Programado", LocalDateTime.now(), LocalDateTime.now());
+                voos[i] = new Voo(i + 1, valor, origem, destino, dataHora, duracao, companhiaEscolhida, capacidade, "Programado", LocalDateTime.now(), LocalDateTime.now());
 
                 System.out.println("\nVoo cadastrado com sucesso!");
                 break;
@@ -158,6 +161,7 @@ public class VooDAO {
                 System.out.println("| Numero: " + v.getId());
                 System.out.println("| Origem: " + v.getOrigem());
                 System.out.println("| Destino: " + v.getDestino());
+                System.out.println("| Valor: R$ " + String.format("%.2f", v.getValor()));
                 System.out.println("| Data/Hora: " + v.getData().format(formato));
                 System.out.println("| Duracao: " + duracaoFormatada);
                 System.out.println("| Companhia: " + v.getCompanhiaAerea().getNome());
@@ -242,6 +246,7 @@ public class VooDAO {
                 System.out.println("| Numero: " + v.getId());
                 System.out.println("| Origem: " + v.getOrigem());
                 System.out.println("| Destino: " + v.getDestino());
+                System.out.println("| Valor: R$ " + String.format("%.2f", v.getValor()));
                 System.out.println("| Data/Hora: " + v.getData().format(formato));
                 System.out.println("| Duracao: " + duracaoFormatada);
                 System.out.println("| Companhia: " + v.getCompanhiaAerea().getNome());
@@ -303,6 +308,7 @@ public class VooDAO {
                         System.out.println("| Numero: " + v.getId());
                         System.out.println("| Origem: " + v.getOrigem());
                         System.out.println("| Destino: " + v.getDestino());
+                        System.out.println("| Valor: R$ " + String.format("%.2f", v.getValor()));
                         System.out.println("| Data/Hora: " + v.getData().format(formatoData));
                         System.out.println("| Duracao: " + duracaoFormatada);
                         System.out.println("| Companhia: " + v.getCompanhiaAerea().getNome());

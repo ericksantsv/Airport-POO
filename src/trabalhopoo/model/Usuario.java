@@ -132,7 +132,7 @@ public class Usuario {
                     crudUsuario(usuarios, scan);
                     break;
                 case 7:
-                    Relatorios.menuRelatorios(voos, tickets, scan);
+                    Relatorios.menuRelatorios(voos, tickets, companhias, passageiros, scan);
                     break;
                 case 8:
                     admMenu = false;

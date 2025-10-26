@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
     private double valor;
     private Voo voo;
     private Passageiro passageiro;
-    private String codigo; // <--- novo campo
+    private String codigo;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
 
