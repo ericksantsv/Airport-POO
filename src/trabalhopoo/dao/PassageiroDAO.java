@@ -39,10 +39,10 @@ public class PassageiroDAO {
         passageiros[16] = new Passageiro(17, "Bruno Henrique", LocalDate.parse("1988-11-30"), "333.222.444-66", LocalDateTime.now(), LocalDateTime.now());
         passageiros[17] = new Passageiro(18, "Camila Andrade", LocalDate.parse("1999-09-02"), "444.333.555-77", LocalDateTime.now(), LocalDateTime.now());
         passageiros[18] = new Passageiro(19, "Gustavo Pereira", LocalDate.parse("1991-07-18"), "555.444.666-88", LocalDateTime.now(), LocalDateTime.now());
-        passageiros[19] = new Passageiro(20, "Natália Rocha", LocalDate.parse("1993-03-09"), "666.555.777-99", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[19] = new Passageiro(20, "Natalia Rocha", LocalDate.parse("1993-03-09"), "666.555.777-99", LocalDateTime.now(), LocalDateTime.now());
         passageiros[20] = new Passageiro(21, "Eduardo Lima", LocalDate.parse("1986-12-25"), "777.666.888-00", LocalDateTime.now(), LocalDateTime.now());
-        passageiros[21] = new Passageiro(22, "Letícia Carvalho", LocalDate.parse("1998-06-03"), "888.777.999-11", LocalDateTime.now(), LocalDateTime.now());
-        passageiros[22] = new Passageiro(23, "André Gonçalves", LocalDate.parse("1992-04-27"), "999.888.000-22", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[21] = new Passageiro(22, "Leticia Carvalho", LocalDate.parse("1998-06-03"), "888.777.999-11", LocalDateTime.now(), LocalDateTime.now());
+        passageiros[22] = new Passageiro(23, "Andre Gonçalves", LocalDate.parse("1992-04-27"), "999.888.000-22", LocalDateTime.now(), LocalDateTime.now());
         passageiros[23] = new Passageiro(24, "Sabrina Torres", LocalDate.parse("1990-10-13"), "000.999.111-33", LocalDateTime.now(), LocalDateTime.now());
         passageiros[24] = new Passageiro(25, "Rodrigo Barbosa", LocalDate.parse("1989-08-29"), "111.000.222-44", LocalDateTime.now(), LocalDateTime.now());
 

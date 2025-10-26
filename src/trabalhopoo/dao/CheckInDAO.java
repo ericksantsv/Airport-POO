@@ -150,10 +150,10 @@ public class CheckInDAO {
                 Ticket t = c.getTicket();
                 Voo v = t.getVoo();
 
-                String dataFormatada = v.getData() != null ? v.getData().format(formato) : "Data indisponível";
+                String dataFormatada = v.getData() != null ? v.getData().format(formato) : "Data indisponivel";
 
-                System.out.println("Número: " + c.getId()
-                        + " | Código: " + t.getCodigo()
+                System.out.println("Numero: " + c.getId()
+                        + " | Codigo: " + t.getCodigo()
                         + " | Passageiro: " + t.getPassageiro().getNome()
                         + " | Voo: " + v.getOrigem() + " -> " + v.getDestino()
                         + " | Data/Hora: " + dataFormatada);
@@ -203,7 +203,7 @@ public class CheckInDAO {
                 }
 
                 if (codigoAssento == null) {
-                    System.out.println("Erro: assento não encontrado para o passageiro neste voo.");
+                    System.out.println("Erro: assento nao encontrado para o passageiro neste voo.");
                     return;
                 }
 

@@ -150,7 +150,7 @@ public class BoardingPassDAO {
         Passageiro passageiro = usuario.getPassageiro();
         Ticket[] tickets = passageiro.getTicket();
 
-        System.out.println("\n--- Tickets disponíveis para embarque ---");
+        System.out.println("\n--- Tickets disponiveis para embarque ---");
 
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -201,8 +201,8 @@ public class BoardingPassDAO {
                 // Exibe somente se o passageiro pode embarcar
                 if (vooEmbarque && checkInAprovado && boardingPassEmitido && bagagemDespachada) {
                     System.out.println("\n--------------------------------------");
-                    System.out.println("| Número Ticket: " + t.getId());
-                    System.out.println("| Código: " + t.getCodigo());
+                    System.out.println("| Numero Ticket: " + t.getId());
+                    System.out.println("| Codigo: " + t.getCodigo());
                     System.out.println("| Origem: " + v.getOrigem());
                     System.out.println("| Destino: " + v.getDestino());
                     System.out.println("| Data/Hora: " + v.getData().format(formato));
@@ -217,12 +217,12 @@ public class BoardingPassDAO {
         }
 
         if (!temDisponivel) {
-            System.out.println("\nNenhum ticket elegível para embarque neste momento.");
+            System.out.println("\nNenhum ticket elegivel para embarque neste momento.");
             return;
         }
 
         // Escolha do ticket
-        System.out.print("\nDigite o número do ticket que deseja embarcar: ");
+        System.out.print("\nDigite o numero do ticket que deseja embarcar: ");
         int idTicket = scan.nextInt();
         scan.nextLine();
 
@@ -232,13 +232,13 @@ public class BoardingPassDAO {
 
                 // Impede embarque em voo cancelado
                 if (v.getEstado().equalsIgnoreCase("Cancelado")) {
-                    System.out.println("❌ Este voo foi cancelado. O embarque não é permitido.");
+                    System.out.println("Este voo foi cancelado. O embarque nao e permitido.");
                     return;
                 }
 
                 // Impede embarque em voo já concluído
                 if (v.getEstado().equalsIgnoreCase("Concluido")) {
-                    System.out.println("❌ Este voo já foi concluído. O embarque não é possível.");
+                    System.out.println("Este voo ja foi concluído. O embarque nao e possivel.");
                     return;
                 }
 
@@ -246,17 +246,17 @@ public class BoardingPassDAO {
                 for (BoardingPass bp : boardingPasses) {
                     if (bp != null && bp.getVoo() == v && bp.getPassageiro() == passageiro) {
                         bp.setEmbarcado(true);
-                        System.out.println("\n✅ Embarque realizado com sucesso! Boa viagem!");
+                        System.out.println("\nEmbarque realizado com sucesso! Boa viagem!");
                         return;
                     }
                 }
 
-                System.out.println("Erro: boarding pass não encontrado.");
+                System.out.println("Erro: boarding pass nao encontrado.");
                 return;
             }
         }
 
-        System.out.println("Ticket inválido.");
+        System.out.println("Ticket invalido.");
     }
 
 }

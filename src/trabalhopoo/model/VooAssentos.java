@@ -81,25 +81,21 @@ public class VooAssentos {
         boolean menu = true;
         while (menu) {
             System.out.println("\n--- CRUD Assentos de Voo ---");
-            System.out.println("1 - Reservar Assento");
-            System.out.println("2 - Listar Assentos");
-            System.out.println("3 - Deletar Assento");
-            System.out.println("4 - Voltar");
+            System.out.println("1 - Listar Assentos");
+            System.out.println("2 - Deletar Assento");
+            System.out.println("3 - Voltar");
             System.out.print("Escolha: ");
             int op = scan.nextInt();
             scan.nextLine();
 
             switch (op) {
                 case 1:
-                    VooAssentosDAO.reservarAssento(voos, passageiros, scan);
-                    break;
-                case 2:
                     VooAssentosDAO.listarAssentos(voos, boarding, scan);
                     break;
-                case 3:
+                case 2:
                     VooAssentosDAO.deletarAssento(voos, scan);
                     break;
-                case 4:
+                case 3:
                     menu = false;
                     break;
                 default:

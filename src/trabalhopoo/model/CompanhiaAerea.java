@@ -107,7 +107,7 @@ public class CompanhiaAerea {
         return Objects.equals(this.abreviacao, other.abreviacao);
     }
 
-    public static void crudCompanhiaAerea(CompanhiaAerea[] companhias, Scanner scan) {
+    public static void crudCompanhiaAerea(CompanhiaAerea[] companhias, Voo[] voos, Ticket[] tickets, VooAssentos[] assentos, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boardingPasses, Scanner scan) {
         boolean menu = true;
         while (menu) {
             System.out.println("\n--- CRUD Companhias Aereas ---");
@@ -131,7 +131,7 @@ public class CompanhiaAerea {
                     CompanhiaAereaDAO.editar(companhias, scan);
                     break;
                 case 4:
-                    CompanhiaAereaDAO.deletar(companhias, scan);
+                    CompanhiaAereaDAO.deletar(companhias, voos, tickets, assentos, checkIns, bagagens, boardingPasses, scan);
                     break;
                 case 5:
                     menu = false;

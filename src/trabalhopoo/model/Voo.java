@@ -184,7 +184,7 @@ public class Voo {
         return Objects.equals(this.data, other.data);
     }
 
-    public static void crudVoo(Voo[] voos, CompanhiaAerea[] companhias, Scanner scan) {
+    public static void crudVoo(Voo[] voos, Ticket[] tickets, VooAssentos[] assentos, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boardingPasses, CompanhiaAerea[] companhias, Scanner scan) {
         boolean menu = true;
         while (menu) {
             System.out.println("\n--- CRUD Voo ---");
@@ -207,11 +207,11 @@ public class Voo {
                     break;
 
                 case 3:
-                    VooDAO.editar(voos, scan);
+                    VooDAO.editarVoo(voos, tickets, boardingPasses, scan);
                     break;
 
                 case 4:
-                    VooDAO.deletar(voos, scan);
+                    VooDAO.deletar(voos, tickets, assentos, checkIns, bagagens, boardingPasses, scan);
                     break;
 
                 case 5:

@@ -17,6 +17,7 @@ import trabalhopoo.model.Passageiro;
 import trabalhopoo.model.Ticket;
 import trabalhopoo.model.Usuario;
 import trabalhopoo.model.Voo;
+import trabalhopoo.model.VooAssentos;
 
 public class TrabalhoPOO {
 
@@ -39,7 +40,9 @@ public class TrabalhoPOO {
         
         BoardingPass[] boardingPasses = new BoardingPass[tickets.length];
         BoardingPassDAO.inicializarBoardingPasses(tickets, boardingPasses, checkIns, bagagens);
-
+        
+        VooAssentos[] assentos = new VooAssentos[200];
+        
         boolean menu = true;
         while (menu) {
             System.out.println("\n\n===== Menu Principal =====");
@@ -67,7 +70,7 @@ public class TrabalhoPOO {
                 case 4:
                     Usuario admin = UsuarioDAO.loginAdmin(scan, usuarios);
                     if (admin != null) {
-                        Usuario.menuAdmin(scan, tickets, passageiros, voos, checkIns, bagagens, companhiaAerea, usuarios, boardingPasses);
+                        Usuario.menuAdmin(scan, tickets, passageiros, voos, checkIns, bagagens, companhiaAerea, usuarios, boardingPasses, assentos);
                     }
                     break;
                 case 5:

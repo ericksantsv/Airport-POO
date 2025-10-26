@@ -4,8 +4,10 @@
  */
 package trabalhopoo.dao;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import trabalhopoo.model.BoardingPass;
 import trabalhopoo.model.CheckIn;
 import trabalhopoo.model.DespachoBagagem;
 import trabalhopoo.model.Passageiro;
@@ -110,19 +112,129 @@ public class TicketDAO {
         return tickets;
     }
 
-    public static void criar(Ticket[] ticket, Passageiro passageiro, Voo[] voos, Scanner scan) {
-        for (int i = 0; i < ticket.length; i++) {
-            if (ticket[i] == null) {
-                //Arrumar valor
-                double valor = 10;
-                Voo voo = VooDAO.escolherVoo(voos, scan);
+    // ================= LISTAR TICKETS =================
+    public static void listar(Ticket[] tickets) {
+        System.out.println("\n=== Lista de Tickets ===");
+        for (Ticket t : tickets) {
+            if (t != null) {
+                System.out.println("ID: " + t.getId()
+                        + " | Voo: " + t.getVoo().getId()
+                        + " | Passageiro: " + t.getPassageiro().getNome()
+                        + " | Valor: R$ " + String.format("%.2f", t.getValor())
+                        + " | Código: " + t.getCodigo());
+            }
+        }
+    }
 
-                ticket[i] = new Ticket(i + 1, valor, voo, passageiro);
-                passageiro.setTicket(ticket);
+    // ================= EDITAR TICKET =================
+    public static void editar(Ticket[] tickets, Scanner scan) {
+        listar(tickets);
+        System.out.print("\nInforme o ID do ticket para editar: ");
+        int id = scan.nextInt();
+        scan.nextLine();
 
+        Ticket tEditar = null;
+        for (Ticket t : tickets) {
+            if (t != null && t.getId() == id) {
+                tEditar = t;
                 break;
             }
         }
+
+        if (tEditar == null) {
+            System.out.println("Ticket não encontrado!");
+            return;
+        }
+
+        System.out.println("Editando Ticket ID: " + tEditar.getId());
+
+        // Editar valor
+        System.out.print("Valor atual (" + tEditar.getValor() + "): ");
+        String valorStr = scan.nextLine();
+        if (!valorStr.isEmpty()) {
+            tEditar.setValor(Double.parseDouble(valorStr));
+        }
+
+        // Editar código
+        System.out.print("Codigo atual (" + tEditar.getCodigo() + "): ");
+        String codigo = scan.nextLine();
+        if (!codigo.isEmpty()) {
+            tEditar.setCodigo(codigo);
+        }
+
+        // Atualizar data de modificação
+        tEditar.setDataModificacao(LocalDateTime.now());
+
+        System.out.println("Ticket atualizado com sucesso!");
+    }
+
+    // ================= DELETAR TICKET =================
+    public static void deletar(Ticket[] tickets, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boardingPasses, Scanner scan) {
+
+        listar(tickets);
+        System.out.print("\nInforme o ID do ticket para deletar: ");
+        int id = scan.nextInt();
+        scan.nextLine();
+
+        Ticket tDeletar = null;
+
+        // Encontrar ticket
+        for (Ticket t : tickets) {
+            if (t != null && t.getId() == id) {
+                tDeletar = t;
+                break;
+            }
+        }
+
+        if (tDeletar == null) {
+            System.out.println("Ticket nao encontrado!");
+            return;
+        }
+
+        // Confirmação
+        System.out.print("Certeza? Isso irá deletar o ticket e todos os dados associados (CheckIn, Bagagem, Boarding Pass) [S/N]: ");
+        String confirm = scan.nextLine();
+        if (!confirm.equalsIgnoreCase("S")) {
+            System.out.println("Operacao cancelada.");
+            return;
+        }
+
+        // Deletar CheckIns associados
+        for (int i = 0; i < checkIns.length; i++) {
+            if (checkIns[i] != null && checkIns[i].getTicket() == tDeletar) {
+                checkIns[i] = null;
+            }
+        }
+
+        // Deletar Bagagens associadas
+        for (int i = 0; i < bagagens.length; i++) {
+            if (bagagens[i] != null && bagagens[i].getTicket() == tDeletar) {
+                bagagens[i] = null;
+            }
+        }
+
+        // Deletar BoardingPass associados
+        for (int i = 0; i < boardingPasses.length; i++) {
+            if (boardingPasses[i] != null) {
+                BoardingPass bp = boardingPasses[i];
+                // Se o passageiro e o voo do boarding pass forem iguais aos do ticket
+                if (bp.getPassageiro() == tDeletar.getPassageiro()
+                        && bp.getVoo() == tDeletar.getVoo()
+                        && bp.getAssento().equals(tDeletar.getCodigo())) {
+                    boardingPasses[i] = null;
+                }
+            }
+        }
+
+        // Remover o ticket
+        for (int i = 0; i < tickets.length; i++) {
+            if (tickets[i] == tDeletar) {
+                tickets[i] = null;
+                break;
+            }
+        }
+
+        System.out.println("Ticket e todos os registros associados deletados com sucesso!");
     }
 
     public static void listarReservas(Usuario usuario, CheckIn[] checkIns, DespachoBagagem[] bagagens) {
@@ -250,7 +362,7 @@ public class TicketDAO {
             }
         }
 
-        System.out.println("Erro: nao ha espaço disponivel para criar novo ticket.");
+        System.out.println("Erro: nao ha espaco disponivel para criar novo ticket.");
         return null;
     }
 

@@ -5,12 +5,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this t
 package trabalhopoo.model;
 
 import java.time.LocalDateTime;
+import java.util.Scanner;
+import trabalhopoo.dao.TicketDAO;
 
 /**
  *
- 
-@author Gonçalves*/
-    public class Ticket {
+ *
+ * @author Gonçalves
+ */
+public class Ticket {
+
     private int id;
     private double valor;
     private Voo voo;
@@ -83,6 +87,44 @@ import java.time.LocalDateTime;
 
     public void setDataModificacao(LocalDateTime dataModificacao) {
         this.dataModificacao = dataModificacao;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public static void crudTickets(Ticket[] tickets, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boardingPasses, Scanner scan) {
+        boolean menu = true;
+        while (menu) {
+            System.out.println("\n--- CRUD Tickets ---");
+            System.out.println("1 - Listar Tickets");
+            System.out.println("2 - Editar Ticket");
+            System.out.println("3 - Deletar Ticket");
+            System.out.println("4 - Voltar");
+            System.out.print("Escolha: ");
+            int op = scan.nextInt();
+            scan.nextLine();
+
+            switch (op) {
+                case 1:
+                    TicketDAO.listar(tickets);
+                    break;
+                case 2:
+                    TicketDAO.editar(tickets, scan);
+                    break;
+
+                case 3:
+                    TicketDAO.deletar(tickets, checkIns, bagagens, boardingPasses, scan);
+                    break;
+                case 4:
+                    // Voltar ao menu anterior
+                    menu = false;
+                    break;
+
+                default:
+                    System.out.println("Opcao invalida!");
+            }
+        }
     }
 
 }

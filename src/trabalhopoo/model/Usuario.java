@@ -91,7 +91,7 @@ public class Usuario {
     }
 
     // ---------------- Menu Admin ----------------
-    public static void menuAdmin(Scanner scan, Ticket[] tickets, Passageiro[] passageiros, Voo[] voos, CheckIn[]checkIns, DespachoBagagem[] bagagens, CompanhiaAerea[] companhias, Usuario[] usuarios, BoardingPass[] boarding) {
+    public static void menuAdmin(Scanner scan, Ticket[] tickets, Passageiro[] passageiros, Voo[] voos, CheckIn[]checkIns, DespachoBagagem[] bagagens, CompanhiaAerea[] companhias, Usuario[] usuarios, BoardingPass[] boarding, VooAssentos[] assentos) {
         boolean admMenu = true;
         while (admMenu) {
             System.out.println("\n--- MENU ADMINISTRADOR ---");
@@ -114,14 +114,14 @@ public class Usuario {
                     break;
                 case 2:
                     // Ainda não implementado
-                    CompanhiaAerea.crudCompanhiaAerea(companhias, scan);
+                    CompanhiaAerea.crudCompanhiaAerea(companhias, voos, tickets, assentos, checkIns, bagagens, boarding, scan);
                     break;
                 case 3:
-                    Voo.crudVoo(voos, companhias, scan);
+                    Voo.crudVoo(voos, tickets, assentos, checkIns, bagagens, boarding, companhias, scan);
                     break;
                 case 4:
                     //Ticket
-
+                    Ticket.crudTickets(tickets, checkIns, bagagens, boarding, scan);
                     break;
                 case 5:
                     // Ainda não implementado

@@ -68,7 +68,7 @@ public class RelatoriosDAO {
     }
 
     public static void passageirosQueChegaramCidade(Voo[] voos, Ticket[] tickets, Scanner scan) {
-        System.out.println("\n===== Cidades de Destino Disponíveis =====");
+        System.out.println("\n===== Cidades de Destino Disponiveis =====");
         String[] destinos = new String[voos.length];
         int count = 0;
 
@@ -166,12 +166,12 @@ public class RelatoriosDAO {
         }
 
         if (companhiaSelecionada == null) {
-            System.out.println("Companhia não encontrada!");
+            System.out.println("Companhia nao encontrada!");
             return;
         }
 
         // Ler período
-        System.out.print("Data início (dd/MM/yyyy HH:mm): ");
+        System.out.print("Data inicio (dd/MM/yyyy HH:mm): ");
         String inicioStr = scan.nextLine();
         System.out.print("Data fim (dd/MM/yyyy HH:mm): ");
         String fimStr = scan.nextLine();
@@ -183,7 +183,7 @@ public class RelatoriosDAO {
             inicio = LocalDateTime.parse(inicioStr, FORMATO_DATA);
             fim = LocalDateTime.parse(fimStr, FORMATO_DATA);
         } catch (Exception e) {
-            System.out.println("Formato de data inválido!");
+            System.out.println("Formato de data invalido!");
             return;
         }
 
@@ -210,8 +210,8 @@ public class RelatoriosDAO {
         }
 
         System.out.println("\nReceita da companhia " + companhiaSelecionada.getNome()
-                + " no período de " + inicio.format(FORMATO_DATA) + " até " + fim.format(FORMATO_DATA)
-                + " é: R$ " + String.format("%.2f", receita));
+                + " no periodo de " + inicio.format(FORMATO_DATA) + " ate " + fim.format(FORMATO_DATA)
+                + " e: R$ " + String.format("%.2f", receita));
     }
 
 }

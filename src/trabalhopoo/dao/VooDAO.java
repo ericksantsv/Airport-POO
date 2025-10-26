@@ -5,8 +5,11 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import trabalhopoo.model.BoardingPass;
+import trabalhopoo.model.CheckIn;
 import trabalhopoo.model.Voo;
 import trabalhopoo.model.CompanhiaAerea;
+import trabalhopoo.model.DespachoBagagem;
+import trabalhopoo.model.Ticket;
 import trabalhopoo.model.VooAssentos;
 
 public class VooDAO {
@@ -25,7 +28,7 @@ public class VooDAO {
         voos[6] = new Voo(7, 250.00, "Sao Paulo", "Brasilia", LocalDateTime.parse("2025-10-04 07:20", formato), LocalTime.of(1, 30), companhiaAerea[0], 8, "Concluido", LocalDateTime.now(), LocalDateTime.now());
         voos[7] = new Voo(8, 100.00, "Brasilia", "Rio de Janeiro", LocalDateTime.parse("2025-10-03 09:10", formato), LocalTime.of(1, 10), companhiaAerea[1], 6, "Concluido", LocalDateTime.now(), LocalDateTime.now());
         voos[8] = new Voo(9, 200.00, "Curitiba", "Uberaba", LocalDateTime.parse("2025-10-02 15:45", formato), LocalTime.of(1, 55), companhiaAerea[3], 7, "Concluido", LocalDateTime.now(), LocalDateTime.now());
-        voos[9] = new Voo(10, 500.00,"Rio de Janeiro", "Sao Paulo", LocalDateTime.parse("2025-10-01 21:00", formato), LocalTime.of(1, 40), companhiaAerea[4], 9, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
+        voos[9] = new Voo(10, 500.00, "Rio de Janeiro", "Sao Paulo", LocalDateTime.parse("2025-10-01 21:00", formato), LocalTime.of(1, 40), companhiaAerea[4], 9, "Cancelado", LocalDateTime.now(), LocalDateTime.now());
         voos[10] = new Voo(11, 234.00, "Uberaba", "Brasilia", LocalDateTime.parse("2025-11-03 09:10", formato), LocalTime.of(1, 10), companhiaAerea[1], 6, "Programado", LocalDateTime.now(), LocalDateTime.now());
         voos[11] = new Voo(12, 800.00, "Sao Paulo", "Uberaba", LocalDateTime.parse("2025-11-02 15:45", formato), LocalTime.of(1, 55), companhiaAerea[3], 7, "Programado", LocalDateTime.now(), LocalDateTime.now());
         voos[12] = new Voo(13, 1000.00, "Brasilia", "Curitiba", LocalDateTime.parse("2025-10-25 12:11", formato), LocalTime.of(1, 40), companhiaAerea[4], 9, "Programado", LocalDateTime.now(), LocalDateTime.now());
@@ -42,22 +45,49 @@ public class VooDAO {
 
                 System.out.print("Destino: ");
                 String destino = scan.nextLine();
-                
-                System.out.print("Informe o valor da viagem: ");
+
+                System.out.print("Informe o valor da viagem: R$");
                 double valor = scan.nextInt();
-                
+                scan.nextLine(); // limpar buffer
+
                 // Data e hora completas do voo
-                System.out.print("Data e hora do voo (AAAA-MM-DD HH:MM): ");
-                String dataHoraStr = scan.nextLine();
                 DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-                LocalDateTime dataHora = LocalDateTime.parse(dataHoraStr, formato);
+                String dataHoraStr;
+                LocalDateTime dataHora = null;
+                while (true) {
+                    System.out.print("Data e hora do voo (AAAA-MM-DD HH:MM): ");
+                    dataHoraStr = scan.nextLine().trim();
+                    if (dataHoraStr.isEmpty()) {
+                        System.out.println("Data e hora não podem ser vazios!");
+                        continue;
+                    }
+                    try {
+                        dataHora = LocalDateTime.parse(dataHoraStr, formato);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Formato inválido! Use o padrão AAAA-MM-DD HH:MM.");
+                    }
+                }
 
                 // Duração do voo em horas e minutos
-                System.out.print("Duracao (HH:MM): ");
-                String duracaoStr = scan.nextLine();
-                LocalTime duracao = LocalTime.parse(duracaoStr, DateTimeFormatter.ofPattern("HH:mm"));
+                String duracaoStr;
+                LocalTime duracao = null;
+                while (true) {
+                    System.out.print("Duracao (HH:MM): ");
+                    duracaoStr = scan.nextLine().trim();
+                    if (duracaoStr.isEmpty()) {
+                        System.out.println("Duracao nao pode ser vazia!");
+                        continue;
+                    }
+                    try {
+                        duracao = LocalTime.parse(duracaoStr, DateTimeFormatter.ofPattern("HH:mm"));
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Formato de duracao inválido! Use HH:MM.");
+                    }
+                }
 
-                System.out.println("\nEscolha a companhia aérea:");
+                System.out.println("\nEscolha a companhia aeea:");
                 for (int j = 0; j < companhias.length; j++) {
                     if (companhias[j] != null) {
                         System.out.println(companhias[j].getId() + " - " + companhias[j].getNome());
@@ -94,46 +124,155 @@ public class VooDAO {
         }
     }
 
-    public static void editar(Voo[] voos, Scanner scan) {
+    public static void editarVoo(
+            Voo[] voos,
+            Ticket[] tickets,
+            BoardingPass[] boardingPasses,
+            Scanner scan) {
+
+        VooDAO.listar(voos);
+
         System.out.print("Informe o ID do voo para editar: ");
         int idEdit = scan.nextInt();
         scan.nextLine();
 
-        Voo vEdit = null;
+        Voo vooEditar = null;
+
+        // Encontrar o voo
         for (Voo v : voos) {
             if (v != null && v.getId() == idEdit) {
-                vEdit = v;
+                vooEditar = v;
                 break;
             }
         }
 
-        if (vEdit != null) {
-            System.out.print("Nova origem: ");
-            vEdit.setOrigem(scan.nextLine());
-
-            System.out.print("Novo destino: ");
-            vEdit.setDestino(scan.nextLine());
-
-            vEdit.setDataModificacao(LocalDateTime.now());
-
-            System.out.println("Voo atualizado!");
-        } else {
+        if (vooEditar == null) {
             System.out.println("Voo nao encontrado!");
+            return;
         }
+
+        System.out.println("Editando voo: " + vooEditar.getId());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+
+        // Editar origem
+        System.out.print("Origem (" + vooEditar.getOrigem() + "): ");
+        String origem = scan.nextLine();
+        if (!origem.isEmpty()) {
+            vooEditar.setOrigem(origem);
+        }
+
+        // Editar destino
+        System.out.print("Destino (" + vooEditar.getDestino() + "): ");
+        String destino = scan.nextLine();
+        if (!destino.isEmpty()) {
+            vooEditar.setDestino(destino);
+        }
+
+        // Editar data
+        System.out.print("Data (yyyy/MM/dd HH:mm) (" + vooEditar.getData().format(formatter) + "): ");
+        String dataStr = scan.nextLine();
+        if (!dataStr.isEmpty()) {
+            vooEditar.setData(LocalDateTime.parse(dataStr, formatter));
+        }
+
+        // Editar duração
+        System.out.print("Duração (HH:mm) (" + vooEditar.getDuracao() + "): ");
+        String duracaoStr = scan.nextLine();
+        if (!duracaoStr.isEmpty()) {
+            String[] hm = duracaoStr.split(":");
+            vooEditar.setDuracao(LocalTime.of(Integer.parseInt(hm[0]), Integer.parseInt(hm[1])));
+        }
+
+        // Editar valor
+        System.out.print("Valor (" + vooEditar.getValor() + "): ");
+        String valorStr = scan.nextLine();
+        if (!valorStr.isEmpty()) {
+            vooEditar.setValor(Double.parseDouble(valorStr));
+        }
+
+        // Atualizar data de modificação do voo
+        vooEditar.setDataModificacao(LocalDateTime.now());
+
+        System.out.println("Voo e todos os registros associados atualizados com sucesso!");
     }
 
-    public static void deletar(Voo[] voos, Scanner scan) {
+    public static void deletar(Voo[] voos, Ticket[] tickets, VooAssentos[] assentos, CheckIn[] checkIns, DespachoBagagem[] bagagens, BoardingPass[] boardingPasses, Scanner scan) {
+
+        VooDAO.listar(voos);
         System.out.print("Informe o ID do voo para deletar: ");
         int idDel = scan.nextInt();
         scan.nextLine();
 
+        Voo vooDeletar = null;
+
+        // Encontrar o voo
         for (int i = 0; i < voos.length; i++) {
             if (voos[i] != null && voos[i].getId() == idDel) {
-                voos[i] = null;
-                System.out.println("Voo deletado!");
+                vooDeletar = voos[i];
                 break;
             }
         }
+
+        if (vooDeletar == null) {
+            System.out.println("Voo nao encontrado!");
+            return;
+        }
+
+        // Confirmação
+        System.out.print("Certeza? Isso irá deletar todos os dados associados a este voo (tickets, assentos, check-ins, bagagens, boarding passes) [S/N]: ");
+        String confirm = scan.nextLine();
+        if (!confirm.equalsIgnoreCase("S")) {
+            System.out.println("Operacao cancelada.");
+            return;
+        }
+
+        // Deletar tickets associados
+        for (int i = 0; i < tickets.length; i++) {
+            if (tickets[i] != null && tickets[i].getVoo() == vooDeletar) {
+                tickets[i] = null;
+            }
+        }
+
+        // Liberar assentos
+        if (vooDeletar.getVooAssentos() != null) {
+            for (VooAssentos a : vooDeletar.getVooAssentos()) {
+                if (a != null) {
+                    a.setPassageiro(null);
+                }
+            }
+        }
+
+        // Deletar check-ins
+        for (int i = 0; i < checkIns.length; i++) {
+            if (checkIns[i] != null && checkIns[i].getTicket().getVoo() == vooDeletar) {
+                checkIns[i] = null;
+            }
+        }
+
+        // Deletar bagagens
+        for (int i = 0; i < bagagens.length; i++) {
+            if (bagagens[i] != null && bagagens[i].getTicket().getVoo() == vooDeletar) {
+                bagagens[i] = null;
+            }
+        }
+
+        // Deletar boarding passes
+        for (int i = 0; i < boardingPasses.length; i++) {
+            if (boardingPasses[i] != null && boardingPasses[i].getVoo() == vooDeletar) {
+                boardingPasses[i] = null;
+            }
+        }
+
+        // Deletar o voo
+        for (int i = 0; i < voos.length; i++) {
+            if (voos[i] == vooDeletar) {
+                voos[i] = null;
+                break;
+            }
+        }
+
+        System.out.println("Voo e todos os registros associados foram deletados!");
     }
 
     public static void listar(Voo[] voos) {
@@ -263,7 +402,6 @@ public class VooDAO {
 
     public static Voo escolherVoo(Voo[] voos, Scanner scan) {
         DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        DateTimeFormatter formatoDuracao = DateTimeFormatter.ofPattern("HH:mm");
 
         while (true) {
             listarOrigens(voos);
